@@ -112,10 +112,10 @@ I had overnight to let it run rather than do a smarter thing and cache the 406 <
 <div class="alert alert-danger" role="alert">
 A dozen or so maps wouldn't load, the error console bemoaning <strong>RangeError: Maximum call stack size exceeded</strong>. Thinking about it, turned out it was because I was simply emitting all the inspections and using <tt>map.panTo(m[0].position)</tt> -- the first marker so that the map was centred over a pin in the county rather than calculate the proper centre of the map first and then emit the cloud of markers. Heed the quality of the data!
 </div>
-Wanting to avoid re-writing it with a cached set of <em>jump</em>-pins I bulk converted all the <tt>xml</tt> files to <tt>JSON</tt> with <tt>JSON.stringify()</tt> as the body to the callback of the <tt>xml2js::parser.parseString()</tt> function and exchanged the <tt>xml</tt> parser call to a <tt>JSON</tt> parser call (<tt>JSON.parse(data)</tt>). Took only a couple of minutes.
+<p>Wanting to avoid re-writing it with a cached set of <em>jump</em>-pins I bulk converted all the <tt>xml</tt> files to <tt>JSON</tt> with <tt>JSON.stringify()</tt> as the body to the callback of the <tt>xml2js::parser.parseString()</tt> function and exchanged the <tt>xml</tt> parser call to a <tt>JSON</tt> parser call (<tt>JSON.parse(data)</tt>). Took only a couple of minutes.
 <div class="alert alert-success" role="alert">
 Two wins: Firstly, three minutes per county <tt>xml</tt> turned into <strong>seven seconds</strong> per county <tt>JSON</tt> (less than half an hour to do the lot now) and seocndly, skipping inspections that have otherwise <tt>undefined</tt> lat/long data made the browser come alive and all the counties I tried worked.</div>
-            
+    </p>            
 <div class="page-header" id="contact">
     <h1>Contact</h1>
 </div>
