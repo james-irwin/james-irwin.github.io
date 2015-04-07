@@ -76,7 +76,13 @@ curl http://ratings.food.gov.uk/search/%5E/%5E/1/5000/xml
         </tt>
    </p> 
     <p>
-        Where <tt>%5E</tt> (^) effectively means a wildcard for both the name of the county and the establishment that was inspected. Replace <tt>xml</tt> with <tt>json</tt> for JSON formatted equivalent. <tt>1</tt> is the page number and <tt>5000</tt> the page size. That's the largest page size I managed to collect -- for a total of about a hundred pages, the result includes metadata with the number of pages at your selected page size.
+        Where <tt>%5E</tt> (^) effectively means a wildcard for both the name of the county and the establishment that was inspected. Replace <tt>xml</tt> with <tt>json</tt> for JSON formatted equivalent. <tt>1</tt> is the page number and <tt>5000</tt> the page size. That's the largest page size I managed to collect -- for a total of about a hundred pages, the result includes metadata with the number of pages at your selected page size. The GitHub repo has an example <a href="https://github.com/james-irwin/fsamap/tree/master/examples">HTML output</a> for just the first 5000 elements.
+    <div class="alert alert-danger" role="alert">
+    Mushing all the FSA inspection data into one large JSON file totals <strong>346Mb</strong>! Throwing away most of that to just pin the location, the rating and the name will make a single file in the tens of megabytes range. 
+      </div>
+    </p>
+    <p>
+    The data is ready partitioned into counties so I took that by scraping the <a href="http://ratings.food.gov.uk/open-data/en-GB">data page</a> and generaing a <tt>curl</tt> command for each, numbering the files. The GitHub repo has the <a href="https://github.com/james-irwin/fsamap/tree/master/xmldata">xml data for North Somerset</a> as a snapshot.
     </p>
 </div>
     
