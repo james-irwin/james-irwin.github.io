@@ -18,7 +18,16 @@
 
     <!-- Custom styles for this template -->
     <link href="theme.css" rel="stylesheet">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+  ga('create', 'UA-16765789-5', 'auto');
+  ga('send', 'pageview');
+
+</script>
   </head>
 
   <body role="document">
@@ -49,14 +58,16 @@
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
         <h1>Somewhere to keep ...</h1>
-        <p>Things that are not related to my work, things that are done because I need to learn by doing.</p>
+        <p>things that are done because I need to learn by doing.</p>
       </div>
-
+<div id="fsamap"> </div>
       <div class="page-header">
-        <h1>JavaScript via the Food Standards Agency</h1>
+          <h1>JavaScript via the Food Standards Agency</h1>
       </div>
         <a href="fsa/index.html"><img src="thumbs/fsa.png" class="img-thumbnail" alt="Food Standards Agency inspection ratings pinned over a Google map."></a>
 <div>
+    <p>
+        I wanted to learn a little JavaScript and being a non-UI person I did <em>learnyounode</em> until I thought I had enough to start something in anger.</p>
     <p>
         <a href="fsa/index.html"><button type="button" class="btn btn-primary">Site</button></a> FSA inspection ratings gathered by county pinned over Google's map.
     </p>
@@ -74,16 +85,43 @@ I wanted all the data, and it comes in XML and JSON options. Curl it in batches 
 <p>        <tt>
 curl http://ratings.food.gov.uk/search/%5E/%5E/1/5000/xml
         </tt>
-   </p> 
-    <p>
-        Where <tt>%5E</tt> (^) effectively means a wildcard for both the name of the county and the establishment that was inspected. Replace <tt>xml</tt> with <tt>json</tt> for JSON formatted equivalent. <tt>1</tt> is the page number and <tt>5000</tt> the page size. That's the largest page size I managed to collect -- for a total of about a hundred pages, the result includes metadata with the number of pages at your selected page size. The GitHub repo has an example <a href="https://github.com/james-irwin/fsamap/tree/master/examples">HTML output</a> for just the first 5000 elements.
-    <div class="alert alert-danger" role="alert">
-    Mushing all the FSA inspection data into one large JSON file totals <strong>346Mb</strong>! Throwing away most of that to just pin the location, the rating and the name will make a single file in the tens of megabytes range. 
-      </div>
-    </p>
-    <p>
-    The data is ready partitioned into counties so I took that by scraping the <a href="http://ratings.food.gov.uk/open-data/en-GB">data page</a> and generaing a <tt>curl</tt> command for each, numbering the files. The GitHub repo has the <a href="https://github.com/james-irwin/fsamap/tree/master/xmldata">xml data for North Somerset</a> as a snapshot.
-    </p>
+</p> 
+<p>
+Where <tt>%5E</tt> (^) effectively means a wildcard for both the name of the county and the establishment that was inspected. Replace <tt>xml</tt> with <tt>json</tt> for JSON formatted equivalent. <tt>1</tt> is the page number and <tt>5000</tt> the page size. That's the largest page size I managed to collect -- for a total of about a hundred pages, the result includes metadata with the number of pages at your selected page size. The GitHub repo has an example <a href="https://github.com/james-irwin/fsamap/tree/master/examples">HTML output</a> for just the first 5000 elements.
+    
+<div class="alert alert-danger" role="alert">
+Mushing all the FSA inspection data into one large JSON file totals <strong>346Mb</strong>! Throwing away most of that to just pin the location, the rating and the name will make a single file in the tens of megabytes range. Plus node didn't like <tt>fs.readfile()</tt> on a 346Mb file and I didn't have need/care to switch to a streamed implementation. I'm writing my first JavaScript program and didn't want any back-end otherwise I would use elasticsearch and mark the dynamically pulled inspections within the bounds of the Google map.
+</div>
+</p>
+<p>
+    As published, the data is partitioned into counties so I scraped the 406 files by curling the <a href = "http://ratings.food.gov.uk/open-data/en-GB" >data page</a> and piping it through <tt>grep http://ratings.food.gov.uk/OpenDataFiles/ | grep English</tt> to see something I could use <tt>cut</tt> to strip out the county names and the file names to re-<tt>curl</tt>. The GitHub repo has the <a href="https://github.com/james-irwin/fsamap/tree/master/xmldata">xml data for North Somerset</a> as a snapshot.
+</p>
+<p>
+    <a href="https://developers.google.com/maps/documentation/javascript/markers">Google maps with pins are surprisingly simple</a>. After installing <tt>xml2js</tt> to parse the xml with:
+<tt>
+var xml2js = require('xml2js');
+var parser = xml2js.Parser();
+parser.parseString(data, function (err, result) {...
+</tt>
+The inspection set for this county (loaded into <tt>data</tt> via <tt>fs.readFile()</tt>) is now navigable as a JavaScript object.
+<div class="alert alert-danger" role="alert">
+Parsing 406 xml files to put a few thousand pins for the county you're interested in plus 405 <em>jump</em>-pins at appropriate places on the map takes over <strong>three minutes!</strong> on my 2014 MacBook Pro. Scaling that even with the two cores takes about <strong>eight hours</strong> for the set.</div>
+
+I had overnight to let it run rather than do a smarter thing and cache the 406 <em>jump</em>-pins. Then I realised I needed something better anyway...</div>
+
+<div class="alert alert-danger" role="alert">
+A dozen or so maps wouldn't load, the error console bemoaning <strong>RangeError: Maximum call stack size exceeded</strong>. Thinking about it, turned out it was because I was simply emitting all the inspections and using <tt>map.panTo(m[0].position)</tt> -- the first marker so that the map was centred over a pin in the county rather than calculate the proper centre of the map first and then emit the cloud of markers. Heed the quality of the data!
+</div>
+Wanting to avoid re-writing it with a cached set of <em>jump</em>-pins I bulk converted all the <tt>xml</tt> files to <tt>JSON</tt> with <tt>JSON.stringify()</tt> as the body to the callback of the <tt>xml2js::parser.parseString()</tt> function and exchanged the <tt>xml</tt> parser call to a <tt>JSON</tt> parser call (<tt>JSON.parse(data)</tt>). Took only a couple of minutes.
+<div class="alert alert-success" role="alert">
+Two wins: Firstly, three minutes per county <tt>xml</tt> turned into <strong>seven seconds</strong> per county <tt>JSON</tt> (less than half an hour to do the lot now) and seocndly, skipping inspections that have otherwise <tt>undefined</tt> lat/long data made the browser come alive and all the counties I tried worked.</div>
+        
+
+</p>
+<p>
+</p>
+<p>
+</p>
 </div>
     
 <div class="page-header" id="contact">
