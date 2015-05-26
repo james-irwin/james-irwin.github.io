@@ -101,7 +101,7 @@ SELECT 'TO', COUNT(*) AS C WHERE 'FROM'='mike.mcconnell' FROM ENRONMAIL GROUP BY
     Shove that into a basic <a href="https://developers.google.com/chart/interactive/docs/gallery/sankey">Sankey</a> and you're away. I wanted to make the full set and have them navigable by clicking on the sames of the branches to recentre the bowtie. Turns out <a href="https://stackoverflow.com/questions/30337430/select-event-not-fired-on-google-chart-api-for-sankey">that's not yet possible</a> so I now have two versions -- a clickable list pair of labels with badges to show the counts and the Sankey image.
 </p>
     <p>
-        I used a modified version of the Sankey generator and iterated it a few times on the list of names it found to build a three-degrees from Rick Buy (or whoever) to build 1826 names to then batch run the lot. Sankeyfying for those names took 2mins 12secs. That's fast enough to do on demand.
+        I used a modified version of the Sankey generator and iterated it a few times on the list of names it found to build a three-degrees from Rick Buy (or whoever) totaling 1826 names to then batch run the lot. Sankeyfying for those names took 2mins 12secs. That's fast enough to do on demand.
     </p>
     <div class="alert alert-success" role="alert">
     Since these little bowtie Sankey diagrams take less than a tenth of a second each, I want to dial it up a step and go out one branch farther. To have a <i>from:from</i> feed into the <i>from</i> left had side and the mirror on the right. That turns the number of aggregations up from two about the centre name to twenty-two.
@@ -109,8 +109,11 @@ SELECT 'TO', COUNT(*) AS C WHERE 'FROM'='mike.mcconnell' FROM ENRONMAIL GROUP BY
     <p>
     First pass at a batwing to just extend the left (from/from) helped with error discovery. Added lots of <tt>&lt;namestring&gt;.replace(/\'/g,"");</tt> for the O'Days, O'Haras, O'Keeffes and so on. I could've escaped them or like I have here, just dropped them.
     </p>
-    <a href="http://james-irwin.github.io/enron/"><img src="thumbs/half.batwing.png" class="img-thumbnail" alt="Enron mail analytics."></a>
+    <a href="http://james-irwin.github.io/enron/mike.mcconnell.batwings.html"><img src="thumbs/half.batwing.png" class="img-thumbnail" alt="Enron mail analytics."></a>
 </div>
+    <p>
+    A matching set of batwings linked to bowtie Sankey views (click the centre name in the top set) generated in 2mins 59secs for twenty times as much work done in Elasticsearch. Still sub a tenth of a second each. Possible on demand then, probably while continually indexing new documents as they pass through the mail system.
+    </p>
       
       <!-- END OF ELSATIC/ENRON -->
       
