@@ -106,8 +106,10 @@ SELECT 'TO', COUNT(*) AS C WHERE 'FROM'='mike.mcconnell' FROM ENRONMAIL GROUP BY
     <div class="alert alert-success" role="alert">
     Since these little bowtie Sankey diagrams take less than a tenth of a second each, I want to dial it up a step and go out one branch farther. To have a <i>from:from</i> feed into the <i>from</i> left had side and the mirror on the right. That turns the number of aggregations up from two about the centre name to twenty-two.
     </div>
-        
-        
+    <p>
+    First pass at a batwing to just extend the left (from/from) helped with error discovery. Added lots of <tt>&lt;namestring&gt;.replace(/\'/g,"");</tt> for the O'Days, O'Haras, O'Keeffes and so on. I could've escaped them or like I have here, just dropped them.
+    </p>
+    <a href="http://james-irwin.github.io/enron/"><img src="thumbs/half.batwing.png" class="img-thumbnail" alt="Enron mail analytics."></a>
 </div>
       
       <!-- END OF ELSATIC/ENRON -->
