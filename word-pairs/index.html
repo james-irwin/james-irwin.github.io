@@ -28,7 +28,18 @@
   ga('send', 'pageview');
 
 </script>
-  </head>
+<script src="js/suggest.js"></script>
+<script src="js/bronte.3.js"></script>
+<script src="js/austen.3.js"></script>
+<script src="js/shakespeare.complete.3.js"></script>
+<script src="js/prob.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        var oTextboxB = new AutoSuggestControl ( document.getElementById("textinput"), [ document.getElementById("Bronte"), document.getElementById("Austen"), document.getElementById("Shakespeare")],[bronte, austen, romeo]);
+        document.getElementById("textinput").focus();
+            }
+</script>
+</head>
 
   <body role="document">
 
@@ -61,12 +72,58 @@
           <p>Reducing great works to numbers</p>
       </div>
     
-<div>
-    <p>
-        I wanted to know if I could auto-suggest in the style of a given writer/text and as a corollary, I threw up a metric to compare two distilled texts. 
-    </p>
+<div class="h3 text-center">
 </div>
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-12">
+        <h3>Get typing with stylo-hints from a few classics</h3>
+        <textarea class="col-md-12" rows="3"  id="textinput"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-4">
+			<h3>
+				Bronte suggests
+			</h3>
+			<p id="Bronte">
+				ready
+			</p>
+			<p>
+				<a class="btn" href="js/bronte.3.js">View data »</a>
+			</p>
+		</div>
+		<div class="col-md-4">
+			<h3>
+				Austen suggests
+			</h3>
+			<p id="Austen">
+				and
+			</p>
+			<p>
+				<a class="btn" href="js/austen.3.js">View data »</a>
+			</p>
+		</div>
+		<div class="col-md-4">
+			<h3>
+				Shakespeare suggests
+			</h3>
+			<p  id="Shakespeare">
+				waiting
+			</p>
+			<p>
+				<a class="btn" href="js/shakespeare.complete.3.js">View data »</a>
+			</p>
+		</div>
+	</div>
+</div>
+        
+      
       </div>
 
 
