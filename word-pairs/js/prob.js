@@ -9,5 +9,3 @@ var dist=function(elements) {
     }
     return index;
 }
-
-module.exports.dist=dist;

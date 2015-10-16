@@ -33,11 +33,23 @@
 <script src="js/austen.3.js"></script>
 <script src="js/shakespeare.complete.3.js"></script>
 <script src="js/prob.js"></script>
+<script src="js/austen.vs.shakespeare.js"></script>
+<script src="js/austen.vs.austen.js"></script>
+
+<script type='text/javascript' src='js/canvasjs.min.js'></script>
 <script type="text/javascript">
     window.onload = function () {
+        // Three classic writers
         var oTextboxB = new AutoSuggestControl ( document.getElementById("textinput"), [ document.getElementById("Bronte"), document.getElementById("Austen"), document.getElementById("Shakespeare")],[bronte, austen, romeo]);
         document.getElementById("textinput").focus();
-            }
+
+        // Bard versus Austen likeness
+    var chart = new CanvasJS.Chart('ShakespeareAustenChartContainer',    { axisX:{   maximum: 1.1,   minimum: -1.1,   title: 'likeness', },        axisY:{   maximum: 1.0,   minimum: 0.0,   title:'inness' },      data: [      {        type: 'bubble',    toolTipContent: '<strong>{name}</strong><br>{follow}',     dataPoints: avss   }   ] });chart.render();
+    
+        // Austen self-likeness
+    var chart = new CanvasJS.Chart('AustenAustenChartContainer',    { axisX:{   maximum: 1.1,   minimum: -1.1,   title: 'likeness', },        axisY:{   maximum: 1.0,   minimum: 0.0,   title:'inness' },      data: [      {        type: 'bubble',    toolTipContent: '<strong>{name}</strong><br>{follow}',     dataPoints: avsa   }   ] });chart.render();
+    
+    }
 </script>
 </head>
 
@@ -71,9 +83,6 @@
         <h2>Stylometry &amp; stylo-sympathy ...</h2>
           <p>Reducing great works to numbers</p>
       </div>
-    
-<div class="h3 text-center">
-</div>
 
 <div class="container-fluid">
     <div class="row">
@@ -123,8 +132,24 @@
 	</div>
 </div>
         
-      
-      </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-12">
+        <h3>Shakespeare vs Austen (complete works)</h3>            
+        </div>
+    </div>
+    <div id='ShakespeareAustenChartContainer' style='height: 450px; width: 100%;'></div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-12">
+        <h3>Austen's Pride &amp; Prejudice vs Austen's complete works</h3>            
+        </div>
+    </div>
+    <div id='AustenAustenChartContainer' style='height: 450px; width: 100%;'></div>
+</div>
+        
+      </div> <!-- Container showcase, the wrapper of the page body -->
 
 
     <!-- Bootstrap core JavaScript
@@ -132,6 +157,5 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="../dist/js/bootstrap.min.js"></script>
-</script>
   </body>
 </html>
