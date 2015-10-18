@@ -32,9 +32,15 @@
 <script src="js/bronte.3.js"></script>
 <script src="js/austen.3.js"></script>
 <script src="js/shakespeare.complete.3.js"></script>
+<script src="js/oldtestament.js"></script>
+<script src="js/koran.js"></script>
+<script src="js/krishna.js"></script>
 <script src="js/prob.js"></script>
 <script src="js/austen.vs.shakespeare.js"></script>
 <script src="js/austen.vs.austen.js"></script>
+<script src="js/koran.vs.krishna.js"></script>
+<script src="js/old.vs.new.js"></script>
+<script src="js/koran.vs.shakespeare.js"></script>
 
 <script type='text/javascript' src='js/canvasjs.min.js'></script>
 <script type="text/javascript">
@@ -43,13 +49,58 @@
         var oTextboxB = new AutoSuggestControl ( document.getElementById("textinput"), [ document.getElementById("Bronte"), document.getElementById("Austen"), document.getElementById("Shakespeare")],[bronte, austen, romeo]);
         document.getElementById("textinput").focus();
 
-        // Bard versus Austen likeness
-    var chart = new CanvasJS.Chart('ShakespeareAustenChartContainer',    { axisX:{   maximum: 1.1,   minimum: -1.1,   title: 'likeness', },        axisY:{   maximum: 1.0,   minimum: 0.0,   title:'inness' },      data: [      {        type: 'bubble',    toolTipContent: '<strong>{name}</strong><br>{follow}',     dataPoints: avss   }   ] });chart.render();
+    // Bard versus Austen likeness
+    var chart1 = new CanvasJS.Chart('ShakespeareAustenChartContainer',    { axisX:{   maximum: 1.1,   minimum: -1.1,   title: 'likeness', },        axisY:{   maximum: 0.6,   minimum: 0.0,   title:'inness' },      data: [      {        type: 'bubble',    toolTipContent: '<strong>{name}</strong><br>{follow}',     dataPoints: avss   }   ] });chart1.render();
     
-        // Austen self-likeness
-    var chart = new CanvasJS.Chart('AustenAustenChartContainer',    { axisX:{   maximum: 1.1,   minimum: -1.1,   title: 'likeness', },        axisY:{   maximum: 1.0,   minimum: 0.0,   title:'inness' },      data: [      {        type: 'bubble',    toolTipContent: '<strong>{name}</strong><br>{follow}',     dataPoints: avsa   }   ] });chart.render();
+    // Austen self-likeness
+    var chart2 = new CanvasJS.Chart('AustenAustenChartContainer',    { axisX:{   maximum: 1.1,   minimum: -1.1,   title: 'likeness', },        axisY:{   maximum: 1.0,   minimum: 0.0,   title:'inness' },      data: [      {        type: 'bubble',    toolTipContent: '<strong>{name}</strong><br>{follow}',     dataPoints: avsa   }   ] });chart2.render();
     
-    }
+    // Scripture suggesters
+    var oTextboxS = new AutoSuggestControl ( document.getElementById("scripturetextinput"), [ document.getElementById("Krishna"), document.getElementById("Koran"), document.getElementById("OldTestament")],[krishna, koran, oldtestament]);
+        
+    // Krishna vs Koran likeness
+    var chart3 = new CanvasJS.Chart('KKChartContainer',
+      {
+        axisX:{ maximum: 1.1, minimum: -1.1, title: 'likeness', },
+        axisY:{ maximum: 0.6,   minimum: 0.0, title:'inness' },
+        data: [ 
+            { 
+                type: 'bubble', 
+                toolTipContent: '<strong>{name}</strong><br>{follow}',
+                dataPoints: kvsk
+            } ]
+      });
+        chart3.render();
+
+        // Krishna vs Koran likeness
+    var chart4 = new CanvasJS.Chart('ONChartContainer',
+      {
+        axisX:{ maximum: 1.1, minimum: -1.1, title: 'likeness', },
+        axisY:{ maximum: 1.0,   minimum: 0.0, title:'inness' },
+        data: [ 
+            { 
+                type: 'bubble', 
+                toolTipContent: '<strong>{name}</strong><br>{follow}',
+                dataPoints: ovsn
+            } ]
+      });
+        chart4.render();
+
+        // Koran vs Shakespeare likeness
+    var chart5 = new CanvasJS.Chart('KSChartContainer',
+      {
+        axisX:{ maximum: 1.1, minimum: -1.1, title: 'likeness', },
+        axisY:{ maximum: 0.6,   minimum: 0.0, title:'inness' },
+        data: [ 
+            { 
+                type: 'bubble', 
+                toolTipContent: '<strong>{name}</strong><br>{follow}',
+                dataPoints: kvss
+            } ]
+      });
+        chart5.render();
+
+    } // Onload!
 </script>
 </head>
 
@@ -147,6 +198,78 @@
         </div>
     </div>
     <div id='AustenAustenChartContainer' style='height: 450px; width: 100%;'></div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-12">
+        <h3>Scripture inspired stylo-hints</h3>
+        <textarea class="col-md-12" rows="3"  id="scripturetextinput"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-4">
+			<h3>
+				Koran suggests
+			</h3>
+			<p id="Koran">
+				ready
+			</p>
+			<p>
+				<a class="btn" href="js/koran.js">View data »</a>
+			</p>
+		</div>
+		<div class="col-md-4">
+			<h3>
+				Krishna suggests
+			</h3>
+			<p id="Krishna">
+				and
+			</p>
+			<p>
+				<a class="btn" href="js/krishna.js">View data »</a>
+			</p>
+		</div>
+		<div class="col-md-4">
+			<h3>
+				Old Testament suggests
+			</h3>
+			<p  id="OldTestament">
+				waiting
+			</p>
+			<p>
+				<a class="btn" href="js/oldtestament.js">View data »</a>
+			</p>
+		</div>
+	</div>
+</div>
+        
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-12">
+        <h3>Koran vs Krishna</h3>            
+        </div>
+    </div>
+    <div id='KKChartContainer' style='height: 450px; width: 100%;'></div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-12">
+        <h3>Old vs New Testament</h3>
+        </div>
+    </div>
+    <div id='ONChartContainer' style='height: 450px; width: 100%;'></div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-12">
+        <h3>Koran vs Shakespeare</h3>
+        </div>
+    </div>
+    <div id='KSChartContainer' style='height: 450px; width: 100%;'></div>
 </div>
         
       </div> <!-- Container showcase, the wrapper of the page body -->
