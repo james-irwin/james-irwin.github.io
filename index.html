@@ -60,7 +60,7 @@
         <h1>Somewhere to keep ...</h1>
         <p>things that are done because I need to learn by doing.</p>
       </div>
-<div id="enronmail"> </div>
+<div id="wordpairs"> </div>
       <div class="page-header">
           <h1>Stylometry &amp; stylo-sympathy</h1>
       </div>
@@ -76,13 +76,13 @@
         <a href="http://www.github.com/james-irwin/word-pairs/"><button type="button" class="btn btn-success">Code</button></a> JavaScript to generate word-distribution distillates; compare them and consume them.
     </p>
     <p>
-    <a href="http://www.gutenberg.org"><button type="button" class="btn btn-info">Data</button></a> Project Gutenburg. 
+    <a href="http://www.gutenberg.org"><button type="button" class="btn btn-info">Data</button></a> Project Gutenburg.
     </p>
 </div>
-    
+
 <div>
     <p>
-        I started with a body of standard texts: 
+        I started with a body of standard texts:
         <a href="http://www.gutenberg.org/ebooks/10.txt.utf-8">The King James Bible</a>
         and <a href="http://www.gutenberg.org/ebooks/100.txt.utf-8">the complete works of
         Shakespeare</a>. I'd used both before as sources of word streams for benchmarking.
@@ -93,7 +93,7 @@
         <a href="http://www.gutenberg.org/ebooks/3434.txt.utf-8">English translation
             of the Koran</a> and an
         <a href="http://www.gutenberg.org/ebooks/7864.txt.utf-8">English translation of the Mahabharata of Krishna</a> to weigh against a partitioned Bible (old and new testaments).
-        The first step was to distill the text into something to use for both 
+        The first step was to distill the text into something to use for both
         auto-suggesting and a basis for the comparison operation. The end resut was a Markov-
         chain like structure:
     </p>
@@ -104,52 +104,52 @@ residue = ["word_1": ["following_word_1.1", "following_word_1.2", ... ],
           ]</pre>
 </p>
     <p>
-        Where the words in the structure above are frequency sorted. I dropped the occurence 
+        Where the words in the structure above are frequency sorted. I dropped the occurence
         counts for precise distributions and assumed a common (power-) curve for simplicity.
     </p>
     <div class="alert alert-warning" role="alert">
-    I was, as with the previous experiments, trying to keep learning JavaScript but it made no 
-    sense if I could do the grunt work by piping together a few binutils classics. The 
-    JavaScript step in this turns the text into word-pairs (or word --&gt; 
-    following word-pair) and thresholds the result (truncating the very long tails). 
+    I was, as with the previous experiments, trying to keep learning JavaScript but it made no
+    sense if I could do the grunt work by piping together a few binutils classics. The
+    JavaScript step in this turns the text into word-pairs (or word --&gt;
+    following word-pair) and thresholds the result (truncating the very long tails).
     Otherwise the puctuation was removed with <i>tr</i>; ordering and counting with
-    <i>sort</i> and <i>uniq</i>; and JSON-ification with trivial <i>AWK</i>. Premature  
-    implementation of all the steps in JavaScript would have missed the point: To see if 
-    stylometry from this residue might be convincing and if I could make a sumultaneous 
-    multi-auto-suggest from it. The <a href="https://github.com/james-irwin/word-pairs/blob/master/tools/wpdist.sh">distillation</a> 
+    <i>sort</i> and <i>uniq</i>; and JSON-ification with trivial <i>AWK</i>. Premature
+    implementation of all the steps in JavaScript would have missed the point: To see if
+    stylometry from this residue might be convincing and if I could make a sumultaneous
+    multi-auto-suggest from it. The <a href="https://github.com/james-irwin/word-pairs/blob/master/tools/wpdist.sh">distillation</a>
     of the 880k words of Shakespeare takes thirty seconds. The rest were completed in a couple
-    of minutes. The slowest part was manually trimming the texts of their introductory and 
+    of minutes. The slowest part was manually trimming the texts of their introductory and
     explanatory envelopes.
     </div>
 
 <p>
     First to use the output were the auto-suggesters based on Nicholas Zakas'
-    <a href="http://oak.cs.ucla.edu/cs144/projects/javascript/suggest1.html">tutorial</a>. 
-    Using a simple probability distributon function to pick the <i>next word</i>, iterated a 
+    <a href="http://oak.cs.ucla.edu/cs144/projects/javascript/suggest1.html">tutorial</a>.
+    Using a simple probability distributon function to pick the <i>next word</i>, iterated a
     few times and while I typed, a satisfactory prompt came from the suggester.
 </p>
     <div class="alert alert-danger" role="alert">
-    Single-word based Markov chains read badly so I switched the distiller to produce 
-    following word pairs. Iterating <i>"word": ["word-pair_1", "word-pair_2", ...]</i> 
+    Single-word based Markov chains read badly so I switched the distiller to produce
+    following word pairs. Iterating <i>"word": ["word-pair_1", "word-pair_2", ...]</i>
     read much easier and is used on the <a href="http://www.github.com/james-irwin/word-pairs/">page</a>
     for the <i>classics</i> and <i>scripture</i> suggesters.
     </div>
 <p>
 To compare two Markov-chains -- I haven't read anything about how stylometry is done
-properly -- I used a three dimensional metric that I could bubble-chart using 
-    <a href="http://canvasjs.com/">CanvasJS</a> charts for a change.  
+properly -- I used a three dimensional metric that I could bubble-chart using
+    <a href="http://canvasjs.com/">CanvasJS</a> charts for a change.
     The size of the intersection of two word lists as a percentage of the union is the y-axis
-    (<i>inness</i>) and the absolute size of the intersection is the bubble size. 
+    (<i>inness</i>) and the absolute size of the intersection is the bubble size.
     This is to give an
     idea of the commonality between two texts. This doesn't eliminate inescapable common word-
-    pairs of a written language but might give a sense of overlap. The third dimension (x-axis 
-    in the <a href="http://www.github.com/james-irwin/word-pairs/">example</a>) is the 
+    pairs of a written language but might give a sense of overlap. The third dimension (x-axis
+    in the <a href="http://www.github.com/james-irwin/word-pairs/">example</a>) is the
     frequency order comparison (<i>likeness</i>) computed as a rank correlation using the
-    <a href="http://simplestatistics.org/">simple statistics</a> library. Both the parallel 
+    <a href="http://simplestatistics.org/">simple statistics</a> library. Both the parallel
     suggesters and the bubble-chart with annotations are intersting to play with as a result.
 </p>
 </div>
-        
+
 <div id="enronmail"> </div>
       <div class="page-header">
           <h1>Sankey diagrams of Enron email via Elasticsearch</h1>
@@ -166,15 +166,15 @@ properly -- I used a three dimensional metric that I could bubble-chart using
         <a href="http://www.github.com/james-irwin/enronsankey/"><button type="button" class="btn btn-success">Code</button></a> JavaScript to generate Sankey diagrams from aggregates collected from Elasticsearch.
     </p>
     <p>
-    <a href="https://www.cs.cmu.edu/~./enron/"><button type="button" class="btn btn-info">Data</button></a> Enron email corpus. 
+    <a href="https://www.cs.cmu.edu/~./enron/"><button type="button" class="btn btn-info">Data</button></a> Enron email corpus.
     </p>
 </div>
-    
+
 <div>
     <p>
             The tarball of data needed loading into <a href="https://www.elastic.co/">Elasticsearch</a>. I used <a href="https://github.com/andris9/mailparser">mailparser</a> in processing each file to generate an Elasticsearch entry demultiplexing multiple names on the <i>To:</i> line.
     </p>
-    <p>        
+    <p>
     <pre>node mail.to.es.js .../enron/enron_mail_20110402/maildir/crandell-s/inbox/2. </pre>
     </p>
     <div class="alert alert-danger" role="alert">
@@ -222,9 +222,9 @@ SELECT 'TO', COUNT(*) AS C WHERE 'FROM'='mike.mcconnell' FROM ENRONMAIL GROUP BY
     probably while continually indexing new documents as they pass through the mail
     system.
     </p>
-      
+
       <!-- END OF ELSATIC/ENRON -->
-      
+
 <div id="fsamap"> </div>
       <div class="page-header">
           <h1>JavaScript via the Food Standards Agency</h1>
@@ -245,7 +245,7 @@ SELECT 'TO', COUNT(*) AS C WHERE 'FROM'='mike.mcconnell' FROM ENRONMAIL GROUP BY
     </p>
     <p>
     <a href="http://ratings.food.gov.uk/open-data/en-GB"><button type="button" class="btn btn-info">Data</button></a> Food Standards Agency inspection ratings data.
-    </p>    
+    </p>
 </div>
 <div>
 <p>
@@ -253,17 +253,17 @@ I wanted all the data, and it comes in XML and JSON options. Curl it in batches 
 </p>
 <p>
     <pre>curl http://ratings.food.gov.uk/search/%5E/%5E/1/5000/xml</pre>
-</p> 
+</p>
 <p>
     Where <tt>%5E</tt> (^) effectively means a wildcard for both the name of the
     county and the establishment that was inspected. Replace <tt>xml</tt> with
     <tt>json</tt> for JSON formatted equivalent. <tt>1</tt> is the page number and
     <tt>5000</tt> the page size. That's the largest page size I managed to collect
     -- for a total of about a hundred pages, the result includes metadata with the
-    number of pages at your selected page size. The GitHub repo has an example 
+    number of pages at your selected page size. The GitHub repo has an example
     <a href="https://github.com/james-irwin/fsamap/tree/master/examples">HTML output</a>
     for just the first 5000 elements.
-    
+
 <div class="alert alert-danger" role="alert">
     Mushing all the FSA inspection data into one large JSON file totals
     <strong>346Mb</strong>! Throwing away most of that to just pin the location,
@@ -279,7 +279,7 @@ I wanted all the data, and it comes in XML and JSON options. Curl it in batches 
     curling the <a href = "http://ratings.food.gov.uk/open-data/en-GB" >data page</a>
     and piping it through <tt>grep http://ratings.food.gov.uk/OpenDataFiles/ | grep English</tt>
     to see something I could use <tt>cut</tt> to strip out the county names and the
-    file names to re-<tt>curl</tt>. The GitHub repo has the 
+    file names to re-<tt>curl</tt>. The GitHub repo has the
     <a href="https://github.com/james-irwin/fsamap/tree/master/xmldata">xml data for North Somerset</a>
     as a snapshot.
 </p>
@@ -302,7 +302,7 @@ The inspection set for this county (loaded into <tt>data</tt> via <tt>fs.readFil
     <em>jump</em>-pins. Then I realised I needed something better anyway...</div>
 
 <div class="alert alert-danger" role="alert">
-    A dozen or so maps wouldn't load, the error console bemoaning 
+    A dozen or so maps wouldn't load, the error console bemoaning
     <strong>RangeError: Maximum call stack size exceeded</strong>. Thinking about it,
     turned out it was because I was simply emitting all the inspections and using
     <tt>map.panTo(m[0].position)</tt> -- the first marker so that the map was centred
@@ -311,26 +311,26 @@ The inspection set for this county (loaded into <tt>data</tt> via <tt>fs.readFil
 </div>
 <p>
     Wanting to avoid re-writing it with a cached set of <em>jump</em>-pins I bulk
-    converted all the <tt>xml</tt> files to <tt>JSON</tt> with 
+    converted all the <tt>xml</tt> files to <tt>JSON</tt> with
     <tt>JSON.stringify()</tt> as the body to the callback of the
     <tt>xml2js::parser.parseString()</tt> function and exchanged the <tt>xml</tt>
-    parser call to a <tt>JSON</tt> parser call (<tt>JSON.parse(data)</tt>). Took 
+    parser call to a <tt>JSON</tt> parser call (<tt>JSON.parse(data)</tt>). Took
     only a couple of minutes.
 <div class="alert alert-success" role="alert">
-    Two wins: Firstly, three minutes per county <tt>xml</tt> turned into 
-    <strong>seven seconds</strong> per county <tt>JSON</tt> (less than half 
+    Two wins: Firstly, three minutes per county <tt>xml</tt> turned into
+    <strong>seven seconds</strong> per county <tt>JSON</tt> (less than half
     an hour to do the lot now) and seocndly, skipping inspections that have otherwise
     <tt>undefined</tt> lat/long data made the browser come alive and all the counties
     I tried worked.</div>
-    </p>            
+    </p>
 <div class="page-header" id="contact">
     <h1>Contact</h1>
 </div>
 <div class="row">
     <div class="col-sm-4">
-        <a href="http://uk.linkedin.com/pub/james-irwin/5/313/a03"><img src="thumbs/Logo-2C-34px-R.png" class="img-thumbnail" alt="LinkedIn profile for James Irwin."></a> 
-        <a href="http://www.github.com/james-irwin/"><img src="thumbs/GitHub_Logo.png" class="img-thumbnail" alt="GitHub for James Irwin."></a> 
-            
+        <a href="http://uk.linkedin.com/pub/james-irwin/5/313/a03"><img src="thumbs/Logo-2C-34px-R.png" class="img-thumbnail" alt="LinkedIn profile for James Irwin."></a>
+        <a href="http://www.github.com/james-irwin/"><img src="thumbs/GitHub_Logo.png" class="img-thumbnail" alt="GitHub for James Irwin."></a>
+
     </div><!-- /.col-sm-4 -->
 </div>
       </div>
