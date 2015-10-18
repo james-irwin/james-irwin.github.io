@@ -67,7 +67,7 @@
         <a href="http://james-irwin.github.io/word-pairs/"><img src="thumbs/word-pairs.png" class="img-thumbnail" alt="Write-like and style-comparison of texts."></a>
 <div>
     <p>
-        I wondered how real stylometry might be and, better than that, could a machine help me write sympathetically in a given style?
+        I wondered how real stylometry might be and, better than that, could a machine help me write sympathetically in a given style? It arose from wondering about simultaneous multiple auto-suggest feeds and <a href="https://www.washingtonpost.com/world/national-security/code-name-verax-snowden-in-exchanges-with-post-reporter-made-clear-he-knew-risks/2013/06/09/c9a25b54-d14c-11e2-9f1a-1a7cdee20287_story.html">the request to not be quoted at length</a>.
     </p>
 <p>
         <a href="http://james-irwin.github.io/word-pairs/"><button type="button" class="btn btn-primary">Site</button></a> Write-like a few classics and compare them too.
@@ -82,8 +82,72 @@
     
 <div>
     <p>
-        I wanted to know if I could auto-suggest in the style of a given writer/text and as a corollary, I threw up a metric to compare two distilled texts. 
+        I started with a body of standard texts: 
+        <a href="http://www.gutenberg.org/ebooks/10.txt.utf-8">The King James Bible</a>
+        and <a href="http://www.gutenberg.org/ebooks/100.txt.utf-8">the complete works of
+        Shakespeare</a>. I'd used both before as sources of word streams for benchmarking.
+        Before analysing, I picked up a couple more samples that I might want to compare
+        which meant <a href="http://www.gutenberg.org/ebooks/31100.txt.utf-8">all of Jane
+        Austen</a> and <a href="http://www.gutenberg.org/files/30486/30486-0.txt">Bronte's
+        Shirley</a> to go with Shakespeare; an
+        <a href="http://www.gutenberg.org/ebooks/3434.txt.utf-8">English translation
+            of the Koran</a> and an
+        <a href="http://www.gutenberg.org/ebooks/7864.txt.utf-8">English translation of the Mahabharata of Krishna</a> to weigh against a partitioned Bible (old and new testaments).
+        The first step was to distill the text into something to use for both 
+        auto-suggesting and a basis for the comparison operation. The end resut was a Markov-
+        chain like structure:
     </p>
+<p>
+    <pre>
+residue = ["word_1": ["following_word_1.1", "following_word_1.2", ... ],
+           "word_2": ["following_word_2.1", "following_word_2.2", ... ], ...
+          ]</pre>
+</p>
+    <p>
+        Where the words in the structure above are frequency sorted. I dropped the occurence 
+        counts for precise distributions and assumed a common (power-) curve for simplicity.
+    </p>
+    <div class="alert alert-warning" role="alert">
+    I was, as with the previous experiments, trying to keep learning JavaScript but it made no 
+    sense if I could do the grunt work by piping together a few binutils classics. The 
+    JavaScript step in this turns the text into word-pairs (or word --&gt; 
+    following word-pair) and thresholds the result (truncating the very long tails). 
+    Otherwise the puctuation was removed with <i>tr</i>; ordering and counting with
+    <i>sort</i> and <i>uniq</i>; and JSON-ification with trivial <i>AWK</i>. Premature  
+    implementation of all the steps in JavaScript would have missed the point: To see if 
+    stylometry from this residue might be convincing and if I could make a sumultaneous 
+    multi-auto-suggest from it. The <a href="https://github.com/james-irwin/word-pairs/blob/master/tools/wpdist.sh">distillation</a> 
+    of the 880k words of Shakespeare takes thirty seconds. The rest were completed in a couple
+    of minutes. The slowest part was manually trimming the texts of their introductory and 
+    explanatory envelopes.
+    </div>
+
+<p>
+    First to use the output were the auto-suggesters based on Nicholas Zakas'
+    <a href="http://oak.cs.ucla.edu/cs144/projects/javascript/suggest1.html">tutorial</a>. 
+    Using a simple probability distributon function to pick the <i>next word</i>, iterated a 
+    few times and while I typed, a satisfactory prompt came from the suggester.
+</p>
+    <div class="alert alert-danger" role="alert">
+    Single-word based Markov chains read badly so I switched the distiller to produce 
+    following word pairs. Iterating <i>"word": ["word-pair_1", "word-pair_2", ...]</i> 
+    read much easier and is used on the <a href="http://www.github.com/james-irwin/word-pairs/">page</a>
+    for the <i>classics</i> and <i>scripture</i> suggesters.
+    </div>
+<p>
+To compare two Markov-chains -- I haven't read anything about how stylometry is done
+properly -- I used a three dimensional metric that I could bubble-chart using 
+    <a href="http://canvasjs.com/">CanvasJS</a> charts for a change.  
+    The size of the intersection of two word lists as a percentage of the union is the y-axis
+    (<i>inness</i>) and the absolute size of the intersection is the bubble size. 
+    This is to give an
+    idea of the commonality between two texts. This doesn't eliminate inescapable common word-
+    pairs of a written language but might give a sense of overlap. The third dimension (x-axis 
+    in the <a href="http://www.github.com/james-irwin/word-pairs/">example</a>) is the 
+    frequency order comparison (<i>likeness</i>) computed as a rank correlation using the
+    <a href="http://simplestatistics.org/">simple statistics</a> library. Both the parallel 
+    suggesters and the bubble-chart with annotations are intersting to play with as a result.
+</p>
 </div>
         
 <div id="enronmail"> </div>
