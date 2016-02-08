@@ -70,7 +70,7 @@
 <div>
 <p>
 Is the surgery opposite the watersports park still the top place for dispensing
-extonox? What are we mostly medicating prisoners with?
+entonox? What are we mostly medicating prisoners with?
 </p>
 <p>
         <a href="http://james-irwin.github.io/prescriptions/medicinehub.html"><button type="button" class="btn btn-primary">Site</button></a> Look at which practice/pharmacy writes the most of a given drug.
@@ -85,7 +85,125 @@ extonox? What are we mostly medicating prisoners with?
 
 <div>
 <p>
-  Write this up ...
+More JavaScript in the client, with the google maps API, and a proper
+aggregation in elastic search.
+
+Last time I looked at the prescription data, there was much less. Then I used
+PHP, MySQL and <a href="http://matplotlib.org/">matplotlib</a> wrapped in shell
+scripts to make heatmaps of prescription density.
+
+The <a href="http://www.hscic.gov.uk/searchcatalogue?q=title:%22presentation+level+data%22&area=&size=10&sort=Relevance">data</a>
+arrives in <a href="http://datagov.ic.nhs.uk/presentation/2015_07_July/T201507PDPI+BNFT.CSV">monthly CSV chunks</a>.
+</p>
+<pre>
+Q44,RTV,Y04937,0204000R0AAAHAH,Propranolol HCl_Tab 10mg,0000001,00000001.45,00000001.35,0000028,201507,
+Q44,RTV,Y04937,0401020K0AAAIAI,Diazepam_Tab 5mg,0000001,00000000.80,00000000.85,0000021,201507,
+</pre>
+<p>
+Of that, I kept the practice writing the drug, a short version of the BNF code
+and the quantity.
+</p>
+<pre>
+Y04937,0204000R0,28,
+Y04937,0401020K0,21,
+</pre>
+<p>
+This means 5mg, 10mg and 20mg tablets of the same thing are bucketed together,
+I know that this misrepresents the tonnage but I'm not weighing it, just looking
+at the popularity of writing the drug itself. I chose the quantity column,
+ignoring the items column through gut feel with items mostly being low numbers.
+Turning this into something to bulk load into elastic was done in AWK with
+trivial print statements selecting field numbers, adding curly brackets and
+quotes.
+</p>
+<pre>
+{ "index" : { "_index" : "presc", "_type": "ription", "_id" : "2"}}
+{"practice" : "Y04937", "bnf" : "0204000R0", "quantity" : 28}
+{ "index" : { "_index" : "presc", "_type": "ription", "_id" : "4"}}
+{"practice" : "Y04937", "bnf" : "0401020K0", "quantity" : 21}
+</pre>
+<p>
+I think I could have trimmed off the index and type fields by putting them
+in the URL used in the bulk load. This made a 20m line intermediate ouput in
+two minutes for
+the July 2015 data set. The bulk API was good for 100,000 line chunks (50,000
+documents). Chopping the 20m row file took 75 seconds (a little C program that
+greedily loads all of it and then fwrites it back out in blocks to numbered
+files).
+Loading these into elastic was complete in eight minutes (two or three seconds
+per file of 50,000 entries).
+</p>
+<pre>
+$>time seq 207 | while read chunk
+> do
+> time curl -XPOST localhost:9200/_bulk --data-binary @chunk-$chunk.dat
+> done
+real    8m0.354s
+</pre>
+<p>
+My macbook pro took about twelve minute to prepare and ingest one month of
+prescription data.
+I'm not trending the data over time, I'm looking at which practices are writing
+the most of a particular drug, or for a given practice, their most popular
+presription item. This core data is ready and loaded at this point but it
+needs more help to be interesting. I mean, that drug 0410030C0 is written the
+most by practice e87637 is half a job. I'm going to put that place on a map,
+along with it's top ten siblings, along with all other practices that have this
+drug in its top ten written items, and I'd like to know that those drugs are
+in English.
+The practice address data, unlike the Food
+Standards Agency data, doesn't include lat-long for placing markers. It looks
+like regular (and not always cleansed) keyed data.
+</p>
+<pre>
+201507,Y02315,DMC COMMUNITY MINOR SURGERY SERVICE,SOUTH WOODFORD HEALTH CTR,114 HIGH ROAD,SOUTH WOODFORD,LONDON,E18 2QS
+</pre>
+<p>
+There's a BNF to English CSV file too, and it's at a higher level than that
+in the prescription data (part of why I bucketed 5mg, 10mg etc. together).
+</p>
+<pre>
+0401020G0,Bromazepam,
+0401020K0,Diazepam,
+0401020L0,Ketazolam,
+0401020P0,Lorazepam,
+0401020Q0,Medazepam,
+0401020R0,Meprobamate,
+0401020T0,Oxazepam,
+0401020U0,Prazepam,
+</pre>
+<p>
+The practice data was turned into a collection of JSON objects that I could
+then extend by adding lat/long for plotting and ultimately the most popular
+scripts for that location. Lat/log came from google
+
+put here the url for grabbing it and the note about the rate which you're
+permitted to collect.
+
+Then it's the top ten drugs they write.
+
+THen it' teh top ten places that write a given drug same query, just rotated
+and it's the code in teh github associated here.
+
+Done.
+
+-----
+
+Load the data into ES is AWKing the CSV file.
+
+Turning the practice names into things to plot is awk + google geocoding.
+
+geocoding with 10k locations had to be done in stages -- limits. Could
+ultimately to 'top 10' for any given drug dynamicaly but couldn't really
+do the 'all' button.
+
+Finding the top ten prescribers of a drug and the top ten prescriptions for
+a given practices is elastic aggregates.
+
+Give timings for the steps and hte number of rows. Sows that this could
+be calculated real-time -- here however we have historical data with a
+reasonable number of rows for a demonstration.
+
 </p>
 </div>
 
