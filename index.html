@@ -175,10 +175,16 @@ in the prescription data (part of why I bucketed 5mg, 10mg etc. together).
 <p>
 The practice data was turned into a collection of JSON objects that I could
 then extend by adding lat/long for plotting and ultimately the most popular
-scripts for that location. Lat/log came from google
+scripts for that location. Lat/log came from google's geocoding API.
+</p>
+<pre>
+curl "http://maps.googleapis.com/maps/api/geocode/json?address=SOUTH%20WOODFORD%20HEALTH%20CTR%20114%20HIGH%20ROAD%20E182QS" -o Y02315.json
+</pre>
+<p>
+Google limit the number of geo-inversions to 2500 per day, so I batched the 9898
+practices in the data set.
 
-put here the url for grabbing it and the note about the rate which you're
-permitted to collect.
+
 
 Then it's the top ten drugs they write.
 
