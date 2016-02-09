@@ -9,15 +9,13 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>james-irwin@github</title>
+    <title>Practice prescriptions james-irwin@github</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
     <link href="../dist/css/bootstrap-theme.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="theme.css" rel="stylesheet">
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -28,18 +26,8 @@
   ga('send', 'pageview');
 
 </script>
-<script src="js/suggest.js"></script>
-<script src="js/prob.js"></script>
 
 <script type='text/javascript' src='js/canvasjs.min.js'></script>
-<script type="text/javascript">
-    window.onload = function () {
-        // Three classic writers
-        var oTextboxB = new AutoSuggestControl ( document.getElementById("textinput"), [ document.getElementById("Bronte"), document.getElementById("Austen"), document.getElementById("Shakespeare")],[bronte, austen, romeo]);
-        document.getElementById("textinput").focus();
-
-    } // Onload!
-</script>
 </head>
 
   <body role="document">
@@ -69,95 +57,75 @@
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h2>Stylometry &amp; stylo-sympathy ...</h2>
-          <p>Popular practice prescriptions</p>
+          <h2>Popular practice prescriptions</h2>
+          <p>Who writes what?</p>
       </div>
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-12">
-        <h3>Change this to a regular search like box.</h3>
-        <textarea class="col-md-12" rows="1"  id="textinput"></textarea>
+        <div class="input-group">
+  <span class="input-group-addon" id="pname">Practice name</span>
+  <input tabindex=1 type="text" class="form-control" id="ptext" aria-describedby="pname">
         </div>
     </div>
 </div>
 
+<script type="text/javascript">
+    window.onload = function () {
+        // Three classic writers
+        //var oTextboxB = new AutoSuggestControl ( document.getElementById("textinput"), [ document.getElementById("Bronte"), document.getElementById("Austen"), document.getElementById("Shakespeare")],[bronte, austen, romeo]);
+        document.getElementById("ptext").focus();
+    } // Onload!
+</script>
+
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-4">
-      <h3>
-        Bronte suggests
-      </h3>
-      <p id="Bronte">
+    <div class="col-md-4" id="P1">
+      <p>
         ready
       </p>
     </div>
-    <div class="col-md-4">
-      <h3>
-        Austen suggests
-      </h3>
-      <p id="Austen">
+    <div class="col-md-4" id="P2">
+      <p>
         and
       </p>
     </div>
-    <div class="col-md-4">
-      <h3>
-        Shakespeare suggests
-      </h3>
-      <p  id="Shakespeare">
+    <div class="col-md-4" id="P3">
+      <p>
         waiting
       </p>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-4">
-      <h3>
-        Bronte2 suggests
-      </h3>
-      <p id="Bronte2">
+    <div class="col-md-4" id="P4">
+      <p>
         ready
       </p>
     </div>
-    <div class="col-md-4">
-      <h3>
-        Austen2 suggests
-      </h3>
-      <p id="Austen2">
-        and
+    <div class="col-md-4" id="P5">
+      <p id="P5">
+       steady 
       </p>
     </div>
-    <div class="col-md-4">
-      <h3>
-        Shakespeare2 suggests
-      </h3>
-      <p  id="Shakespeare2">
-        waiting
+    <div class="col-md-4" id="P6">
+      <p>
+       go
       </p>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-4">
-      <h3>
-        Bronte3 suggests
-      </h3>
-      <p id="Bronte3">
+    <div class="col-md-4" id="P7">
+      <p>
         ready
       </p>
     </div>
-    <div class="col-md-4">
-      <h3>
-        Austen3 suggests
-      </h3>
-      <p id="Austen3">
+    <div class="col-md-4" id="P8">
+      <p>
         and
       </p>
     </div>
-    <div class="col-md-4">
-      <h3>
-        Shakespeare3 suggests
-      </h3>
-      <p  id="Shakespeare3">
+    <div class="col-md-4" id="P9">
+      <p>
         waiting
       </p>
     </div>
