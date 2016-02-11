@@ -5,23 +5,31 @@ function AutoSuggestControl(oTextbox, oTargets, oData) {
     this.init();
 }
 
-lastWord = function(s) {
-    var b=s.split(" ");
-    var offset=1;
-    if (b.length==1) return s;
-    while (b[b.length-offset]=="") { offset++; }
-    return b[b.length-offset];
-}
-
 AutoSuggestControl.prototype.scoreThem = function() {
-  var words = this.textbox.value.split(' ');
+  var words = this.textbox.value.toUpperCase().split(' ');
   for (practice in this.data) {
     this.data[practice].searchScore = 0;
-    for (wordID = 0; wordID < words.length; ++wordID) {
-        if (this.data[practice].searchText.indexOf(words[wordID] > -1)
-        this.data[practice].searchScore ++;
+    for (var wordID = 0; wordID < words.length; wordID++) {
+        if (this.data[practice].searchText.indexOf(words[wordID]) > -1) {
+          this.data[practice].searchScore = this.data[practice].searchScore + 1;
+          console.log(this.data[practice].searchScore + 'for:' + this.data[practice].searchText);
+        }
     }
   }
+}
+
+AutoSuggestControl.prototype.maxPractice = function() {
+  var pname;
+  var searchScore=-1;
+
+  for (practice in this.data) {
+    if (this.data[practice].searchScore > searchScore) {
+        pname=practice;
+        searchScore = this.data[practice].searchScore;
+    }
+  }
+  console.log('score ' + searchScore + ' for ' + this.data[pname].searchText);
+  return pname;
 }
 
 AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
@@ -31,15 +39,14 @@ AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
         //ignore
     } else {
     this.scoreThem();
-
-    // Search for the words in the text box and score +1 for each
-    // match then dump the highest scores in the targets.
-    // By taking the maximum score from the set and then knobbling it's score
-    // for the next target.
-        for (var targetID=0; targetID<this.target.length; targetID++) {
-            this.target[targetID].innerHTML = "<h4>" +
-                this.textbox.value +
-                " <small>" + 'Boom' + targetID + "</small></h4>";
+    // Take the maximum scoring practice each time (when you take it, knock out its
+    // score so the next one bubbles up
+    for (var targetID=0; targetID<this.target.length; targetID++) {
+        var maxPractice = this.maxPractice();
+        this.target[targetID].innerHTML = "<h4>" +
+            this.textbox.value +
+            " <small>" + this.data[maxPractice].searchText + ' ' + targetID + "</small></h4>";
+        this.data[maxPractice].searchScore = -1;
         }
     }
 };
@@ -57,9 +64,9 @@ AutoSuggestControl.prototype.init = function () {
   for (practice in this.data) {
       var str='';
       for (var i=0; i<this.data[practice].address.length; i++) {
-        str+=this.data[practice].address[i];
+        str+=this.data[practice].address[i] +' ';
       }
-    practice.searchText = str;
+    this.data[practice].searchText = str;
   }
   console.log(str);
 };
