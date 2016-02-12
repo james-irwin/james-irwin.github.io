@@ -27,6 +27,7 @@
 
 </script>
 <script src="practices.json.full.serialised.bnf-only.js"></script>
+<script src="bnf.to.name.js""></script>
 <script src="suggest.js"></script>
 </head>
 
@@ -60,7 +61,6 @@
           <h2>Popular practice prescriptions</h2>
           <p>Who writes what?</p>
       </div>
-
 <div class="container-fluid">
     <div class="row">
         <div class="input-group">
@@ -69,7 +69,7 @@
         </div>
     </div>
 </div>
-
+<br>
 <script type="text/javascript">
   window.onload = function () {
     var scriberFinder= new AutoSuggestControl (
@@ -83,6 +83,12 @@
           document.getElementById("P7"),
           document.getElementById("P8"),
           document.getElementById("P9"),
+          document.getElementById("P10"),
+          document.getElementById("P11"),
+          document.getElementById("P12"),
+          document.getElementById("P13"),
+          document.getElementById("P14"),
+          document.getElementById("P15"),
         ],
         practices
      );
@@ -143,6 +149,41 @@
       </p>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-4" id="P10">
+      <p>
+        ready
+      </p>
+    </div>
+    <div class="col-md-4" id="P11">
+      <p>
+        and
+      </p>
+    </div>
+    <div class="col-md-4" id="P12">
+      <p>
+        waiting
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4" id="P13">
+      <p>
+        ready
+      </p>
+    </div>
+    <div class="col-md-4" id="P14">
+      <p>
+        and
+      </p>
+    </div>
+    <div class="col-md-4" id="P15">
+      <p>
+        waiting
+      </p>
+    </div>
+  </div>
+
 </div>
 
       </div> <!-- Container showcase, the wrapper of the page body -->

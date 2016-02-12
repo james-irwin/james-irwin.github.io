@@ -12,7 +12,6 @@ AutoSuggestControl.prototype.scoreThem = function() {
     for (var wordID = 0; wordID < words.length; wordID++) {
         if (this.data[practice].searchText.indexOf(words[wordID]) > -1) {
           this.data[practice].searchScore = this.data[practice].searchScore + 1;
-          console.log(this.data[practice].searchScore + 'for:' + this.data[practice].searchText);
         }
     }
   }
@@ -28,8 +27,27 @@ AutoSuggestControl.prototype.maxPractice = function() {
         searchScore = this.data[practice].searchScore;
     }
   }
-  console.log('score ' + searchScore + ' for ' + this.data[pname].searchText);
   return pname;
+}
+
+AutoSuggestControl.prototype.practicename = function(practice, sep) {
+  var str='';
+  for (var i=0; i<this.data[practice].address.length; i++) {
+    str+=this.data[practice].address[i] + sep;
+  }
+
+  return str;
+}
+
+AutoSuggestControl.prototype.topscripts = function(practice) {
+  var str='<ul>';
+  for (var i=0; i<this.data[practice].list.length; i++) {
+    if (bnfdecode[this.data[practice].list[i]] != undefined)
+      str+='<li>' + bnfdecode[this.data[practice].list[i]];
+  }
+  str+='<ul>';
+
+  return str;
 }
 
 AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
@@ -43,9 +61,9 @@ AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
     // score so the next one bubbles up
     for (var targetID=0; targetID<this.target.length; targetID++) {
         var maxPractice = this.maxPractice();
-        this.target[targetID].innerHTML = "<h4>" +
-            this.textbox.value +
-            " <small>" + this.data[maxPractice].searchText + ' ' + targetID + "</small></h4>";
+        this.target[targetID].innerHTML = '<div class="well"><strong>' +
+            this.practicename(maxPractice, '<br>') +
+            '<br><small>' + this.topscripts(maxPractice) + '</small></strong></div>';
         this.data[maxPractice].searchScore = -1;
         }
     }
@@ -53,7 +71,6 @@ AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
 
 AutoSuggestControl.prototype.init = function () {
     var oThis = this;
-    console.log('Hello');
     this.textbox.onkeyup = function (oEvent) {
         if (!oEvent) {
             oEvent = window.event;
@@ -68,5 +85,4 @@ AutoSuggestControl.prototype.init = function () {
       }
     this.data[practice].searchText = str;
   }
-  console.log(str);
 };
