@@ -68,9 +68,14 @@
 <script src="bnf.to.name.array.js""></script>
 <script src="drugs.full.js""></script>
 <script>
-var icons=['http://james-irwin.github.io/thumbs/pharmacy_plus.sm.png',
-           'http://james-irwin.github.io/thumbs/pharmacy_plus.sm.pink.png',
-           'http://james-irwin.github.io/thumbs/pharmacy_plus.sm.orange.png'];
+var icons=[
+        { url: 'http://james-irwin.github.io/thumbs/pharmacy_plus.sm.png',
+          anchor: new google.maps.Point(16,16)},
+        { url: 'http://james-irwin.github.io/thumbs/pharmacy_plus.sm.pink.png',
+          anchor: new google.maps.Point(16,16)},
+        { url: 'http://james-irwin.github.io/thumbs/pharmacy_plus.sm.orange.png',
+          anchor: new google.maps.Point(16,16)}
+        ];
 
 /**
  * The CenterControl adds a control to the map that recenters the map on
