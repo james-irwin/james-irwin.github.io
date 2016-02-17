@@ -18,7 +18,7 @@
         height: 100%;
       }
 
-#goAboutUI, #showAllUI {
+#goPracticeSearchUI, #goAboutUI, #showAllUI {
   background-color: #fff;
   border: 2px solid #fff;
   border-radius: 3px;
@@ -40,7 +40,7 @@
   text-align: center;
 }
 
-#ppsetDrugText, #goAboutText, #showAllText {
+#goPracticeSearchText, #goAboutText, #showAllText {
   color: rgb(25,25,25);
   font-family: Roboto,Arial,sans-serif;
   font-size: 18px;
@@ -58,7 +58,7 @@
   padding-right: 0px;
 }
 
-#setDrugUI, #goAboutUI {
+#setDrugUI, #goAboutUI, #goPracticeSearchUI {
   margin-left: 12px;
 }
 
@@ -122,6 +122,23 @@ function CenterControl(controlDiv, map, center) {
   mystr += '</select>';
   setDrugText.innerHTML = mystr;
   setDrugUI.appendChild(setDrugText);
+
+  // Set CSS for the control border
+  var goPracticeSearchUI = document.createElement('div');
+  goPracticeSearchUI.id = 'goPracticeSearchUI';
+  goPracticeSearchUI.title = 'Search by practice';
+  controlDiv.appendChild(goPracticeSearchUI);
+
+  // Set CSS for the control interior
+  var goPracticeSearchText = document.createElement('div');
+  goPracticeSearchText.id = 'goPracticeSearchText';
+  goPracticeSearchText.innerHTML = 'Search Practices';
+  goPracticeSearchUI.appendChild(goPracticeSearchText);
+
+  // Set up the click event listener for 'about'
+  goPracticeSearchUI.addEventListener('click', function() {
+        window.location = "http://james-irwin.github.io/prescriptions/practiehabits.html";
+  });
 
   // Set CSS for the control border
   var goAboutUI = document.createElement('div');
