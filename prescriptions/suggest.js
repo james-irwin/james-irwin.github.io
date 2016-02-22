@@ -40,7 +40,7 @@ AutoSuggestControl.prototype.practicename = function(practice, sep) {
   return str;
 }
 
-AutoSuggestControl.prototype.topscripts = function(practice) {
+AutoSuggestControl.prototype.oldtopscripts = function(practice) {
   var str='<ul>';
   for (var i=0; i<this.data[practice].list.length; i++) {
     if (bnfdecode[this.data[practice].list[i]] != undefined)
@@ -49,6 +49,48 @@ AutoSuggestControl.prototype.topscripts = function(practice) {
   str+='<ul>';
 
   return str;
+}
+
+AutoSuggestControl.prototype.drawChart = function(practice, id) {
+
+        var data = google.visualization.arrayToDataTable([
+          ['', '', '', '', '', '', '', '', '', '', ''],
+          ['2014',  10, 9, 6, 8, 7, 3, 4, 5, 2, 0],
+          ['2015',  10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+        ]);
+
+        var options = {
+          chartArea: {left:30, top:0},
+          legend: { position: 'none' },
+          series: {0: {targetAxisIndex:1}},
+          vAxes: {0:{gridlines:{count:0, color:'#fff'}},
+                  1:{
+                  gridlines:{count:10, color:'#fff'},
+                  textPosition:'in',
+                  ticks: [{v:0,f:''},
+                          {v:1.5, f:'Other Food For Special Diet Preps'},
+                          {v:2.5, f:'Levothyroxine Sodium'},
+                          {v:3.5, f:'Metformin Hydrochloride'},
+                          {v:4.5, f:'Lactulose'},
+                          {v:5.5, f:'Alginic Acid Compound Preparations'},
+                          {v:6.5, f:'Gluten Free Bread'},
+                          {v:7.5, f:'Paracetamol'},
+                          {v:8.5, f:'Co-Codamol (Codeine Phos/Paracetamol)'},
+                          {v:9.5, f:'Other Emollient Preps'},
+                          {v:10.5, f:'Enteral Nutrition'}
+                         ],
+                    }
+                  },
+          hAxis: {
+                  viewWindow: {min:0.5,max:3}
+                 }
+        };
+
+        var chart = new google.visualization.LineChart(
+                        document.getElementById('chart'+id));
+
+        chart.draw(data, options);
+
 }
 
 AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
@@ -69,9 +111,11 @@ AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
             this.data[maxPractice].latlng.lng + '/@' +
             this.data[maxPractice].latlng.lat + ',' +
             this.data[maxPractice].latlng.lng + ',' +
-            '16z">Map</a></span>' +
-            '<br><br><small>' + this.topscripts(maxPractice) + '</small></strong></div>';
+            '16z">Map</a></span></strong></div>' +
+            '<div id="chart' + targetID +
+            '" style="width: 500px; height: 450px"></div>';
         this.data[maxPractice].searchScore = -1;
+        this.drawChart(maxPractice, targetID);
         }
     }
 };
