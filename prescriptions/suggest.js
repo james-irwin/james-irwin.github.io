@@ -60,7 +60,7 @@ AutoSuggestControl.prototype.drawChart = function(practice, id) {
         ]);
 
         var options = {
-          chartArea: {left:30, top:0},
+          chartArea: {left:20, top:0, width:320, height:300},
           legend: { position: 'none' },
           series: {0: {targetAxisIndex:1}},
           vAxes: {0:{gridlines:{count:0, color:'#fff'}},
@@ -90,7 +90,6 @@ AutoSuggestControl.prototype.drawChart = function(practice, id) {
                         document.getElementById('chart'+id));
 
         chart.draw(data, options);
-
 }
 
 AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
@@ -113,7 +112,7 @@ AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
             this.data[maxPractice].latlng.lng + ',' +
             '16z">Map</a></span></strong></div>' +
             '<div id="chart' + targetID +
-            '" style="width: 500px; height: 450px"></div>';
+            '" style="width: 400px; height: 350px"></div>';
         this.data[maxPractice].searchScore = -1;
         this.drawChart(maxPractice, targetID);
         }
