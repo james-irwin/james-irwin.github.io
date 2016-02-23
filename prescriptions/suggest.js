@@ -53,43 +53,57 @@ AutoSuggestControl.prototype.oldtopscripts = function(practice) {
 
 AutoSuggestControl.prototype.drawChart = function(practice, id) {
 
-        var data = google.visualization.arrayToDataTable([
-          ['', '', '', '', '', '', '', '', '', '', ''],
-          ['2014',  10, 9, 6, 8, 7, 3, 4, 5, 2, 0],
-          ['2015',  10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-        ]);
+  var values_2015=['2015', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var values_2014=['2014', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-        var options = {
-          chartArea: {left:20, top:0, width:320, height:300},
-          legend: { position: 'none' },
-          series: {0: {targetAxisIndex:1}},
-          vAxes: {0:{gridlines:{count:0, color:'#fff'}},
-                  1:{
-                  gridlines:{count:10, color:'#fff'},
-                  textPosition:'in',
-                  ticks: [{v:0,f:''},
-                          {v:1.5, f:'Other Food For Special Diet Preps'},
-                          {v:2.5, f:'Levothyroxine Sodium'},
-                          {v:3.5, f:'Metformin Hydrochloride'},
-                          {v:4.5, f:'Lactulose'},
-                          {v:5.5, f:'Alginic Acid Compound Preparations'},
-                          {v:6.5, f:'Gluten Free Bread'},
-                          {v:7.5, f:'Paracetamol'},
-                          {v:8.5, f:'Co-Codamol (Codeine Phos/Paracetamol)'},
-                          {v:9.5, f:'Other Emollient Preps'},
-                          {v:10.5, f:'Enteral Nutrition'}
-                         ],
-                    }
-                  },
-          hAxis: {
-                  viewWindow: {min:0.5,max:3}
-                 }
-        };
+  for (var i = 0; i < this.data[practice].list.length; i++) {
+    values_2015[i+1] = 10-i;
+  }
+  for (var i = 0; i < this.data[practice].list2014.length; i++) {
+    values_2014[i+1] = 10 -
+                this.data[practice].list.indexOf(this.data[practice].list2014[i]);
+    if (values_2014[i+1]==11) values_2014[i+1]=0;
+  }
+  var data = google.visualization.arrayToDataTable([
+    ['', '', '', '', '', '', '', '', '', '', ''],
+    values_2014,
+    values_2015,
+  ]);
 
-        var chart = new google.visualization.LineChart(
-                        document.getElementById('chart'+id));
+  var options = {
+    chartArea: {left:20, top:0, width:320, height:300},
+    legend: { position: 'none' },
+    series: {0: {targetAxisIndex:1}},
+    vAxes: {0:{gridlines:{count:0, color:'#fff'},
+               viewWindow: {min:0, max:11},
+              },
+            1:{
+            gridlines:{count:10, color:'#fff'},
+            textPosition:'in',
+            ticks: [{v:0,f:''},
+                    {v:1.5, f:'Other Food For Special Diet Preps'},
+                    {v:2.5, f:'Levothyroxine Sodium'},
+                    {v:3.5, f:'Metformin Hydrochloride'},
+                    {v:4.5, f:'Lactulose'},
+                    {v:5.5, f:'Alginic Acid Compound Preparations'},
+                    {v:6.5, f:'Gluten Free Bread'},
+                    {v:7.5, f:'Paracetamol'},
+                    {v:8.5, f:'Co-Codamol (Codeine Phos/Paracetamol)'},
+                    {v:9.5, f:'Other Emollient Preps'},
+                    {v:10.5, f:'Enteral Nutrition'}
+                   ],
+            viewWindow: {min:0, max:11},
+              }
+            },
+    hAxis: {
+            viewWindow: {min:0.5,max:3}
+           }
+  };
 
-        chart.draw(data, options);
+  var chart = new google.visualization.LineChart(
+                  document.getElementById('chart'+id));
+
+  chart.draw(data, options);
 }
 
 AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
