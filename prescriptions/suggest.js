@@ -51,6 +51,20 @@ AutoSuggestControl.prototype.oldtopscripts = function(practice) {
   return str;
 }
 
+AutoSuggestControl.prototype.nameFor = function(practice, index) {
+
+  if (index >= this.data[practice].list.length) { return '';}
+
+  var bnf = this.data[practice].list[index];
+
+  var name = ''+bnfdecode[bnf];
+  if (name == 'undefined') {
+    return 'BNF:'+bnf;
+  } else {
+    return name;
+  }
+}
+
 AutoSuggestControl.prototype.drawChart = function(practice, id) {
 
   var values_2015=['2015', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -69,7 +83,6 @@ AutoSuggestControl.prototype.drawChart = function(practice, id) {
     values_2014,
     values_2015,
   ]);
-
   var options = {
     chartArea: {left:20, top:0, width:320, height:300},
     legend: { position: 'none' },
@@ -81,16 +94,16 @@ AutoSuggestControl.prototype.drawChart = function(practice, id) {
             gridlines:{count:10, color:'#fff'},
             textPosition:'in',
             ticks: [{v:0,f:''},
-                    {v:1.5, f:'Other Food For Special Diet Preps'},
-                    {v:2.5, f:'Levothyroxine Sodium'},
-                    {v:3.5, f:'Metformin Hydrochloride'},
-                    {v:4.5, f:'Lactulose'},
-                    {v:5.5, f:'Alginic Acid Compound Preparations'},
-                    {v:6.5, f:'Gluten Free Bread'},
-                    {v:7.5, f:'Paracetamol'},
-                    {v:8.5, f:'Co-Codamol (Codeine Phos/Paracetamol)'},
-                    {v:9.5, f:'Other Emollient Preps'},
-                    {v:10.5, f:'Enteral Nutrition'}
+                    {v:1.5, f:this.nameFor(practice,9)},
+                    {v:2.5, f:this.nameFor(practice,8)},
+                    {v:3.5, f:this.nameFor(practice,7)},
+                    {v:4.5, f:this.nameFor(practice,6)},
+                    {v:5.5, f:this.nameFor(practice,5)},
+                    {v:6.5, f:this.nameFor(practice,4)},
+                    {v:7.5, f:this.nameFor(practice,3)},
+                    {v:8.5, f:this.nameFor(practice,2)},
+                    {v:9.5, f:this.nameFor(practice,1)},
+                    {v:10.5, f:this.nameFor(practice,0)},
                    ],
             viewWindow: {min:0, max:11},
               }
@@ -99,7 +112,6 @@ AutoSuggestControl.prototype.drawChart = function(practice, id) {
             viewWindow: {min:0.5,max:3}
            }
   };
-
   var chart = new google.visualization.LineChart(
                   document.getElementById('chart'+id));
 
