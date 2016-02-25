@@ -67,8 +67,9 @@ AutoSuggestControl.prototype.nameFor = function(practice, index) {
 
 AutoSuggestControl.prototype.drawChart = function(practice, id) {
 
-  var values_2015=['2015', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  var values_2014=['2014', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var values_2015=['July 2015', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var values_2014=['July 2014', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var values_2013=['July 2013', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   for (var i = 0; i < this.data[practice].list.length; i++) {
     values_2015[i+1] = 10-i;
@@ -78,8 +79,14 @@ AutoSuggestControl.prototype.drawChart = function(practice, id) {
                 this.data[practice].list.indexOf(this.data[practice].list2014[i]);
     if (values_2014[i+1]==11) values_2014[i+1]=0;
   }
+  for (var i = 0; i < this.data[practice].list2013.length; i++) {
+    values_2013[i+1] = 10 -
+                this.data[practice].list.indexOf(this.data[practice].list2013[i]);
+    if (values_2013[i+1]==11) values_2013[i+1]=0;
+  }
   var data = google.visualization.arrayToDataTable([
     ['', '', '', '', '', '', '', '', '', '', ''],
+    values_2013,
     values_2014,
     values_2015,
   ]);
@@ -109,7 +116,7 @@ AutoSuggestControl.prototype.drawChart = function(practice, id) {
               }
             },
     hAxis: {
-            viewWindow: {min:0.5,max:3}
+            viewWindow: {min:0.25,max:4}
            }
   };
   var chart = new google.visualization.LineChart(
