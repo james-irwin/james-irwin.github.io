@@ -110,13 +110,7 @@ AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
         var maxPractice = this.maxPractice();
         this.target[targetID].innerHTML = '<div class="well"><strong>' +
             this.practicename(maxPractice, '<br>') +
-            '<span class="map"><a href="https://www.google.co.uk/maps/place/' +
-            this.data[maxPractice].latlng.lat + '+' +
-            this.data[maxPractice].latlng.lng + '/@' +
-            this.data[maxPractice].latlng.lat + ',' +
-            this.data[maxPractice].latlng.lng + ',' +
-            '16z">Map</a></span></strong></div>' +
-            '<div id="chart' + targetID +
+            '</strong></div><div id="chart' + targetID +
             '" style="width: 400px; height: 350px"></div>';
         this.data[maxPractice].searchScore = -1;
         this.drawChart(maxPractice, targetID);
