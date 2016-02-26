@@ -67,28 +67,11 @@ AutoSuggestControl.prototype.nameFor = function(practice, index) {
 
 AutoSuggestControl.prototype.drawChart = function(practice, id) {
 
-  var values_2015=['July 2015', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  var values_2014=['July 2014', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  var values_2013=['July 2013', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-  for (var i = 0; i < this.data[practice].list.length; i++) {
-    values_2015[i+1] = 10-i;
-  }
-  for (var i = 0; i < this.data[practice].list2014.length; i++) {
-    values_2014[i+1] = 10 -
-                this.data[practice].list.indexOf(this.data[practice].list2014[i]);
-    if (values_2014[i+1]==11) values_2014[i+1]=0;
-  }
-  for (var i = 0; i < this.data[practice].list2013.length; i++) {
-    values_2013[i+1] = 10 -
-                this.data[practice].list.indexOf(this.data[practice].list2013[i]);
-    if (values_2013[i+1]==11) values_2013[i+1]=0;
-  }
   var data = google.visualization.arrayToDataTable([
     ['', '', '', '', '', '', '', '', '', '', ''],
-    values_2013,
-    values_2014,
-    values_2015,
+    this.data[practice].values_2013,
+    this.data[practice].values_2014,
+    this.data[practice].values_2015,
   ]);
   var options = {
     chartArea: {left:20, top:0, width:320, height:300},
@@ -100,18 +83,7 @@ AutoSuggestControl.prototype.drawChart = function(practice, id) {
             1:{
             gridlines:{count:10, color:'#fff'},
             textPosition:'in',
-            ticks: [{v:0,f:''},
-                    {v:1.5, f:this.nameFor(practice,9)},
-                    {v:2.5, f:this.nameFor(practice,8)},
-                    {v:3.5, f:this.nameFor(practice,7)},
-                    {v:4.5, f:this.nameFor(practice,6)},
-                    {v:5.5, f:this.nameFor(practice,5)},
-                    {v:6.5, f:this.nameFor(practice,4)},
-                    {v:7.5, f:this.nameFor(practice,3)},
-                    {v:8.5, f:this.nameFor(practice,2)},
-                    {v:9.5, f:this.nameFor(practice,1)},
-                    {v:10.5, f:this.nameFor(practice,0)},
-                   ],
+            ticks: this.data[practice].ticks,
             viewWindow: {min:0, max:11},
               }
             },
@@ -167,5 +139,40 @@ AutoSuggestControl.prototype.init = function () {
         str+=this.data[practice].address[i] +' ';
       }
     this.data[practice].searchText = str;
+
+    this.data[practice].values_2015=['July 2015', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this.data[practice].values_2014=['July 2014', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this.data[practice].values_2013=['July 2013', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    for (var i = 0; i < this.data[practice].list.length; i++) {
+      this.data[practice].values_2015[i+1] = 10-i;
+    }
+    for (var i = 0; i < this.data[practice].list2014.length; i++) {
+      this.data[practice].values_2014[i+1] = 10 -
+                  this.data[practice].list.indexOf(this.data[practice].list2014[i]);
+      if (this.data[practice].values_2014[i+1]==11) {
+        this.data[practice].values_2014[i+1]=0;
+      }
+    }
+    for (var i = 0; i < this.data[practice].list2013.length; i++) {
+      this.data[practice].values_2013[i+1] = 10 -
+                  this.data[practice].list.indexOf(this.data[practice].list2013[i]);
+      if (this.data[practice].values_2013[i+1]==11) {
+        this.data[practice].values_2013[i+1]=0;
+      }
+    }
+    this.data[practice].ticks= [{v:0,f:''},
+                    {v:1.5, f:this.nameFor(practice,9)},
+                    {v:2.5, f:this.nameFor(practice,8)},
+                    {v:3.5, f:this.nameFor(practice,7)},
+                    {v:4.5, f:this.nameFor(practice,6)},
+                    {v:5.5, f:this.nameFor(practice,5)},
+                    {v:6.5, f:this.nameFor(practice,4)},
+                    {v:7.5, f:this.nameFor(practice,3)},
+                    {v:8.5, f:this.nameFor(practice,2)},
+                    {v:9.5, f:this.nameFor(practice,1)},
+                    {v:10.5, f:this.nameFor(practice,0)},
+                   ];
   }
+
 };
