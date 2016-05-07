@@ -302,10 +302,9 @@ SELECT 'TO', COUNT(*) AS C WHERE 'FROM'='mike.mcconnell' FROM ENRONMAIL GROUP BY
 <p>
     Shove that into a basic <a href="https://developers.google.com/chart/interactive/docs/gallery/sankey">Sankey</a>
     and you're away. I wanted to make the full set and have them navigable by clicking
-    on the sames of the branches to recentre the bowtie. Turns out
-    <a href="https://stackoverflow.com/questions/30337430/select-event-not-fired-on-google-chart-api-for-sankey">that's not yet possible</a>
-    so I now have two versions -- a clickable list pair of labels with badges to
-    show the counts and the Sankey image.
+    on the sames of the branches to recentre the bowtie. Initially, that
+    <a href="https://stackoverflow.com/questions/30337430/select-event-not-fired-on-google-chart-api-for-sankey">wasn't possible</a>
+    but the StackOverflow community got me to the right remedy.
 </p>
     <p>
     I used a modified version of the Sankey generator and iterated it a few times
@@ -329,8 +328,8 @@ SELECT 'TO', COUNT(*) AS C WHERE 'FROM'='mike.mcconnell' FROM ENRONMAIL GROUP BY
     <a href="http://james-irwin.github.io/enron/mike.mcconnell.batwings.html"><img src="thumbs/half.batwing.png" class="img-thumbnail" alt="Enron mail analytics."></a>
 </div>
     <p>
-    A matching set of batwings linked to bowtie Sankey views (click the centre name
-    in the top set) generated in 2mins 59secs for twenty times as much work done in
+    A matching set of batwings linked to bowtie Sankey views (click the centre namebar)
+    generated in 2mins 59secs for twenty times as much work done in
     Elasticsearch. Still sub a tenth of a second each. Possible on demand then,
     probably while continually indexing new documents as they pass through the mail
     system.
