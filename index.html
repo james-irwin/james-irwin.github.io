@@ -61,6 +61,89 @@
         <p>things that are done because I need to learn by doing.</p>
       </div>
 
+<div id="mot-dash"> </div>
+      <div class="page-header">
+          <h1>Vehicle test result dashboard</h1>
+      </div>
+        <a href="#contact"><img src="thumbs/NewDash.Final.png" class="img-thumbnail" alt="Kibana dashboard of 36m MOT tests."></a>
+<div>
+    <p>I didn't know the average vehicle was over nine-years old on the day it
+       was put in for its MOT.
+    </p>
+<p>
+        <a href="#contact"><button type="button" class="btn btn-primary">Site</button></a> Contact me to see this running.
+    </p>
+    <p>
+        <a href="http://www.github.com/james-irwin/mot-dash/"><button type="button" class="btn btn-success">Code</button></a> Python to ETL the CSV files into Elasticsearch.
+    </p>
+    <p>
+    <a href="https://data.gov.uk/dataset/anonymised_mot_test"><button type="button" class="btn btn-info">Data</button></a> Anonymised MOT test data.
+    </p>
+</div>
+
+<div>
+    <p>
+I needed to write an ETL in Python, and I wanted to start to use Kibana in anger.
+Python seems inescapable and I spent a few days trying to get to grip with the
+<a href="http://stackoverflow.com/questions/2573135/python-progression-path-from-apprentice-to-guru">basics</a>.
+ Unlike the other visualisations, Kibana runs as a live
+service, atop an equally live Elasticsearch instance. After running on my laptop,
+I could then re-benchmark and host this on a cloud service for demonstrations.
+    </p>
+    <p>
+I took the <a href="http://data.dft.gov.uk/anonymised-mot-test/12-03/test_result_2013.txt.gz">2013 results data</a>
+as this was the most recent data set and at 36m rows was a reasonable sized sample.
+The <a href="http://www.github.com/james-irwin/mot-dash/">ETL</a> code, like
+all the others, basically takes one line at a time from the CSV file and turns it
+into a Python dict. These are aggregated and pushed into Elastic search through
+the bulk interface. The (single threaded, single buffered) job takes an hour
+on my macbook and two hours on a two-core AWS instance. It took an hour longer on 
+a Google Compute instance but I wasn't really sure I was doing it right
+    </p>
+<a href="#contact"><img src="thumbs/AWS.ETL.png" class="img-thumbnail"     alt="AWS 2-core VM usage profile at about 10p per hour."></a>
+<p>
+I loaded the data from the compressed file (and stripped the UNCALSSIFIED vehicles)
+to minimise read-bandwidth and disk space
+<pre>$> mkfifo data.pipe
+$> gunzip -c data/test_results.gz | sed -e "/UNCLASSIFIED/d" > data.pipe &
+$> etl/MOT.csv.to.es.py data.pipe
+</pre>
+
+<p>
+To get satisfactory dashboard performance, I ended up choosing a four
+core instance (n1-highcpu-4) with 3.6 GB memory for the Elastic server and a
+simple one-core (n1-standard-1) for the Kibana server. The loaded Elastic index
+was about 4Gb and the Java runtime never used all the RAM. This costs
+about 20p per hour to run.
+</p>
+
+<a href="#contact"><img src="thumbs/NewDash.Final.Ford.Focus.png" class="img-thumbnail"     alt="Filtered dashboard to profile the Ford Focus Zetec"></a>
+<p>
+The most popular vehicle tested was the Ford Focus Zetec, filtered with two clicks
+on the pie charts and a wait of a couple of seconds as the 36m rows are processed.
+They're generally two years older, and fail more often than the average vehicle
+tested.
+</p>
+
+<a href="#contact"><img src="thumbs/NewDash.Final.Ferrari.png" class="img-thumbnail"     alt="Filtered dashboard to profile the Ferraris"></a>
+<p>
+Ferraris, on the other hand, are rarer, younger and fail their MOTs less. The
+time that Ferraris are tested, biased towards the end of winter and spring suggests,
+perhaps, these are summer cars.
+</p>
+
+<a href="#contact"><img src="thumbs/iOS.simple.dash.png" class="img-thumbnail"     alt="Simple key-metric dashboard on a phone"></a>
+<p>
+A summary metrics dashboard showing the data for one day fits nicely on a phone.
+The beauty of Kibana and Elasticsearch setup like this means a live feed into
+into Elastic permits auto-refresh (5 second) updates to trends of metrics that are
+operationally critical as I was able to see when developing the dashboard and
+loading the 36m rows simultaneously.
+</p>
+
+
+      <!-- END OF ELSATIC/ENRON -->
+
 <div id="prescriptiontrends"> </div>
       <div class="page-header">
           <h1>Prescription trends</h1>
@@ -79,7 +162,7 @@ Analysing three times as much data as the prescription drug map below
 by practice address. Slopegraphs in the league position style rather than the
 prescribed quantity show relative positions rather than relative volume.
 </p>
-
+</div>
 <div id="prescription"> </div>
       <div class="page-header">
           <h1>Top drug writers</h1>
