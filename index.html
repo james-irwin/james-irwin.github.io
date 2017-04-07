@@ -61,6 +61,66 @@
         <p>things that are done because I need to learn by doing.</p>
       </div>
 
+<div id="fitness"> </div>
+      <div class="page-header">
+          <h1>Fitness data</h1>
+      </div>
+        <a href="#contact"><img src="thumbs/HeartRateHeatMap.png" class="img-thumbnail" alt="Kibana geo-heatmap of my heartrate around Bristol."></a>
+<div>
+    <p>Heart rate nice and low on the train but walking to the park and ride,
+       while faster than the bus that day, was a fair trek. My heart rate
+       looks like a terrain proxy.
+    </p>
+<p>
+        <a href="#contact"><button type="button" class="btn btn-primary">Site</button></a> Contact me to see this running.
+    </p>
+    <p>
+        <a href="http://www.github.com/james-irwin/fitness/"><button type="button" class="btn btn-success">Code</button></a> Python &amp; Javascript to ETL Garmin or Strava files into Elasticsearch.
+    </p>
+</div>
+
+<div>
+    <p>My goal is to swim 100m in one minute. Practice is what will count, but
+       tracking how well I'm doing is interesting. There's the corporate
+       <a href="https://connect.garmin.com/">Garmin connect</a> and Stephane's
+       <a href="http://www.swimmingwatchtools.com">Swimming Watch tools</a>
+       to look at your stats. However, there's a tonne more data coming out of a
+       fitness watch. And I need to practice a little more ETL.
+    </p>
+    <p>
+       The Garmin watches turn out a FIT format file that is licenced but
+       available to developers through an
+       <a href="https://www.thisisant.com/resources/fit">SDK</a>.
+       The code includes a <a href="http://www.github.com/james-irwin/fitness/blob/master/garmin_fit/decode.cpp.patch">patch</a>
+       to the SDK example (<tt>cpp/examples/decodeMac</tt>) to emit something more
+       JSON-like to feed into a
+       <a href="https://github.com/james-irwin/fitness/blob/master/garmin_fit/push.fit.docs.to.es.py">python loader</a>
+       for elastic search.
+    </p>
+    <p>
+       The Strava downloads are GPX format XML files. These are converted with
+       a little <a href="https://github.com/james-irwin/fitness/blob/master/strava_gpx/src/gpx.to.json.js">Node/Javascript</a>
+       before another
+       <a href="https://github.com/james-irwin/fitness/blob/master/strava_gpx/src/push.gpx.docs.to.es.py">python loader</a>
+       for elastic search.
+    </p>
+    <a href="#contact"><img src="thumbs/ParkStreetHeartRate.png" class="img-thumbnail"     alt="Walking up the hill to the pool"></a>
+    <p>
+       Just to make sure the data is loaded, a quick check with proper science
+       says the first five minutes of walking to the pool shows
+       altitude <i>causing</i> my heart rate ;)
+    </p>
+    <p>
+       The goal measurement is done in Kibana as a scripted field from the
+       Garmin <tt>avg_speed</tt> field (milimeters per second).
+<pre>(doc['avg_speed'].value==0.0)?0.0:((100.0/(doc['avg_speed'].value/1000.0))-60.0)</pre>
+       gives the number of seconds I'm over the pace of one minute for 100m.
+       First swim with a cold and watch that broke on its first outing in an
+       odd-length pool but I have numbers!
+    </p>
+    <a href="#contact"><img src="thumbs/SecsOver1mFor100m.png" class="img-thumbnail"     alt="Baseline swim speed"></a>
+
+      <!-- END OF fitness dash -->
 <div id="mot-dash"> </div>
       <div class="page-header">
           <h1>Vehicle test result dashboard</h1>
@@ -102,7 +162,7 @@ a Google Compute instance but I wasn't really sure I was doing it right
     </p>
 <a href="#contact"><img src="thumbs/AWS.ETL.png" class="img-thumbnail"     alt="AWS 2-core VM usage profile at about 10p per hour."></a>
 <p>
-I loaded the data from the compressed file (and stripped the UNCALSSIFIED vehicles)
+I loaded the data from the compressed file (and stripped the UNCLASSIFIED vehicles)
 to minimise read-bandwidth and disk space
 <pre>$> mkfifo data.pipe
 $> gunzip -c data/test_results.gz | sed -e "/UNCLASSIFIED/d" > data.pipe &
