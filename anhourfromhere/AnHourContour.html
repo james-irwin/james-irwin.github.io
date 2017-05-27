@@ -1,0 +1,59 @@
+<head>
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+  
+  <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+  <script src="ContourData.js"></script>
+  <script>
+    <!-- JAVASCRIPT CODE GOES HERE -->
+
+var data = [ {
+        z: dist,
+autocontour: false,
+   contours: {
+               start: 0,
+               end: 10,
+               size: 0.5
+             },
+    showscale:false,
+        type: 'contour'
+    }
+];
+
+var layout = {
+    autosize:false,
+    width: 380,
+    height: 680,
+    margin: {
+      l: 0,
+      r: 0,
+      b: 0,
+      t: 0,
+      pad: 0
+    },
+    xaxis: {
+      ticks:'',
+      showticklabels:false,
+      showline:false,
+      showgrid:false,
+      zeroline:false,
+      domain: [0, width],
+    },
+    yaxis:{
+      ticks:'',
+      showticklabels:false,
+      showline:false,
+      showgrid:false,
+      zeroline:false,
+      scaleanchor: "x",
+      domain: [0, width]
+    },
+}
+
+Plotly.newPlot('myDiv', data, layout);
+
+  </script>
+</body>
