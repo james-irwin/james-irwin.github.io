@@ -61,6 +61,126 @@
         <p>things that are done because I need to learn by doing.</p>
       </div>
 
+
+<div id="anhourfromhere"> </div>
+  <div class="page-header">
+    <h1>Getaway driving</h1>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <p>
+          <a href="anhourfromhere/AnHourHeatmap.html"><img src="thumbs/AnHourFromHereUK.png" class="img-thumbnail" alt="Google heatmap of driving distance."></a>
+        </p>
+        <p>
+          <a class="btn btn-primary" href="anhourfromhere/AnHourHeatmap.html" role="button">Site</a> Pseudo driving distance via a heatmap in Google maps</p>
+    <p><a href="anhourfromhere/fullMap.js"/><button type="button" class="btn btn-info">Data</button></a>
+     Weighted heatmap points for a Google map.
+     </p>
+     </div>
+     <div class="col-md-6">
+       <p>
+         <a href="anhourfromhere/AnHourContour.html"><img src="thumbs/AnHourFromHerePlotly.png" class="img-thumbnail" alt="Plotly contour map of driving distance."></a>
+       </p>
+       <p>
+         <a class="btn btn-primary" href="anhourfromhere/AnHourContour.html" role="button">Site</a> Half hour dragnet boundaries with a contour map
+       </p>
+    <p><a href="anhourfromhere/ContourData.js"/><button type="button" class="btn btn-info">Data</button></a>
+     Matrix input for Plot.ly
+     </p>
+     </div>
+     <div>
+       <p>
+         Wondering about day trip options with a budget of only 2500 drive-time
+         lookups per day with the google API. Distilled the UK into about a
+         nine thousand point grid (a week of free scraping) by taking the
+         <a href="https://www.ordnancesurvey.co.uk/business-and-government/products/code-point-open.html">Code-Point Open</a>
+         data and finding the middle-most of each 5km box.
+        </p><p>
+         Four days of burning my quota to get driving distance and do a lat/long
+         lookup (too lazy to calculate form the OS gridpoint):
+         <img src="thumbs/AnHourFromHereAPIFull.png" class="img-thumbnail" alt="Quota fulfilled">
+       </p>
+       <p>
+         There were a few unroutable destinations. Naturally remote places included
+         a fair few in islands off the
+         <a href="https://maps.google.com/maps?q=IV499BS,UK">
+         coast</a>
+         or in a
+         <a href="https://maps.google.com/maps?q=G630JY,UK">
+         loch
+         </a>
+         <a href="https://maps.google.com/maps?q=IV519RA,UK">
+         of</a>
+         <a href="https://maps.google.com/maps?q=PH414PS,UK">
+         Scotland</a>,
+         <a href="https://maps.google.com/maps?q=LL538DE,UK">
+         off</a>
+         <a href="https://maps.google.com/maps?q=SA707UH,UK">
+         Wales</a>, and
+         <a href="https://maps.google.com/maps?q=TR210NX,UK">
+         off</a>
+         <a href="https://maps.google.com/maps?q=EX392LY,UK">
+         Cornwall</a>. A fair bit of the
+         Shetland Islands were routable
+         <a href="https://maps.google.com/maps?q=ZE29PA,UK">
+         bar</a>
+         <a href="https://maps.google.com/maps?q=ZE29PN,UK">
+         these</a>. Novel places that wouldn't route were a
+         <a href="https://maps.google.com/maps?q=PA344SX,UK">
+         Parrot Sanctuary</a>
+         and a
+         <a href="https://maps.google.com/maps?q=SN118TJ,UK">
+         cement and rubble company</a>.
+       </p>
+       <p>
+         There's a fair bit of Scotland without enough postcodes to request a
+         route. You can see the data grid by zooming in on the google heatmap.
+         <div class="alert alert-success" role="alert">
+           I caught myself before thinking routing was trivially linear, making
+           corresponding contour (<i>dragnet</i>)  maps from any data point by
+           just using deltas. Or trying to compensate and generating a data set
+           form the four <i>corners</i> of the UK and interpolating when centering
+           at any point. A long scrape to increase fidelity or make multiple
+           dragnet datasets could generate one of
+           <a href="https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0000hv">Tufte's small multiple visualisations</a>.
+         </div>
+         On my way to the Plot.ly and Google heat map, I pushed very similar
+         data into Octave and Kibana respectively. The Kibana small multiple
+         of one two and three hours out from the origin with a scripted field
+         is below:
+       </p>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <p>
+          <img src="thumbs/AnHourKibana.png" class="img-thumbnail" alt="Google heatmap of driving distance.">
+        </p>
+      </div>
+      <div class="col-md-4">
+        <p>
+          <img src="thumbs/ASecondHourKibana.png" class="img-thumbnail" alt="Google heatmap of driving distance.">
+        </p>
+      </div>
+      <div class="col-md-4">
+        <p>
+          <img src="thumbs/AThirdHourKibana.png" class="img-thumbnail" alt="Google heatmap of driving distance.">
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+     </div>
+   </div>
+</div>
+
+
+      <!-- END OF an hour from here-->
+
+
+
 <div id="fitness"> </div>
       <div class="page-header">
           <h1>Fitness data</h1>

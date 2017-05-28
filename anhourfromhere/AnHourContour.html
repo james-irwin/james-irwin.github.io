@@ -4,11 +4,10 @@
 </head>
 
 <body>
-  
-  <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+  <div id="myDiv"></div>
   <script src="ContourData.js"></script>
   <script>
-    <!-- JAVASCRIPT CODE GOES HERE -->
 
 var data = [ {
         z: dist,
@@ -27,6 +26,98 @@ var layout = {
     autosize:false,
     width: 380,
     height: 680,
+    showlegend:false,
+    annotations: [
+     {
+      x: 50,
+      y: 166,
+      xref: 'x',
+      yref: 'y',
+      text: 'Loch Ness',
+      showarrow: true,
+      arrowhead: 7,
+      ax: 70,
+      ay: -50
+     },
+     {
+      x: 76,
+      y: 161,
+      xref: 'x',
+      yref: 'y',
+      text: 'Aberdeen',
+      showarrow: true,
+      arrowhead: 7,
+      ax: 55,
+      ay: -15
+     },
+     {
+      x: 66,
+      y: 135,
+      xref: 'x',
+      yref: 'y',
+      text: 'Edinbrugh',
+      showarrow: true,
+      arrowhead: 7,
+      ax: 55,
+      ay: -15
+     },
+     {
+      x: 52,
+      y: 56,
+      xref: 'x',
+      yref: 'y',
+      text: 'Aberystwyth',
+      showarrow: true,
+      arrowhead: 7,
+      ax: -80,
+      ay: 0
+     },
+     {
+      x: 66,
+      y: 87,
+      xref: 'x',
+      yref: 'y',
+      text: 'Blackpool',
+      showarrow: true,
+      arrowhead: 7,
+      ax: -80,
+      ay: 0
+     },
+     {
+      x: 85,
+      y: 113,
+      xref: 'x',
+      yref: 'y',
+      text: 'Newcastle',
+      showarrow: true,
+      arrowhead: 7,
+      ax: 60,
+      ay: -20
+     },
+     {
+      x: 106,
+      y: 36,
+      xref: 'x',
+      yref: 'y',
+      text: 'London',
+      showarrow: true,
+      arrowhead: 7,
+      ax: 0,
+      ay: +70
+     },
+     {
+      x: 30,
+      y: 8,
+      xref: 'x',
+      yref: 'y',
+      text: 'St.Ives',
+      showarrow: true,
+      arrowhead: 7,
+      ax: -20,
+      ay: -40
+     },
+
+    ],
     margin: {
       l: 0,
       r: 0,
