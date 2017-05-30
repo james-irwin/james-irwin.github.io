@@ -1,14 +1,55 @@
 <head>
   <!-- Plotly.js -->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <title>james-irwin@github An hour from here</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap theme -->
+  <link href="dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="theme.css" rel="stylesheet">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), 
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-16765789-5', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 
-<body>
+<body role="document">
 
-  <div id="myDiv"></div>
+<div class="container theme-showcase" role="main">
+  <div class="page-header">
+    <h1>As contours</h1>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div id="ContourDiv"></div>
+    </div>
+  <div class="page-header">
+    <h1>As correlations</h1>
+  </div>
+    <div class="row">
+      <div class="col-md-4" style="width: 640px; height: 640px;" id="CorrelationDiv"></div>
+    </div>
+  </div>
+
   <script src="ContourData.js"></script>
   <script>
-
 var data = [ {
         z: dist,
 autocontour: false,
@@ -144,7 +185,63 @@ var layout = {
     },
 }
 
-Plotly.newPlot('myDiv', data, layout);
+Plotly.newPlot('ContourDiv', data, layout);
 
   </script>
+
+  <script src="plotly.dists.js"></script>
+  <script src="plotly.durations.js"></script>
+  <script src="plotly.linear.dists.js"></script>
+
+<script>
+var DrivingDistanceVsDrivingDuration = {
+  x: dists,
+  y: durations,
+  type: 'scatter',
+  mode:'markers',
+  showscale:false
+};
+
+var LinearDistanceVsDrivingDuration = {
+  x: lindists,
+  y: durations,
+  xaxis: 'x2',
+  yaxis: 'y',
+  type: 'scatter',
+  mode:'markers',
+  showscale:false
+};
+
+var DrivingDistanceVsLinearDistance = {
+  x: dists,
+  y: lindists,
+  xaxis: 'x',
+  yaxis: 'y3',
+  type: 'scatter',
+  mode:'markers',
+  showscale:false
+};
+
+var data = [DrivingDistanceVsDrivingDuration, LinearDistanceVsDrivingDuration,
+            DrivingDistanceVsLinearDistance];
+
+var layout = {
+  showlegend:false,
+  margin: {
+      l: 0,
+      r: 0,
+      b: 0,
+      t: 0,
+      pad: 0
+    },
+  xaxis: {title:'Driving distance', domain: [0, 0.45]},
+  yaxis: {title:'Driving duration', domain: [0, 0.45]},
+  xaxis2: {title:'Crow-flies distance', domain: [0.55, 1]},
+  yaxis3: {title:'Crow-flies distance', domain: [0.55, 1]},
+};
+
+Plotly.newPlot('CorrelationDiv', data, layout);
+
+</script>
+<div> <!-- End of container class showcase -->
 </body>
