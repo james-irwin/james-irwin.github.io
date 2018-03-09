@@ -90,6 +90,147 @@
           within the selected visible area. County border problems taken care
           of at the same time.
        </p>
+       <p>The FSA API offers a <a href="http://api.ratings.food.gov.uk/Help/Api/GET-Establishments_name_address_longitude_latitude_maxDistanceLimit_businessTypeId_schemeTypeKey_ratingKey_ratingOperatorKey_localAuthorityId_countryId_sortOptionKey_pageNumber_pageSize">boundary based query defined by distance from a centre</a>,
+       however I was looking to make use of the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-bounding-box-query.html">bounding
+       box</a> API in elastic search. This was akin to the
+       <a href="http://www.nytimes.com/interactive/dining/new-york-health-department-restaurant-ratings-map.html">map of New York</a>.
+       </p>
+       <p>The <a href="https://morning-harbor-24616.herokuapp.com/">Heroku site</a>
+          is stand-alone with a simple loop through all the ratings data
+          that will return restaurant ratings to pin to the map.
+          The process involved collecting all the FHRSID numbers; collecting
+          the rating and details for each rated location; and then trimming
+          it to that required to just mark the pin on the map.
+       </p>
+       <p>Collecting all the IDs was a two step process. First get the first page
+          of basic results with one record per page.
+       </p>
+       <pre>curl -XGET -H "accept: application/json" -H "x-api-version: 2" "http://api.ratings.food.gov.uk/Establishments/basic/1/1"</pre>
+       <p>The key takeaway is the
+          response component indicating the number of pages in the set.
+       </p>
+       <pre>{
+  "establishments": [
+    {
+      "FHRSID": 9228,
+      ...
+    }
+  ],
+  "meta": {
+    ...
+    "totalCount": 525016, &lt;-- this is the number we're looking for
+    ...
+  },
+  ...
+}</pre>
+      <p>Collect all 90Mb of basic results to enumerate all FHRSIDs by requesting
+the first page with <i>$meta.totalCount</i> items per page</p>
+       <pre>curl -XGET -H "accept: application/json" -H "x-api-version: 2" "http://api.ratings.food.gov.uk/Establishments/basic/1/$totalCount"
+
+{
+  "establishments": [
+    {
+      "FHRSID": 9228,
+      "LocalAuthorityBusinessID": "03850/0050/0/000",
+      "BusinessName": "\"A\" Squadron, Scottish And North Irish Yeomanry",
+      "BusinessType": null,
+      "RatingValue": "Pass",
+      "RatingDate": "2016-01-20T00:00:00",
+      "links": []
+    },
+    {
+      "FHRSID": 134047,
+      "LocalAuthorityBusinessID": "67154",
+      "BusinessName": "\"Buttylicious\"",
+      "BusinessType": null,
+      "RatingValue": "4",
+      "RatingDate": "2017-07-20T00:00:00",
+      "links": []
+    },
+    {
+      ...
+</pre>
+
+       <p>Collecting one full record for the loation uses the simple FSA API</p>
+       <pre>curl -XGET -H "accept: application/json" -H "x-api-version: 2" "http://api.ratings.food.gov.uk/Establishments/1000011"</pre>
+       <p>Returns the fourty-four line record</p>
+<pre>
+{
+  "FHRSID": 1000011,
+  "LocalAuthorityBusinessID": "INSPF/17/209773",
+  "BusinessName": "Killer Tomato",
+  "BusinessType": "Restaurant/Cafe/Canteen",
+  "BusinessTypeID": 1,
+  "AddressLine1": "Ground Floor",
+  "AddressLine2": "275 Portobello Road",
+  "AddressLine3": "LONDON",
+  "AddressLine4": "",
+  "PostCode": "W11 1LR",
+  "Phone": "",
+  "RatingValue": "5",
+  "RatingKey": "fhrs_5_en-gb",
+  "RatingDate": "2017-11-08T00:00:00",
+  "LocalAuthorityCode": "520",
+  "LocalAuthorityName": "Kensington and Chelsea",
+  "LocalAuthorityWebSite": "http://www.rbkc.gov.uk",
+  "LocalAuthorityEmailAddress": "food.hygiene@rbkc.gov.uk",
+  "scores": {
+    "Hygiene": 0,
+    "Structural": 5,
+    "ConfidenceInManagement": 5
+  },
+  "SchemeType": "FHRS",
+  "geocode": {
+    "longitude": "-0.206798002123833",
+    "latitude": "51.5178604125977"
+  },
+  ...
+}
+       </pre>
+       <p>This is trimmed and stored in a large
+          <a href="https://github.com/james-irwin/dynamic-fsamap/blob/master/all.data.compact">JSON array</a>
+          to be returned from
+          <a href="https://github.com/james-irwin/dynamic-fsamap/blob/master/service.js#L85">bounding box based searches</a>
+          used by the map object's
+          <a href="https://github.com/james-irwin/dynamic-fsamap/blob/master/index.html#L47"><i>idle</i> listener</a>.
+<pre>curl "https://morning-harbor-24616.herokuapp.com/LAT=51.518&lat=51.5175&LON=-0.20678&lon=-0.2068"</pre>
+        <p>The Killer Tomato is one of three in this tiny area</p>
+        <pre>{
+  "params": {
+    "good": true,
+    "LAT": 51.518,
+    "lat": 51.5175,
+    "LON": -0.20678,
+    "lon": -0.2068
+  },
+  "found": [
+    {
+      "BusinessName": "Killer Tomato",
+      "RatingValue": 5,
+      "position": {
+        "lat": 51.5178604125977,
+        "lon": -0.206798002123833
+      }
+    },
+    {
+      "BusinessName": "Portobello Gardens",
+      "RatingValue": 5,
+      "position": {
+        "lat": 51.51786,
+        "lon": -0.206798
+      }
+    },
+    {
+      "BusinessName": "BRT Vinyl Cafe",
+      "RatingValue": 1,
+      "position": {
+        "lat": 51.517861,
+        "lon": -0.206798
+      }
+    }
+  ],
+  "total": 3
+}</pre>
      </div>
 
 
