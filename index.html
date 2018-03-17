@@ -60,6 +60,96 @@
       </div>
 
 
+<div id="JIRA"> </div>
+  <div class="page-header">
+    <h1>The graph JIRA didn't offer</h1>
+  </div>
+  <a href="JIRA/performance.html"><img src="thumbs/JIRA.png" class="img-thumbnail" alt="The same tickets going into build over and over."></a>
+  <div>
+  <p>Tickets going back into build over time.
+  </p>
+  <p><a class="btn btn-primary" href="JIRA/performance.html" role="button">Site</a>
+        Three projects measured.
+  </p>
+  <p><a href="https://developer.atlassian.com/cloud/jira/platform/rest/#about"><button type="button" class="btn btn-info">Data</button></a>
+   JIRA REST API
+  </p>
+  <p><a href="http://www.github.com/james-irwin/JIRA/"><button type="button" class="btn btn-success">Code</button></a>
+   Shell scripts to pull on JIRA API and filter for analysis.
+  </p>
+  </div>
+  <div>
+  <p>Progress concerns on a project tracked in JIRA weren't being
+     represented in the standard set of visualisations like the
+     <a href="https://confluence.atlassian.com/jirasoftwarecloud/cumulative-flow-diagram-777002689.html">cumulative flow graph</a>.
+     I wanted to see if the data stood up to the anecdotal mood outbursts.
+     First I counted the number of times a ticket was pushed back from
+     <i>Test</i> to <i>Build</i>. There are
+     <a href="https://community.atlassian.com/t5/Jira-questions/How-can-i-see-the-reopen-counter/qaq-p/196194">JIRA plugin</a>
+     based solutions using custom fileds, and
+     <a href="https://stackoverflow.com/questions/14614426/displaying-how-often-an-issue-has-been-reopen-in-jira">JQL/Webhook</a>
+     alternatives. These would give a singular field report, I don't speak
+     any JIRA and I was after a broader picture. What I could get was the
+     ticket data in JSON via the
+     <a href="https://developer.atlassian.com/cloud/jira/platform/rest/#about">JIRA
+     REST API</a>. The first task was to get all the ticket IDs for a given project.
+     Setting <i>maxResults</i> to <i>-1</i> returns all results.
+  </p>
+  <pre>curl -s -u $user:$pass -X GET -H "Content-Type: application/json" "https://$your.jira.server/jira/rest/api/2/search?jql=project=$project&maxResults=-1" | jq '.issues[] | .key'
+
+  "D-517"
+  "D-516"
+  "D-515"
+  "D-514"
+  "D-513"
+  ...</pre>
+  <p>For all transitions of an individual ticket get the extended
+     <i>changelog</i> detail.
+  </p>
+  <pre>
+curl -s -u $user:$pass -X GET -H "Content-Type: application/json" "https://$your.jira.server/jira/rest/api/2/issue/$ticket?expand=changelog"
+</pre>
+  <p>
+  Initially, I just wanted to test the claim that a large number of ticket were
+  being returned form the <i>Test</i> column to <i>Build</i>.
+  Using <a href="https://stedolan.github.io/jq/"><i>jq</i></a> plus <i>grep</i>
+  to filter the transitions we want then count with <i>wc</i>.
+  </p>
+  <pre>curl ...$ticket... | jq '.changelog.histories[] | .items[] | [.toString, .fromString]'  | jq '(.[0]=="Build" and .[1]=="Test")' | grep true | wc -l
+</pre>
+  <p>Iterating this over the tickets filtering for those with two or more
+  pushbacks generates a summary.</p>
+  <pre>cat tickets | while read ticket
+do
+  ./count.pushbacks.sh $ticket | grep :[2-9]
+done
+
+D-107 Test to Build pushbacks:3
+D-84 Test to Build pushbacks:2
+D-71 Test to Build pushbacks:2
+D-53 Test to Build pushbacks:4
+D-50 Test to Build pushbacks:3
+D-47 Test to Build pushbacks:2
+...</pre>
+  <p>This gave rise to a number of questions when thinking about the progress
+  a team is making on a project (improving over time) and whether this could
+  be used to compare projects/teams.</p>
+  <p>A project's colective <i>Test-to-Build</i> rejections are still too close
+   -- they cause a knee-jerk blame on developers. So I dialed back to simply
+  <a href="JIRA/performance.html">counting
+  the number of times a ticket enters <i>Build</i> and tracking that over time</a>.
+  Tickets can enter build form any direction (bouncing back to a requirement
+  refinement stage or returning from somewhere downstream post-build). I
+  think it makes an interesting measure of the management and execution of tickets.
+  It's perfectly expected for some tickets to return to the <i>Build</i> stage
+  if you're working at pace and trying to make a minimum increment on a
+  product that's evolving. The question is, what do the stats for a team
+  pushing hard look like compared to a team that's struggling to make the grade?</p>
+</div>
+
+     <!-- END OF JIRA-->
+
+
 <div id="fsaredo"> </div>
   <div class="page-header">
     <h1>Returning to the Food Standards Agency</h1>
