@@ -59,6 +59,154 @@
         <p>things I do while learning.</p>
       </div>
 
+<div id="backwell"> </div>
+  <div class="page-header">
+    <h1>Clandestine fun through Markov chains</h1>
+  </div>
+  <a href="Backwell/consumer.html"><img src="thumbs/Backwell.png" class="img-thumbnail" alt="Poetry coroner"></a>
+  <div>
+  <p>Constraints spark creativity.
+  </p>
+  <p><a class="btn btn-primary" href="Backwell/consumer.html" role="button">Site</a>
+        I was born ... <i>Romeo and Juliet</i> style.
+  </p>
+  <p><a href="http://www.gutenberg.org/files/1112/1112.txt"><button type="button" class="btn btn-info">Data</button></a>
+   Shakespeare's Romeo &amp; Juliet hosted at Project Gutenberg.
+  </p>
+  <p><a href="https://gist.github.com/james-irwin/4dd88550a3faa50390b9854e0a5a37e0"><button type="button" class="btn btn-success">Code</button></a>
+   Word pair collapser.
+  </p>
+  </div>
+  <div>
+  <p>
+    Aggressive reduction of the <a href="#word-pairs">stylometry</a>
+    experiment as a teaching aid made something fun enough to record. The result
+    is a predictive text engine to build on, with enough to start showing
+    the fun you can have applying the result.
+  </p>
+  <p>Starting again, with <a href="http://www.gutenberg.org/files/1112/1112.txt">Romeo
+     and Juliet</a> (in <tt>RandJ.txt</tt>) we build the dictionary of possible
+    following words for a given lead word. This time we did it all at the command
+    line. No <a href="http://scikit-learn.org/stable/">scikit-learn</a> or
+    <a href="https://www.tensorflow.org/">TensorFlow</a> here as you might find
+    on <a href="https://www.youtube.com/watch?v=cf24R12l0uw&t=187s">YouTube</a>.
+    Just a few lines of bash and a handful of JavaScript to prepare the dictionary.
+  </p>
+  <pre>
+cat RandJ.txt | tr '[:upper:]' '[:lower:]' |  <-- normalise to lowercase
+    tr -d '[:punct:]'                      |  <-- ditch punctuation
+    tr -d \\r                              |  <-- normalise CRLF
+    tr \  \\n                              |  <-- split words one per line
+    sed -e '/^$/d'                            <-- delete empty lines
+                    > words.in.order          <-- save a column linearised copy
+  </pre>
+  <p> <tt>words.in.order</tt> looks like:
+  </p>
+  <pre>
+the
+project
+gutenberg
+ebook
+of
+romeo
+and
+juliet
+by
+william
+...
+  </pre>
+  <p>Turn this into a list of frequency sorted word pairs where the second word
+     follows the first. Add syntax sugar so these word pairs read as JSON objects
+     with key/value pairs to then collapse the left-hand sides.
+  </p>
+  <pre>
+wc words.in.order                             <-- how many left-hand-sides?
+   28970   28970  149169 words.in.order
+tail -28969 words.in.order > second.words     <-- take the whole text bar one word
+                                                  to make the right hand sides.
+paste -d:  words.in.order second.words      | <-- paste the left and right hand sides
+sort                                        | <-- order them by the left hand sides
+uniq -c                                     | <-- collapse duplicates and count
+sort -rn                                    | <-- sort (descending) by count
+sed -e 's/^.* /{"/;s/:/":"/;s/$/"}/'        | <-- drop numbers, have served purpose,
+                                                  decorate with curlys and quotes
+   > all.wordpairs.js                         <-- save
+  </pre>
+  <p>
+  <tt>all worpairs.js</tt> is a well formed list of JSON key value pairs:
+  </p>
+  <pre>
+{"of":"the"}
+{"i":"will"}
+{"in":"the"}
+{"project":"gutenbergtm"}                     <-- side effect of untrimmed input
+{"i":"am"}
+{"to":"the"}
+{"of":"this"}
+{"it":"is"}
+{"i":"have"}
+{"with":"the"}
+{"project":"gutenberg"}                       <-- side effect of untrimmed input
+{"the":"project"}                             <-- side effect of untrimmed input
+{"is":"the"}
+{"for":"the"}
+{"thou":"art"}
+</pre>
+  <p> For each left hand side (key) we push the right hand side (value) to form
+      the dictionary -- testing for the case that the left had side has a
+      structure to push. Pseudo code of <a href="https://gist.github.com/james-irwin/4dd88550a3faa50390b9854e0a5a37e0#file-turn-js-L17">full
+      collapser</a>:
+  </p>
+  <pre>
+var dict={};                                  <-- initialise an empty dictionary
+
+for each line l in all.wordpais.js
+  o=JSON.parse(l);                            <-- parse into a key/value object
+  key=Object.keys(o)[0];                      <-- take the first key
+
+  if (typeof(dict[key] == "undefined") {      <-- this left hand side is novel
+    dict[key]=[];                             <-- initialise the left hand side
+  }
+
+  dict[key].push(o[key]);                     <-- append this right had side
+  </pre>
+  <p>Processing <tt>all.wordpairs.js</tt> collapses to the form:
+  </p>
+<pre>
+dict={
+  ...
+  "born":["to", "some"],
+  ...
+  "some":["other", "of", "say", "noise", "ill", "word", "want", "villanous", "vile", "twenty", "that", "supper", "strange", "spite", "special", "shall", "punished", "private", "present", "poison", "paris", "others", "occasion", "new", "misadventure", "minute", "meteor", "merry", "means", "mean", "juliet", "joyful", "house", "hours", "hour", "half", "grief", "great", "good", "fiveandtwenty", "festival", "distemprature", "consequence", "confidence", "comfort", "business", "aquavitae", "aqua", "and"],
+  ...
+};
+</pre>
+  <p> Moving to consumption in the browser, this is simply a matter of
+  emitting a button for each word from a given state, and appending the selected
+  word to the message:
+  </p>
+  <pre>
+var step = function(w) {
+  document.getElementById('message') += ' ' + w;
+  var buttons=document.getElementById('buttons');
+  buttons    = '';
+  for (var i in dict[w]) {
+    var nw = dict[w][i];
+    buttons += ' &lt;button;                        + <-- create a button
+               ; onclick=&quot;step(\''+ nw +'\');&quot;>; + <-- sets up next step
+               nw  +  '&lt;/button>';
+  }
+}
+</pre>
+<p>With the word <i>wherefore</i> this results in the button list, of descending
+frequency in the text, and with the most likely famous in last place:
+</p>
+<p>
+<button type="button" class="btn btn-primary" onclick="generate_suggester_buttons('weep', buttonElement, messageElement);">weep</button> <button type="button" class="btn btn-primary" onclick="generate_suggester_buttons('villain', buttonElement, messageElement);">villain</button> <button type="button" class="btn btn-primary" onclick="generate_suggester_buttons('the', buttonElement, messageElement);">the</button> <button type="button" class="btn btn-primary" onclick="generate_suggester_buttons('storm', buttonElement, messageElement);">storm</button> <button type="button" class="btn btn-primary" onclick="generate_suggester_buttons('art', buttonElement, messageElement);">art</button>
+</div>
+
+     <!-- END OF backwell-->
+
 
 <div id="JIRA"> </div>
   <div class="page-header">
