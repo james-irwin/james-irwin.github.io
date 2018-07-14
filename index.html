@@ -105,16 +105,15 @@ for (t in tweets) {
   <p><a href="http://www.hansard-archive.parliament.uk/Parliamentary_Debates_Vol_1_(1803)_to_Vol_41_(Feb_1820)"><button type="button" class="btn btn-info">Data</button></a>
    Hansard records.
   </p>
-  <p><a href=""><button type="button" class="btn btn-success">Code</button></a>
-   Generator
-  </p>
+  <p><a href="https://gist.github.com/james-irwin/3d3755127b5de1d4ea52453f9bb1db97"><button type="button" class="btn btn-success">Code</button></a>
+   Generator.
   </div>
   <div>
   <p>
   With all the machine leraning and artifical inteligence
   hype, why not just take the final step form
   <a href="#word-pairs">stylometry</a> and
-  <a href="#word-pairs">chain-following</a>? Generate the seed
+  <a href="#backwell">chain-following</a>? Generate the seed
   from the set of all openers, and walk a random path.
   </p>
   <p>With three variables <tt>opens, middles, closes</tt>
@@ -133,24 +132,28 @@ var closes={"may have":["brutal results.", "won again."],
   </pre>
   <p>
   Generation of a tweet is then a series of <tt>Math.round(Math.random()</tt>
-  applied to <tt>{opens|middles[key]|closes[key].length})</tt>
+  multiplied by <tt>{opens|middles[key]|closes[key]}.length</tt>
   where the key is the last two words of the tweet so far.
   The data sets gathered were small to begin with, a handful
   or records from the early 1800s (150,000+ approximate sentences). Latterly,
-  the 13M+ line set from 1981-2004 was tried but blew up.
+  the 13M+ line set from 1981-2004 worked on an 8Gb
+  Mac but blew up from the naive implementation on a Rasberry Pi.
   </p>
 <div class="alert alert-danger" role="alert">
-    <tt>read(fd, buff, size);</tt> [C programming] fails to read more than 2^32-1
-    bytes in one chunk, even though <tt>sizeof(size_t)i</tt>
+    <tt>read((int) fd, (void *)buff, (size_t) size)</tt> [in C] fails to read more than 2^32-1
+    bytes in one chunk though <tt>sizeof(size_t)</tt>
     is eight bytes. A file-system-developer friend asked for
     a break, and I forgive them, as it is rather lazy to do it like this.
    <br><br>
    <tt>node</tt> defaults to a moderate heap and needs
    <tt>--max-old-space-size=2048</tt> (2Gb) to run the trimmed
-   down 1981 data set (to just the first 5M lines).
+   down 1981 data set (to just the first 5M lines) and that hurts on a
+   Raspberry Pi. I should use a <i>database</i>, but I wasn't going to start
+   playing with mongo just to demo this.
 </div>
   <p>
-  Attach the tweet-content generating script to a Twitter
+  Attach the tweet-content generating
+  <a href="https://gist.github.com/james-irwin/3d3755127b5de1d4ea52453f9bb1db97">script</a> to a Twitter
   account via the API (I used the <a href="https://github.com/ttezel/twit">twit</a>
   package). Throw invocations into a loop that tweets once
   per day on you Raspberry Pi and wait for something
@@ -162,8 +165,8 @@ var closes={"may have":["brutal results.", "won again."],
   the trap I fell into: Set up the basics, send the first tweet, fill in a
   synthetic profile, set the date of birth to <i>today's date</i> and then get immediately locked out because you just said you were less than 13 years old.
   Over the next day or two trade emails with Twitter support
-  resisting their requests to authorise by sendng a scan
-  of a government issued photo ID, instead invoking the
+  resisting their requests
+  for a government issued photo ID, instead invoking the
   GDPR right to be forgotten (abandon!) to completely remove
   the account and start over. Be advised that Twitter want
   government issued photo ID to do that step too. ARGH.
@@ -172,7 +175,8 @@ var closes={"may have":["brutal results.", "won again."],
 </div>
 </div>
 
-     <!-- END OF backwell-->
+     <!-- END OF hansard-blurter-->
+
 <div id="backwell"> </div>
   <div class="page-header">
     <h1>Clandestine fun through Markov chains</h1>
