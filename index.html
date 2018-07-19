@@ -97,7 +97,7 @@ for (t in tweets) {
 </script>
 
   <div>
-  <p>Why wait for a human input when you can just use Math.random()?
+  <p>Why wait for human input when you can just use Math.random()?
   </p>
   <p><a class="btn btn-primary" href="https://twitter.com/BlurterHansard" role="button">Site</a>
         Hansard Blurter Twitter account.
@@ -111,16 +111,17 @@ for (t in tweets) {
   <div>
   <p>
   With all the machine leraning and artifical inteligence
-  hype, why not just take the final step form
+  hype, why not just take the final step from
   <a href="#word-pairs">stylometry</a> and
   <a href="#backwell">chain-following</a>? Generate the seed
   from the set of all openers, and walk a random path.
   </p>
-  <p>With three variables <tt>opens, middles, closes</tt>
-     we pick a sentence (tweet) starting point, an
+  <p>
+     We pick a sentence to tweet from a random starting point, an
      arbitrary number of continuations, and an end-of-sentence
      where overlaps key the transtitions. <tt>opens</tt> is
-     simply an array, the others are dictionaries keyed by
+     simply an array, the others (<tt>middles</tt> and <tt>closes</tt>)
+     are dictionaries keyed by
      the tail word-pair of the tweet-thus-far.
   </p>
   <pre>
@@ -132,8 +133,7 @@ var closes={"may have":["brutal results.", "won again."],
   </pre>
   <p>
   Generation of a tweet is then a series of <tt>Math.round(Math.random()</tt>
-  multiplied by <tt>{opens|middles[key]|closes[key]}.length</tt>
-  where the key is the last two words of the tweet so far.
+  multiplied by <tt>{opens|middles[key]|closes[key]}.length</tt>.
   The data sets gathered were small to begin with, a handful
   or records from the early 1800s (150,000+ approximate sentences). Latterly,
   the 13M+ line set from 1981-2004 worked on an 8Gb
@@ -143,13 +143,13 @@ var closes={"may have":["brutal results.", "won again."],
     <tt>read((int) fd, (void *)buff, (size_t) size)</tt> [in C] fails to read more than 2^32-1
     bytes in one chunk though <tt>sizeof(size_t)</tt>
     is eight bytes. A file-system-developer friend asked for
-    a break, and I forgive them, as it is rather lazy to do it like this.
+    a break, and I forgive them, as it is rather lazy to do it like this. I should use <tt>mmap</tt> or chunk it up.
    <br><br>
    <tt>node</tt> defaults to a moderate heap and needs
-   <tt>--max-old-space-size=2048</tt> (2Gb) to run the trimmed
-   down 1981 data set (to just the first 5M lines) and that hurts on a
+   <tt>--max-old-space-size=2048</tt> (2Gb) to run a trimmed
+   1981-2004 data set (just the first 5M lines) fails on a
    Raspberry Pi. I should use a <i>database</i>, but I wasn't going to start
-   playing with mongo just to demo this.
+   playing with mongo.
 </div>
   <p>
   Attach the tweet-content generating
