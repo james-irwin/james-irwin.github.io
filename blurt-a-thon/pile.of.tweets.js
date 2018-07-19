@@ -226,7 +226,6 @@ var tweets=[
 "The Northern Ireland Gas Employers Board raised a large sum of money.",
 "NEDO is addressing itself it only pensioners? Mr.",
 "Eyre: There is an incidence of stock losses.",
-"Hunt John Ravensbourne Waller Gary Hurd Rt Hon Gregor St.",
 "This resistance is made to me.",
 "I continue to be excellent and going well.",
 "Universities are being forced into that category without disproportionate expense.",
