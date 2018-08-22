@@ -251,7 +251,7 @@ paste -d:  words.in.order second.words      | <-- paste the left and right hand 
 sort                                        | <-- order them by the left hand sides
 uniq -c                                     | <-- collapse duplicates and count
 sort -rn                                    | <-- sort (descending) by count
-sed -e 's/^.* /{"/;s/:/":"/;s/$/"}/'        | <-- drop numbers, have served purpose,
+sed -e 's/^.* /{"/;s/:/":"/;s/$/"}/'          <-- drop numbers, have served purpose,
                                                   decorate with curlys and quotes
    > all.wordpairs.js                         <-- save
   </pre>
