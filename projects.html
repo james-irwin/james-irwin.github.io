@@ -1,68 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Write-ups of data and engineering projects by James Irwin, 2015 to 2018.">
+    <meta name="author" content="James Irwin">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>james-irwin@github</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="dist/css/bootstrap-theme.min.css" rel="stylesheet">
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-16765789-5', 'auto');
-  ga('send', 'pageview');
-
-</script>
+    <title>Projects | James Irwin</title>
+<style>
+:root{--bg:#f7f8f9;--ink:#14181c;--soft:#59626b;--rule:#d9dde1;--link:#0b5568;--tint:#eceff1}
+@media (prefers-color-scheme:dark){:root{--bg:#101316;--ink:#e6e9ec;--soft:#97a1aa;--rule:#2a3036;--link:#6cc3d8;--tint:#1a1f23}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:1.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--link);text-underline-offset:.18em}
+a:focus-visible,.btn:focus-visible{outline:2px solid var(--link);outline-offset:3px;border-radius:2px}
+.wrap{display:grid;grid-template-columns:15rem minmax(0,42rem);gap:4rem;max-width:64rem;margin:0 auto;padding:4rem 1.5rem 5rem}
+.side{position:sticky;top:3rem;align-self:start;max-height:calc(100vh - 5rem);overflow:auto}
+.side .name{font:600 1.6rem/1.15 ui-serif,Georgia,"Times New Roman",serif;margin:0 0 1rem;display:block;color:var(--ink);text-decoration:none}
+.side a{display:block;padding:.15rem 0;color:var(--ink);text-decoration:none;font-size:.95rem}
+.side a:hover{color:var(--link);text-decoration:underline}
+.side .back{color:var(--soft);margin-bottom:1rem}
+h1{font:600 2rem/1.15 ui-serif,Georgia,serif;margin:0 0 .5rem}
+h2.proj{font:600 1.45rem/1.25 ui-serif,Georgia,serif;margin:4rem 0 1rem;padding-top:1.5rem;border-top:1px solid var(--rule)}
+h2.proj .yr{display:inline-block;margin-right:.6rem;font:400 .95rem system-ui,sans-serif;color:var(--soft);font-variant-numeric:tabular-nums}
+.lede{color:var(--soft);margin:.2rem 0 0}
+p{margin:.7rem 0}
+img{max-width:100%;height:auto}
+.img-thumbnail{display:block;border:1px solid var(--rule);border-radius:4px;background:var(--tint);padding:3px}
+.btn{display:inline-block;font:inherit;font-size:.85rem;line-height:1.4;padding:.05rem .6rem;margin:.1rem 0;color:var(--link);background:transparent;border:1px solid var(--link);border-radius:4px;text-decoration:none;cursor:pointer}
+.btn:hover{background:var(--link);color:var(--bg)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:1rem;margin:1rem 0}
+.note{margin:1.2rem 0;padding:.2rem 1rem;border-left:3px solid var(--link);background:var(--tint)}
+pre,tt,code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{font-size:.82rem;line-height:1.45;background:var(--tint);border:1px solid var(--rule);border-radius:4px;padding:.8rem 1rem;overflow-x:auto;color:var(--ink)}
+tt{font-size:.9em}
+.pre-scrollable{max-height:18rem;overflow:auto;border:1px solid var(--rule);border-radius:4px;padding:.5rem 1rem}
+table td{vertical-align:top;padding:.3rem .8rem .3rem 0}
+@media (max-width:820px){
+ .wrap{display:block;padding:2rem 1.25rem 4rem}
+ .side{position:static;max-height:none;margin-bottom:2rem}
+ .side .list{display:flex;flex-wrap:wrap;gap:.2rem 1.1rem}
+}
+</style>
   </head>
 
   <body role="document">
 
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">james-irwin@github</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-    <div class="container theme-showcase" role="main">
-
-      <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h1>Somewhere to keep ...</h1>
-        <p>things I do while learning.</p>
-      </div>
-
+    <div class="wrap">
+<aside class="side">
+<a class="name" href="index.html">James Irwin</a>
+<a class="back" href="index.html">Back to home</a>
+<nav class="list" aria-label="Projects"><a href="#hansard-blurter">Hansard Blurter</a><a href="#backwell">Markov poetry</a><a href="#JIRA">The graph JIRA didn't offer</a><a href="#fsaredo">Food ratings, dynamic</a><a href="#anhourfromhere">An hour from here</a><a href="#fitness">Fitness data</a><a href="#mot-dash">MOT test dashboard</a><a href="#prescriptiontrends">Prescription trends</a><a href="#prescription">Top drug writers</a><a href="#word-pairs">Stylometry</a><a href="#enronmail">Enron email</a><a href="#fsamap">Food ratings, static</a><a href="#contact">Contact</a></nav>
+</aside>
+<main role="main">
+<header>
+<h1>Projects</h1>
+<p class="lede">Things I did while learning, newest first. Each links to a live demo, the data and the code where they still exist.</p>
+</header>
 <div id="hansard-blurter"> </div>
-  <div class="page-header">
-    <h1>[2018] Removing the human: Generative text.</h1>
-  </div>
+  <h2 class="proj"><span class="yr">2018</span>Removing the human: Generative text.</h2>
 <div class="pre-scrollable" id="hansard-tweets">
 </div>
 <script>
@@ -88,7 +88,7 @@ var tweetElt=document.getElementById('hansard-tweets');
 var tweet=function(e, t){
   e.innerHTML+='<table><tr><td><a href="https://twitter.com/BlurterHansard"><img src="thumbs/hansard-avatar.jpg"></a></td><td>' +
                '<a href="https://twitter.com/BlurterHansard"><strong>Hansard Blurter</strong> @BlurterHansard</a><br>' +
-                 t + '<br><img src="thumbs/twitter-footer.png" width=250px></td></tr></table><hr>';
+                 t + '<br><img src="thumbs/twitter-footer.png"></td></tr></table><hr>';
 }
 
 for (t in tweets) {
@@ -99,18 +99,18 @@ for (t in tweets) {
   <div>
   <p>Why wait for human input when you can just use Math.random()?
   </p>
-  <p><a class="btn btn-primary" href="https://twitter.com/BlurterHansard" role="button">Site</a>
+  <p><a class="btn" href="https://twitter.com/BlurterHansard">Site</a>
         Hansard Blurter Twitter account, generating from the 1800 Hansard input.
   </p>
 
-  <p><a class="btn btn-primary" href="blurt-a-thon/bleurgh.html" role="button">Site</a>
+  <p><a class="btn" href="blurt-a-thon/bleurgh.html">Site</a>
         A sample of generated blurts from the 1981-2004 Hansard data.
   </p>
 
-  <p><a href="http://www.hansard-archive.parliament.uk/Parliamentary_Debates_Vol_1_(1803)_to_Vol_41_(Feb_1820)"><button type="button" class="btn btn-info">Data</button></a>
+  <p><a class="btn" href="http://www.hansard-archive.parliament.uk/Parliamentary_Debates_Vol_1_(1803)_to_Vol_41_(Feb_1820)">Data</a>
    Hansard records.
   </p>
-  <p><a href="https://gist.github.com/james-irwin/3d3755127b5de1d4ea52453f9bb1db97"><button type="button" class="btn btn-success">Code</button></a>
+  <p><a class="btn" href="https://gist.github.com/james-irwin/3d3755127b5de1d4ea52453f9bb1db97">Code</a>
    Generator.
   </div>
   <div>
@@ -144,7 +144,7 @@ var closes={"may have":["brutal results.", "won again."],
   the 13M+ line set from 1981-2004 worked on an 8Gb
   Mac but blew up from the naive implementation on a Raspberry Pi.
   </p>
-<div class="alert alert-danger" role="alert">
+<div class="note">
     <tt>read((int) fd, (void *)buff, (size_t) size)</tt> [in C] fails to read more than 2^32-1
     bytes in one chunk though <tt>sizeof(size_t)</tt>
     is eight bytes. A file-system-developer friend asked for
@@ -170,20 +170,18 @@ var closes={"may have":["brutal results.", "won again."],
      <!-- END OF hansard-blurter-->
 
 <div id="backwell"> </div>
-  <div class="page-header">
-    <h1>[2018] Clandestine fun through Markov chains</h1>
-  </div>
+  <h2 class="proj"><span class="yr">2018</span>Clandestine fun through Markov chains</h2>
   <a href="Backwell/consumer.html"><img src="thumbs/Backwell.png" class="img-thumbnail" alt="Poetry coroner"></a>
   <div>
   <p>Constraints spark creativity.
   </p>
-  <p><a class="btn btn-primary" href="Backwell/consumer.html" role="button">Site</a>
+  <p><a class="btn" href="Backwell/consumer.html">Site</a>
         I was born ... <i>Romeo and Juliet</i> style.
   </p>
-  <p><a href="http://www.gutenberg.org/files/1112/1112.txt"><button type="button" class="btn btn-info">Data</button></a>
+  <p><a class="btn" href="https://www.gutenberg.org/ebooks/1513">Data</a>
    Shakespeare's Romeo &amp; Juliet hosted at Project Gutenberg.
   </p>
-  <p><a href="https://gist.github.com/james-irwin/4dd88550a3faa50390b9854e0a5a37e0"><button type="button" class="btn btn-success">Code</button></a>
+  <p><a class="btn" href="https://gist.github.com/james-irwin/4dd88550a3faa50390b9854e0a5a37e0">Code</a>
    Word pair collapser.
   </p>
   </div>
@@ -194,7 +192,7 @@ var closes={"may have":["brutal results.", "won again."],
     is a predictive text engine to build on, with enough to start showing
     the fun you can have applying the result.
   </p>
-  <p>Starting again, with <a href="http://www.gutenberg.org/files/1112/1112.txt">Romeo
+  <p>Starting again, with <a href="https://www.gutenberg.org/ebooks/1513">Romeo
      and Juliet</a> (in <tt>RandJ.txt</tt>) we build the dictionary of possible
     following words for a given lead word. This time we did it all at the command
     line. No <a href="http://scikit-learn.org/stable/">scikit-learn</a> or
@@ -312,27 +310,25 @@ var step = function(w) {
 frequency in the text, and with the most likely famous in last place:
 </p>
 <p>
-<button type="button" class="btn btn-primary" onclick="generate_suggester_buttons('weep', buttonElement, messageElement);">weep</button> <button type="button" class="btn btn-primary" onclick="generate_suggester_buttons('villain', buttonElement, messageElement);">villain</button> <button type="button" class="btn btn-primary" onclick="generate_suggester_buttons('the', buttonElement, messageElement);">the</button> <button type="button" class="btn btn-primary" onclick="generate_suggester_buttons('storm', buttonElement, messageElement);">storm</button> <button type="button" class="btn btn-primary" onclick="generate_suggester_buttons('art', buttonElement, messageElement);">art</button>
+<button type="button" class="btn" onclick="generate_suggester_buttons('weep', buttonElement, messageElement);">weep</button> <button type="button" class="btn" onclick="generate_suggester_buttons('villain', buttonElement, messageElement);">villain</button> <button type="button" class="btn" onclick="generate_suggester_buttons('the', buttonElement, messageElement);">the</button> <button type="button" class="btn" onclick="generate_suggester_buttons('storm', buttonElement, messageElement);">storm</button> <button type="button" class="btn" onclick="generate_suggester_buttons('art', buttonElement, messageElement);">art</button>
 </div>
 
      <!-- END OF backwell-->
 
 
 <div id="JIRA"> </div>
-  <div class="page-header">
-    <h1>[2018] The graph JIRA didn't offer</h1>
-  </div>
+  <h2 class="proj"><span class="yr">2018</span>The graph JIRA didn't offer</h2>
   <a href="JIRA/performance.html"><img src="https://james-irwin.github.io/thumbs/JIRA.png" class="img-thumbnail" alt="The same tickets going into build over and over."></a>
   <div>
   <p>Tickets going back into build over time.
   </p>
-  <p><a class="btn btn-primary" href="JIRA/performance.html" role="button">Site</a>
+  <p><a class="btn" href="JIRA/performance.html">Site</a>
         Three projects measured.
   </p>
-  <p><a href="https://developer.atlassian.com/cloud/jira/platform/rest/#about"><button type="button" class="btn btn-info">Data</button></a>
+  <p><a class="btn" href="https://developer.atlassian.com/cloud/jira/platform/rest/#about">Data</a>
    JIRA REST API
   </p>
-  <p><a href="http://www.github.com/james-irwin/JIRA/"><button type="button" class="btn btn-success">Code</button></a>
+  <p><a class="btn" href="http://www.github.com/james-irwin/JIRA/">Code</a>
    Shell scripts to pull on JIRA API and filter for analysis.
   </p>
   </div>
@@ -409,22 +405,20 @@ D-47 Test to Build pushbacks:2
 
 
 <div id="fsaredo"> </div>
-  <div class="page-header">
-    <h1>[2018] Returning to the Food Standards Agency</h1>
-  </div>
+  <h2 class="proj"><span class="yr">2018</span>Returning to the Food Standards Agency</h2>
   <a href="https://morning-harbor-24616.herokuapp.com/"><img src="thumbs/FSADynamicVsStatic.png" class="img-thumbnail" alt="Pinning Food Standards Agency ratings again."></a>
   <div>
     <p>Map boundaries (left) rather than county boundaries (right) define what
        ratings are pinned to the map.</p>
     <p>
-      <a class="btn btn-primary" href="https://morning-harbor-24616.herokuapp.com/" role="button">Site</a>
+      <a class="btn" href="https://morning-harbor-24616.herokuapp.com/">Site</a>
         [Deadlink] Heroku hosted Javascript app.
     </p>
-    <p><a href="http://api.ratings.food.gov.uk/help"/><button type="button" class="btn btn-info">Data</button></a>
+    <p><a class="btn" href="http://api.ratings.food.gov.uk/help">Data</a>
      Food Standards Agency API
      </p>
      <p>
-     <a href="http://www.github.com/james-irwin/dynamic-fsamap/"><button type="button" class="btn btn-success">Code</button></a>
+     <a class="btn" href="http://www.github.com/james-irwin/dynamic-fsamap/">Code</a>
     JavaScript to generate dynamic set over Google's mapping API.
     </p>
     </div>
@@ -588,29 +582,27 @@ the first page with <i>$meta.totalCount</i> items per page</p>
 
 
 <div id="anhourfromhere"> </div>
-  <div class="page-header">
-    <h1>[2017] Getaway driving</h1>
-  </div>
-  <div class="container">
+  <h2 class="proj"><span class="yr">2017</span>Getaway driving</h2>
+  <div>
     <div class="row">
-      <div class="col-md-6">
+      <div>
         <p>
           <a href="anhourfromhere/AnHourHeatmap.html"><img src="thumbs/AnHourFromHereUK.png" class="img-thumbnail" alt="Google heatmap of driving distance."></a>
         </p>
         <p>
-          <a class="btn btn-primary" href="anhourfromhere/AnHourHeatmap.html" role="button">Site</a> Pseudo driving distance via a heatmap in Google maps</p>
-    <p><a href="anhourfromhere/fullMap.js"/><button type="button" class="btn btn-info">Data</button></a>
+          <a class="btn" href="anhourfromhere/AnHourHeatmap.html">Site</a> Pseudo driving distance via a heatmap in Google maps</p>
+    <p><a class="btn" href="anhourfromhere/fullMap.js">Data</a>
      Weighted heatmap points for a Google map.
      </p>
      </div>
-     <div class="col-md-6">
+     <div>
        <p>
          <a href="anhourfromhere/AnHourContour.html"><img src="thumbs/AnHourFromHerePlotly.png" class="img-thumbnail" alt="Plotly contour map of driving distance."></a>
        </p>
        <p>
-         <a class="btn btn-primary" href="anhourfromhere/AnHourContour.html" role="button">Site</a> Half hour dragnet boundaries with a contour map
+         <a class="btn" href="anhourfromhere/AnHourContour.html">Site</a> Half hour dragnet boundaries with a contour map
        </p>
-    <p><a href="anhourfromhere/ContourData.js"/><button type="button" class="btn btn-info">Data</button></a>
+    <p><a class="btn" href="anhourfromhere/ContourData.js">Data</a>
      Matrix input for Plot.ly
      </p>
      </div>
@@ -661,7 +653,7 @@ the first page with <i>$meta.totalCount</i> items per page</p>
        <p>
          There's a fair bit of Scotland without enough postcodes to request a
          route. You can see the data grid by zooming in on the google heatmap.
-         <div class="alert alert-success" role="alert">
+         <div class="note">
            I caught myself before thinking routing was trivially linear, making
            corresponding contour (<i>dragnet</i>)  maps from any data point by
            just using deltas. Or trying to compensate and generating a data set
@@ -679,21 +671,21 @@ the first page with <i>$meta.totalCount</i> items per page</p>
          is below:
        </p>
 
-  <div class="container">
+  <div>
     <div class="row">
-      <div class="col-md-4">
+      <div>
         <p>
-          <img src="thumbs/AnHourKibana.png" class="img-thumbnail" alt="Google heatmap of driving distance.">
+          <img src="thumbs/AnHourKibana.png" class="img-thumbnail" alt="Kibana map of drive times, one hour out">
         </p>
       </div>
-      <div class="col-md-4">
+      <div>
         <p>
-          <img src="thumbs/ASecondHourKibana.png" class="img-thumbnail" alt="Google heatmap of driving distance.">
+          <img src="thumbs/ASecondHourKibana.png" class="img-thumbnail" alt="Kibana map of drive times, two hours out">
         </p>
       </div>
-      <div class="col-md-4">
+      <div>
         <p>
-          <img src="thumbs/AThirdHourKibana.png" class="img-thumbnail" alt="Google heatmap of driving distance.">
+          <img src="thumbs/AThirdHourKibana.png" class="img-thumbnail" alt="Kibana map of drive times, three hours out">
         </p>
       </div>
 
@@ -710,9 +702,7 @@ the first page with <i>$meta.totalCount</i> items per page</p>
 
 
 <div id="fitness"> </div>
-      <div class="page-header">
-          <h1>[2017] Fitness data</h1>
-      </div>
+      <h2 class="proj"><span class="yr">2017</span>Fitness data</h2>
         <a href="#contact"><img src="thumbs/HeartRateHeatMap.png" class="img-thumbnail" alt="Kibana geo-heatmap of my heartrate around Bristol."></a>
 <div>
     <p>Heart rate nice and low on the train but walking to the park and ride,
@@ -720,7 +710,7 @@ the first page with <i>$meta.totalCount</i> items per page</p>
        looks like a terrain proxy.
     </p>
     <p>
-        <a href="http://www.github.com/james-irwin/fitness/"><button type="button" class="btn btn-success">Code</button></a> Python &amp; Javascript to ETL Garmin or Strava files into Elasticsearch.
+        <a class="btn" href="http://www.github.com/james-irwin/fitness/">Code</a> Python &amp; Javascript to ETL Garmin or Strava files into Elasticsearch.
     </p>
 </div>
 
@@ -765,21 +755,20 @@ the first page with <i>$meta.totalCount</i> items per page</p>
     </p>
     <a href="#contact"><img src="thumbs/SecsOver1mFor100m.png" class="img-thumbnail"     alt="Baseline swim speed"></a>
 
+</div>
       <!-- END OF fitness dash -->
 <div id="mot-dash"> </div>
-      <div class="page-header">
-          <h1>[2016] Vehicle test result dashboard</h1>
-      </div>
+      <h2 class="proj"><span class="yr">2016</span>Vehicle test result dashboard</h2>
         <a href="#contact"><img src="thumbs/NewDash.Final.png" class="img-thumbnail" alt="Kibana dashboard of 36m MOT tests."></a>
 <div>
     <p>I didn't know the average vehicle was over nine-years old on the day it
        was put in for its MOT.
     </p>
     <p>
-        <a href="http://www.github.com/james-irwin/mot-dash/"><button type="button" class="btn btn-success">Code</button></a> Python to ETL the CSV files into Elasticsearch.
+        <a class="btn" href="http://www.github.com/james-irwin/mot-dash/">Code</a> Python to ETL the CSV files into Elasticsearch.
     </p>
     <p>
-    <a href="https://data.gov.uk/dataset/anonymised_mot_test"><button type="button" class="btn btn-info">Data</button></a> Anonymised MOT test data.
+    <a class="btn" href="https://data.gov.uk/dataset/anonymised_mot_test">Data</a> Anonymised MOT test data.
     </p>
 </div>
 
@@ -845,12 +834,11 @@ operationally critical as I was able to see when developing the dashboard and
 loading the 36m rows simultaneously.
 </p>
 
+</div>
       <!-- END OF MOT dash -->
 
 <div id="prescriptiontrends"> </div>
-      <div class="page-header">
-          <h1>[2016] Prescription trends</h1>
-      </div>
+      <h2 class="proj"><span class="yr">2016</span>Prescription trends</h2>
         <a href="http://james-irwin.github.io/prescriptions/practicehabits.html"><img src="thumbs/prescriptionslope.png" class="img-thumbnail" alt="League table for prescribed drugs"></a>
 <div>
 <p>
@@ -867,9 +855,7 @@ prescribed quantity show relative positions rather than relative volume.
 </p>
 </div>
 <div id="prescription"> </div>
-      <div class="page-header">
-          <h1>[2016] Top drug writers</h1>
-      </div>
+      <h2 class="proj"><span class="yr">2016</span>Top drug writers</h2>
         <a href="http://james-irwin.github.io/prescriptions/medicinehub.html"><img src="thumbs/prescriptions.png" class="img-thumbnail" alt="Where are the popular spots for writing diazepam?"></a>
 <div>
 <p>
@@ -877,13 +863,13 @@ Is the surgery opposite the watersports park still the top place for dispensing
 entonox? What are we mostly medicating prisoners with?
 </p>
 <p>
-        <a href="http://james-irwin.github.io/prescriptions/medicinehub.html"><button type="button" class="btn btn-primary">Site</button></a> Look at which practice/pharmacy writes the most of a given drug.
+        <a class="btn" href="http://james-irwin.github.io/prescriptions/medicinehub.html">Site</a> Look at which practice/pharmacy writes the most of a given drug.
     </p>
     <p>
-        <a href="http://www.github.com/james-irwin/prescriptions/"><button type="button" class="btn btn-success">Code</button></a> JavaScript to aggregate records loaded into Elastic Search.
+        <a class="btn" href="http://www.github.com/james-irwin/prescriptions/">Code</a> JavaScript to aggregate records loaded into Elastic Search.
     </p>
     <p>
-    <a href="http://www.hscic.gov.uk/searchcatalogue?q=title:%22presentation+level+data%22&area=&size=10&sort=Relevance"><button type="button" class="btn btn-info">Data</button></a> Monthly prescription data.
+    <a class="btn" href="http://www.hscic.gov.uk/searchcatalogue?q=title:%22presentation+level+data%22&area=&size=10&sort=Relevance">Data</a> Monthly prescription data.
     </p>
 </div>
 
@@ -960,22 +946,20 @@ serving.
 </div>
 
 <div id="word-pairs"> </div>
-      <div class="page-header">
-          <h1>[2015] Stylometry &amp; stylo-sympathy</h1>
-      </div>
+      <h2 class="proj"><span class="yr">2015</span>Stylometry &amp; stylo-sympathy</h2>
         <a href="http://james-irwin.github.io/word-pairs/"><img src="thumbs/word-pairs.png" class="img-thumbnail" alt="Write-like and style-comparison of texts."></a>
 <div>
     <p>
         I wondered how real stylometry might be and, better than that, could a machine help me write sympathetically in a given style? It arose from wondering about simultaneous multiple auto-suggest feeds and <a href="https://www.washingtonpost.com/world/national-security/code-name-verax-snowden-in-exchanges-with-post-reporter-made-clear-he-knew-risks/2013/06/09/c9a25b54-d14c-11e2-9f1a-1a7cdee20287_story.html">the request to not be quoted at length</a>.
     </p>
 <p>
-        <a href="http://james-irwin.github.io/word-pairs/"><button type="button" class="btn btn-primary">Site</button></a> Write-like a few classics and compare them too.
+        <a class="btn" href="http://james-irwin.github.io/word-pairs/">Site</a> Write-like a few classics and compare them too.
     </p>
     <p>
-        <a href="http://www.github.com/james-irwin/word-pairs/"><button type="button" class="btn btn-success">Code</button></a> JavaScript to generate word-distribution distillates; compare them and consume them.
+        <a class="btn" href="http://www.github.com/james-irwin/word-pairs/">Code</a> JavaScript to generate word-distribution distillates; compare them and consume them.
     </p>
     <p>
-    <a href="http://www.gutenberg.org"><button type="button" class="btn btn-info">Data</button></a> Project Gutenburg.
+    <a class="btn" href="http://www.gutenberg.org">Data</a> Project Gutenburg.
     </p>
 </div>
 
@@ -1006,7 +990,7 @@ residue = ["word_1": ["following_word_1.1", "following_word_1.2", ... ],
         Where the words in the structure above are frequency sorted. I dropped the occurence
         counts for precise distributions and assumed a common (power-) curve for simplicity.
     </p>
-    <div class="alert alert-warning" role="alert">
+    <div class="note">
     I was, as with the previous experiments, trying to keep learning JavaScript but it made no
     sense if I could do the grunt work by piping together a few binutils classics. The
     JavaScript step in this turns the text into word-pairs (or word --&gt;
@@ -1027,7 +1011,7 @@ residue = ["word_1": ["following_word_1.1", "following_word_1.2", ... ],
     Using a simple probability distributon function to pick the <i>next word</i>, iterated a
     few times and while I typed, a satisfactory prompt came from the suggester.
 </p>
-    <div class="alert alert-danger" role="alert">
+    <div class="note">
     Single-word based Markov chains read badly so I switched the distiller to produce
     following word pairs. Iterating <i>"word": ["word-pair_1", "word-pair_2", ...]</i>
     read much easier and is used on the <a href="http://james-irwin.github.io/word-pairs/">page</a>
@@ -1050,22 +1034,20 @@ properly -- I used a three dimensional metric that I could bubble-chart using
 </div>
 
 <div id="enronmail"> </div>
-      <div class="page-header">
-          <h1>[2015] Sankey diagrams of Enron email via Elasticsearch</h1>
-      </div>
+      <h2 class="proj"><span class="yr">2015</span>Sankey diagrams of Enron email via Elasticsearch</h2>
         <a href="http://james-irwin.github.io/enron/"><img src="thumbs/enron.even.png" class="img-thumbnail" alt="Enron mail analytics."></a>
 <div>
     <p>
         An excuse to draw Sankey diagrams and learn to do aggregations in Elasticsearch. The Enron mail corpus fit and was plenty less trendy than twitter/facebook feeds. Check out <a href="http://james-irwin.github.io/enron/vince.kaminski.batwings.html">Vince Kaminski</a> (an objector to the practices with a fat cc: pipe to himself outside of Enron) or <a href="http://james-irwin.github.io/enron/rosalee.fleming.batwings.html">Rosalee Flemming</a> (Ken Lay's assistant, a broadcast beacon to the top brass).
     </p>
 <p>
-        <a href="http://james-irwin.github.io/enron/"><button type="button" class="btn btn-primary">Site</button></a> Sankey diagrams (with clickable fudge).
+        <a class="btn" href="http://james-irwin.github.io/enron/">Site</a> Sankey diagrams (with clickable fudge).
     </p>
     <p>
-        <a href="http://www.github.com/james-irwin/enronsankey/"><button type="button" class="btn btn-success">Code</button></a> JavaScript to generate Sankey diagrams from aggregates collected from Elasticsearch.
+        <a class="btn" href="http://www.github.com/james-irwin/enronsankey/">Code</a> JavaScript to generate Sankey diagrams from aggregates collected from Elasticsearch.
     </p>
     <p>
-    <a href="https://www.cs.cmu.edu/~./enron/"><button type="button" class="btn btn-info">Data</button></a> Enron email corpus.
+    <a class="btn" href="https://www.cs.cmu.edu/~./enron/">Data</a> Enron email corpus.
     </p>
 </div>
 
@@ -1076,7 +1058,7 @@ properly -- I used a three dimensional metric that I could bubble-chart using
     <p>
     <pre>node mail.to.es.js .../enron/enron_mail_20110402/maildir/crandell-s/inbox/2. </pre>
     </p>
-    <div class="alert alert-danger" role="alert">
+    <div class="note">
     That took half a second to load the single mbox-format mail and generate forty-one documents in Elasticsearch (a sample with a long <i>To:</i> list). With half a million files the machine was left running while I floored the loft over a weekend. There's a lot of fat left on that pork chop to speed it up. In the end there are 3.1m documents in the Elasticsearch index.
     </div>
     <p>
@@ -1098,7 +1080,7 @@ SELECT 'TO', COUNT(*) AS C WHERE 'FROM'='mike.mcconnell' FROM ENRONMAIL GROUP BY
     totaling 1826 names to then batch run the lot. Sankeyfying for those names took
     2mins 12secs. That's fast enough to do on demand.
     </p>
-    <div class="alert alert-success" role="alert">
+    <div class="note">
     Since these little bowtie Sankey diagrams take less than a tenth of a second each,
     I want to dial it up a step and go out one branch farther. To have a
     <i>from:from</i> feed into the <i>from</i> left hand side and the mirror
@@ -1124,9 +1106,7 @@ SELECT 'TO', COUNT(*) AS C WHERE 'FROM'='mike.mcconnell' FROM ENRONMAIL GROUP BY
       <!-- END OF ELSATIC/ENRON -->
 
 <div id="fsamap"> </div>
-      <div class="page-header">
-          <h1>[2015] JavaScript via the Food Standards Agency</h1>
-      </div>
+      <h2 class="proj"><span class="yr">2015</span>JavaScript via the Food Standards Agency</h2>
         <a href="http://james-irwin.github.io/fsa/"><img src="thumbs/fsa.png" class="img-thumbnail" alt="Food Standards Agency inspection ratings pinned over a Google map."></a>
 <div>
     <p>
@@ -1135,15 +1115,15 @@ SELECT 'TO', COUNT(*) AS C WHERE 'FROM'='mike.mcconnell' FROM ENRONMAIL GROUP BY
     until I thought I had enough to start something in anger.
     </p>
     <p>
-    <a href="http://james-irwin.github.io/fsa/"><button type="button" class="btn btn-primary">Site</button></a>
+    <a class="btn" href="http://james-irwin.github.io/fsa/">Site</a>
     FSA inspection ratings gathered by county pinned over Google's map.
     </p>
     <p>
-    <a href="http://www.github.com/james-irwin/fsamap/"><button type="button" class="btn btn-success">Code</button></a>
+    <a class="btn" href="http://www.github.com/james-irwin/fsamap/">Code</a>
     JavaScript to generate static HTML set over Google's mapping API.
     </p>
     <p>
-    <a href="http://ratings.food.gov.uk/open-data/en-GB"><button type="button" class="btn btn-info">Data</button></a> Food Standards Agency inspection ratings data.
+    <a class="btn" href="http://ratings.food.gov.uk/open-data/en-GB">Data</a> Food Standards Agency inspection ratings data.
     </p>
 </div>
 <div>
@@ -1163,7 +1143,7 @@ I wanted all the data, and it comes in XML and JSON options. Curl it in batches 
     <a href="https://github.com/james-irwin/fsamap/tree/master/examples">HTML output</a>
     for just the first 5000 elements.
 
-<div class="alert alert-danger" role="alert">
+<div class="note">
     Mushing all the FSA inspection data into one large JSON file totals
     <strong>346Mb</strong>! Throwing away most of that to just pin the location,
     the rating and the name will make a single file in the tens of megabytes range.
@@ -1191,7 +1171,7 @@ var parser = xml2js.Parser();
 parser.parseString(data, function (err, result) {...
 </pre>
 The inspection set for this county (loaded into <tt>data</tt> via <tt>fs.readFile()</tt>) is now navigable as a JavaScript object.
-<div class="alert alert-danger" role="alert">
+<div class="note">
     Parsing 406 xml files to put a few thousand pins for the county you're interested in
     plus 405 <em>jump</em>-pins at appropriate places on the map takes over
     <strong>three minutes!</strong> on my 2014 MacBook Pro. Scaling that even with the
@@ -1200,7 +1180,7 @@ The inspection set for this county (loaded into <tt>data</tt> via <tt>fs.readFil
     I had overnight to let it run rather than do a smarter thing and cache the 406
     <em>jump</em>-pins. Then I realised I needed something better anyway...</div>
 
-<div class="alert alert-danger" role="alert">
+<div class="note">
     A dozen or so maps wouldn't load, the error console bemoaning
     <strong>RangeError: Maximum call stack size exceeded</strong>. Thinking about it,
     turned out it was because I was simply emitting all the inspections and using
@@ -1215,31 +1195,22 @@ The inspection set for this county (loaded into <tt>data</tt> via <tt>fs.readFil
     <tt>xml2js::parser.parseString()</tt> function and exchanged the <tt>xml</tt>
     parser call to a <tt>JSON</tt> parser call (<tt>JSON.parse(data)</tt>). Took
     only a couple of minutes.
-<div class="alert alert-success" role="alert">
+<div class="note">
     Two wins: Firstly, three minutes per county <tt>xml</tt> turned into
     <strong>seven seconds</strong> per county <tt>JSON</tt> (less than half
     an hour to do the lot now) and secondly, skipping inspections that have otherwise
     <tt>undefined</tt> lat/long data made the browser come alive and all the counties
     I tried worked.</div>
     </p>
-<div class="page-header" id="contact">
-    <h1>Contact</h1>
-</div>
+<h2 class="proj" id="contact">Contact</h2>
 <div class="row">
-    <div class="col-sm-4">
+    <div>
         <a href="https://www.linkedin.com/in/james--irwin/"><img src="thumbs/Logo-2C-34px-R.png" class="img-thumbnail" alt="LinkedIn profile for James Irwin."></a>
         <a href="http://www.github.com/james-irwin/"><img src="thumbs/GitHub_Logo.png" class="img-thumbnail" alt="GitHub for James Irwin."></a>
 
     </div><!-- /.col-sm-4 -->
 </div>
-      </div>
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="dist/js/bootstrap.min.js"></script>
-</script>
+</main>
+</div>
   </body>
 </html>
