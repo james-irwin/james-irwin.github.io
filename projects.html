@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="Write-ups of data and engineering projects by James Irwin, 2015 to 2018.">
+    <meta name="description" content="Side projects by James Irwin, 2015 to 2026: data, visualisation and engineering experiments.">
     <meta name="author" content="James Irwin">
     <link rel="icon" href="../../favicon.ico">
 
@@ -58,13 +58,23 @@ table td{vertical-align:top;padding:.3rem .8rem .3rem 0}
 <aside class="side">
 <a class="name" href="index.html">James Irwin</a>
 <a class="back" href="index.html">Back to home</a>
-<nav class="list" aria-label="Projects"><a href="#hansard-blurter">Hansard Blurter</a><a href="#backwell">Markov poetry</a><a href="#JIRA">The graph JIRA didn't offer</a><a href="#fsaredo">Food ratings, dynamic</a><a href="#anhourfromhere">An hour from here</a><a href="#fitness">Fitness data</a><a href="#mot-dash">MOT test dashboard</a><a href="#prescriptiontrends">Prescription trends</a><a href="#prescription">Top drug writers</a><a href="#word-pairs">Stylometry</a><a href="#enronmail">Enron email</a><a href="#fsamap">Food ratings, static</a><a href="#contact">Contact</a></nav>
+<nav class="list" aria-label="Projects"><a href="#tribunal-search">Tribunal search</a><a href="#hansard-blurter">Hansard Blurter</a><a href="#backwell">Markov poetry</a><a href="#JIRA">The graph JIRA didn't offer</a><a href="#fsaredo">Food ratings, dynamic</a><a href="#anhourfromhere">An hour from here</a><a href="#fitness">Fitness data</a><a href="#mot-dash">MOT test dashboard</a><a href="#prescriptiontrends">Prescription trends</a><a href="#prescription">Top drug writers</a><a href="#word-pairs">Stylometry</a><a href="#enronmail">Enron email</a><a href="#fsamap">Food ratings, static</a><a href="#contact">Contact</a></nav>
 </aside>
 <main role="main">
 <header>
 <h1>Projects</h1>
-<p class="lede">Things I did while learning, newest first. Each links to a live demo, the data and the code where they still exist.</p>
+<p class="lede">Side projects from following my curiosity, newest first. Each links to a live demo, the data and the code where they still exist.</p>
 </header>
+<div id="tribunal-search"> </div>
+<h2 class="proj"><span class="yr">2026</span>Tribunal search</h2>
+<p>Search-as-you-type across about 160,000 Employment Tribunal and Employment Appeal Tribunal decisions. Every result is a published judgment, so nothing is invented. I built it while studying law, and following the questions it raised led to the <a href="writing/unexpected_consequences.pdf">article on Restriction of Proceedings Orders</a>.</p>
+<p><img src="thumbs/tribunal-search.png" class="img-thumbnail" alt="Tribunal search results for the query ethical veganism: 503 hits, each with category tags, highlighted snippets, the decision date, word counts and an automatically classified claimant result"></p>
+<p class="meta">Searching for &ldquo;ethical veganism&rdquo;. The open menu at top right is the bundle.</p>
+<p><strong>Outcome labels.</strong> Each decision carries a claimant outcome (successful or well founded, withdrawn, not well founded or dismissed, and so on) with a confidence figure. These are classifier output, not a legal reading, and I am improving them over time. More fields are planned, such as whether a judgment is a default for no response from the respondent.</p>
+<p><strong>Bundles.</strong> Cases can be gathered while searching and exported with the case name, categories, date, the search term that found them and links to the judgments, so research can continue elsewhere with the trail intact.</p>
+<p><img src="thumbs/tribunal-bundle.png" class="img-thumbnail" alt="A spreadsheet of an exported bundle: case, categories, date, search term, document links with outcomes and word counts"></p>
+<p class="meta">Built on Elasticsearch, with a single-page app in JavaScript and a small Node script behind it. Contains public sector information licensed under the Open Government Licence v3.0.</p>
+
 <div id="hansard-blurter"> </div>
   <h2 class="proj"><span class="yr">2018</span>Removing the human: Generative text.</h2>
 <div class="pre-scrollable" id="hansard-tweets">
