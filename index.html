@@ -61,7 +61,7 @@
 
 <div id="hansard-blurter"> </div>
   <div class="page-header">
-    <h1>Removing the human: Generative text.</h1>
+    <h1>[2018] Removing the human: Generative text.</h1>
   </div>
 <div class="pre-scrollable" id="hansard-tweets">
 </div>
@@ -115,7 +115,7 @@ for (t in tweets) {
   </div>
   <div>
   <p>
-  With all the machine leraning and artifical inteligence
+  With all the machine learning and artificial intelligence
   hype, why not just take the final step from
   <a href="#word-pairs">stylometry</a> and
   <a href="#backwell">chain-following</a>? Generate the seed
@@ -124,7 +124,7 @@ for (t in tweets) {
   <p>
      We pick a sentence to tweet from a random starting point, an
      arbitrary number of continuations, and an end-of-sentence
-     where overlaps key the transtitions. <tt>opens</tt> is
+     where overlaps key the transitions. <tt>opens</tt> is
      simply an array, the others (<tt>middles</tt> and <tt>closes</tt>)
      are dictionaries keyed by
      the tail word-pair of the tweet-thus-far.
@@ -142,7 +142,7 @@ var closes={"may have":["brutal results.", "won again."],
   The data sets gathered were small to begin with, a handful
   or records from the early 1800s (150,000+ approximate sentences). Latterly,
   the 13M+ line set from 1981-2004 worked on an 8Gb
-  Mac but blew up from the naive implementation on a Rasberry Pi.
+  Mac but blew up from the naive implementation on a Raspberry Pi.
   </p>
 <div class="alert alert-danger" role="alert">
     <tt>read((int) fd, (void *)buff, (size_t) size)</tt> [in C] fails to read more than 2^32-1
@@ -165,26 +165,13 @@ var closes={"may have":["brutal results.", "won again."],
   tenuously related to today's politics burp form the
   machine.
   </p>
-<div class="alert alert-danger" role="alert">
-  When you create your Twitter account for publishing, avoid
-  the trap I fell into: Set up the basics, send the first tweet, fill in a
-  synthetic profile, set the date of birth to <i>today's date</i> and then get immediately locked out because you just said you were less than 13 years old.
-  Over the next day or two trade emails with Twitter support
-  resisting their requests
-  for a government issued photo ID, instead invoking the
-  GDPR right to be forgotten (abandon!) to completely remove
-  the account and start over. Be advised that Twitter want
-  government issued photo ID to do that step too. ARGH.
-<br><br>
-  Make a second account. Have them born in 1951.
-</div>
 </div>
 
      <!-- END OF hansard-blurter-->
 
 <div id="backwell"> </div>
   <div class="page-header">
-    <h1>Clandestine fun through Markov chains</h1>
+    <h1>[2018] Clandestine fun through Markov chains</h1>
   </div>
   <a href="Backwell/consumer.html"><img src="thumbs/Backwell.png" class="img-thumbnail" alt="Poetry coroner"></a>
   <div>
@@ -333,7 +320,7 @@ frequency in the text, and with the most likely famous in last place:
 
 <div id="JIRA"> </div>
   <div class="page-header">
-    <h1>The graph JIRA didn't offer</h1>
+    <h1>[2018] The graph JIRA didn't offer</h1>
   </div>
   <a href="JIRA/performance.html"><img src="https://james-irwin.github.io/thumbs/JIRA.png" class="img-thumbnail" alt="The same tickets going into build over and over."></a>
   <div>
@@ -423,7 +410,7 @@ D-47 Test to Build pushbacks:2
 
 <div id="fsaredo"> </div>
   <div class="page-header">
-    <h1>Returning to the Food Standards Agency</h1>
+    <h1>[2018] Returning to the Food Standards Agency</h1>
   </div>
   <a href="https://morning-harbor-24616.herokuapp.com/"><img src="thumbs/FSADynamicVsStatic.png" class="img-thumbnail" alt="Pinning Food Standards Agency ratings again."></a>
   <div>
@@ -602,7 +589,7 @@ the first page with <i>$meta.totalCount</i> items per page</p>
 
 <div id="anhourfromhere"> </div>
   <div class="page-header">
-    <h1>Getaway driving</h1>
+    <h1>[2017] Getaway driving</h1>
   </div>
   <div class="container">
     <div class="row">
@@ -724,7 +711,7 @@ the first page with <i>$meta.totalCount</i> items per page</p>
 
 <div id="fitness"> </div>
       <div class="page-header">
-          <h1>Fitness data</h1>
+          <h1>[2017] Fitness data</h1>
       </div>
         <a href="#contact"><img src="thumbs/HeartRateHeatMap.png" class="img-thumbnail" alt="Kibana geo-heatmap of my heartrate around Bristol."></a>
 <div>
@@ -781,7 +768,7 @@ the first page with <i>$meta.totalCount</i> items per page</p>
       <!-- END OF fitness dash -->
 <div id="mot-dash"> </div>
       <div class="page-header">
-          <h1>Vehicle test result dashboard</h1>
+          <h1>[2016] Vehicle test result dashboard</h1>
       </div>
         <a href="#contact"><img src="thumbs/NewDash.Final.png" class="img-thumbnail" alt="Kibana dashboard of 36m MOT tests."></a>
 <div>
@@ -862,7 +849,7 @@ loading the 36m rows simultaneously.
 
 <div id="prescriptiontrends"> </div>
       <div class="page-header">
-          <h1>Prescription trends</h1>
+          <h1>[2016] Prescription trends</h1>
       </div>
         <a href="http://james-irwin.github.io/prescriptions/practicehabits.html"><img src="thumbs/prescriptionslope.png" class="img-thumbnail" alt="League table for prescribed drugs"></a>
 <div>
@@ -881,7 +868,7 @@ prescribed quantity show relative positions rather than relative volume.
 </div>
 <div id="prescription"> </div>
       <div class="page-header">
-          <h1>Top drug writers</h1>
+          <h1>[2016] Top drug writers</h1>
       </div>
         <a href="http://james-irwin.github.io/prescriptions/medicinehub.html"><img src="thumbs/prescriptions.png" class="img-thumbnail" alt="Where are the popular spots for writing diazepam?"></a>
 <div>
@@ -974,7 +961,7 @@ serving.
 
 <div id="word-pairs"> </div>
       <div class="page-header">
-          <h1>Stylometry &amp; stylo-sympathy</h1>
+          <h1>[2015] Stylometry &amp; stylo-sympathy</h1>
       </div>
         <a href="http://james-irwin.github.io/word-pairs/"><img src="thumbs/word-pairs.png" class="img-thumbnail" alt="Write-like and style-comparison of texts."></a>
 <div>
@@ -1064,7 +1051,7 @@ properly -- I used a three dimensional metric that I could bubble-chart using
 
 <div id="enronmail"> </div>
       <div class="page-header">
-          <h1>Sankey diagrams of Enron email via Elasticsearch</h1>
+          <h1>[2015] Sankey diagrams of Enron email via Elasticsearch</h1>
       </div>
         <a href="http://james-irwin.github.io/enron/"><img src="thumbs/enron.even.png" class="img-thumbnail" alt="Enron mail analytics."></a>
 <div>
@@ -1138,7 +1125,7 @@ SELECT 'TO', COUNT(*) AS C WHERE 'FROM'='mike.mcconnell' FROM ENRONMAIL GROUP BY
 
 <div id="fsamap"> </div>
       <div class="page-header">
-          <h1>JavaScript via the Food Standards Agency</h1>
+          <h1>[2015] JavaScript via the Food Standards Agency</h1>
       </div>
         <a href="http://james-irwin.github.io/fsa/"><img src="thumbs/fsa.png" class="img-thumbnail" alt="Food Standards Agency inspection ratings pinned over a Google map."></a>
 <div>
