@@ -46,7 +46,7 @@ AutoSuggestControl.prototype.oldtopscripts = function(practice) {
     if (bnfdecode[this.data[practice].list[i]] != undefined)
       str+='<li>' + bnfdecode[this.data[practice].list[i]];
   }
-  str+='<ul>';
+  str+='</ul>';
 
   return str;
 }
@@ -73,21 +73,34 @@ AutoSuggestControl.prototype.drawChart = function(practice, id) {
     this.data[practice].values_2014,
     this.data[practice].values_2015,
   ]);
+  // Pull the page's theme colours so the charts follow light/dark mode
+  var css = getComputedStyle(document.documentElement);
+  var ink = css.getPropertyValue('--ink').trim() || '#14181c';
+  var soft = css.getPropertyValue('--soft').trim() || '#59626b';
+  var rule = css.getPropertyValue('--rule').trim() || '#d9dde1';
+
   var options = {
-    chartArea: {left:20, top:0, width:320, height:300},
+    backgroundColor: { fill: 'transparent' },
+    chartArea: {left:20, top:0, width:'90%', height:300},
     legend: { position: 'none' },
     series: {0: {targetAxisIndex:1}},
-    vAxes: {0:{gridlines:{count:0, color:'#fff'},
+    vAxes: {0:{gridlines:{count:0, color:'transparent'},
+               baselineColor: rule,
+               textStyle: {color: soft},
                viewWindow: {min:0, max:11},
               },
             1:{
-            gridlines:{count:10, color:'#fff'},
+            gridlines:{count:10, color:'transparent'},
+            baselineColor: rule,
             textPosition:'in',
+            textStyle: {color: ink},
             ticks: this.data[practice].ticks,
             viewWindow: {min:0, max:11},
               }
             },
     hAxis: {
+            baselineColor: rule,
+            textStyle: {color: soft},
             viewWindow: {min:0.25,max:4}
            }
   };
@@ -108,10 +121,10 @@ AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
     // score so the next one bubbles up
     for (var targetID=0; targetID<this.target.length; targetID++) {
         var maxPractice = this.maxPractice();
-        this.target[targetID].innerHTML = '<div class="well"><strong>' +
+        this.target[targetID].innerHTML = '<div class="practice"><strong>' +
             this.practicename(maxPractice, '<br>') +
             '</strong></div><div id="chart' + targetID +
-            '" style="width: 400px; height: 350px"></div>';
+            '" class="chart"></div>';
         this.data[maxPractice].searchScore = -1;
         this.drawChart(maxPractice, targetID);
         }
