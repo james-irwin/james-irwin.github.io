@@ -1,80 +1,230 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
-<!-- Required meta tags -->
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" href="../../favicon.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="JIRA project vitals: exploring ticket re-entry into the build stage across three kinds of project.">
+  <title>JIRA project vitals | James Irwin</title>
 
-<title>james-irwin@github</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f7f8f9;
+      --surface: #fff;
+      --ink: #14181c;
+      --soft: #59626b;
+      --rule: #d9dde1;
+      --link: #0b5568;
+      --tint: #eceff1;
+      --plot-grid: #e5e8eb;
+    }
 
-<!-- Bootstrap core CSS -->
-<link href="../dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap theme -->
-<link href="../dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #101316;
+        --surface: #171c20;
+        --ink: #e6e9ec;
+        --soft: #97a1aa;
+        --rule: #2a3036;
+        --link: #6cc3d8;
+        --tint: #1a1f23;
+        --plot-grid: #30383f;
+      }
+    }
 
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    * { box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
 
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 1rem/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
+    a {
+      color: var(--link);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 3px;
+      border-radius: 3px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 15rem minmax(0, 48rem);
+      gap: 4rem;
+      max-width: 70rem;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 5rem;
+    }
+
+    .site-aside {
+      position: sticky;
+      top: 3rem;
+      align-self: start;
+    }
+
+    .site-name {
+      display: inline-block;
+      margin-bottom: .9rem;
+      color: var(--ink);
+      font: 600 2rem/1.15 ui-serif, Georgia, serif;
+      text-decoration: none;
+      letter-spacing: -.035em;
+    }
+
+    .site-nav a {
+      display: block;
+      width: fit-content;
+      padding: .18rem 0;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .site-nav a:hover { color: var(--link); text-decoration: underline; }
+
+    main { min-width: 0; }
+
+    .page-header { margin: 0 0 2.5rem; }
+
+    h1, h2 {
+      color: var(--ink);
+      font-family: ui-serif, Georgia, serif;
+      font-weight: 600;
+      letter-spacing: -.025em;
+    }
+
+    h1 {
+      margin: 0 0 .55rem;
+      font-size: clamp(2rem, 5vw, 2.7rem);
+      line-height: 1.15;
+    }
+
+    .lede {
+      margin: 0;
+      color: var(--soft);
+      font-size: 1.08rem;
+    }
+
+    .project-section {
+      margin-top: 2.8rem;
+      padding-top: 1.6rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .project-section h2 {
+      margin: 0 0 1rem;
+      font-size: 1.65rem;
+      line-height: 1.25;
+    }
+
+    .chart-frame {
+      width: 100%;
+      min-width: 0;
+      margin: 0 0 1.4rem;
+      padding: .6rem;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+    }
+
+    .chart {
+      width: 100%;
+      height: clamp(340px, 48vw, 460px);
+    }
+
+    .project-section p {
+      max-width: 68ch;
+      margin: 0;
+      color: var(--soft);
+    }
+
+    .chart-error {
+      margin: .5rem;
+      padding: 1rem;
+      color: var(--soft);
+      background: var(--tint);
+      border-radius: 4px;
+    }
+
+    @media (max-width: 800px) {
+      .layout {
+        display: block;
+        padding: 2rem 1.25rem 4rem;
+      }
+
+      .site-aside {
+        position: static;
+        margin-bottom: 2.5rem;
+      }
+
+      .site-name { margin-bottom: .5rem; }
+
+      .site-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .35rem 1.2rem;
+      }
+
+      .project-section { margin-top: 2.3rem; }
+      .chart-frame { padding: .2rem; }
+      .chart { height: 360px; }
+    }
+
+    @media (max-width: 420px) {
+      .chart { height: 320px; }
+    }
+  </style>
 </head>
-<body role="document">
+<body>
+  <div class="layout">
+    <aside class="site-aside">
+      <a class="site-name" href="../index.html">James Irwin</a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="../index.html">Home</a>
+        <a href="../projects.html">Projects</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </aside>
 
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <main>
+      <header class="page-header">
+        <h1>JIRA project vitals</h1>
+        <p class="lede">Recasting ticket data through a polarised lens</p>
+      </header>
 
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="http://james-irwin.github.io/">james-irwin@github</a>
+      <section class="project-section" aria-labelledby="reimplementation-heading">
+        <h2 id="reimplementation-heading">Reimplementation</h2>
+        <div class="chart-frame">
+          <div id="PGraph" class="chart" role="img" aria-label="Chart showing ticket re-entries to the build stage for the reimplementation project"></div>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="http://james-irwin.github.io/">Home</a></li>
-            <li><a href="http://james-irwin.github.io/#contact">Contact</a></li> 
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-<div class="container theme-showcase" role="main">
-<div class="jumbotron">
-  <h2>JIRA project vitals</h2>
-    <p>Recasting ticket data through a polarised lens</p>
-</div>
-<br>
-<h1>Reimplementation</h1>
-<div id="PGraph" style="width:800px;height:480px;"></div>
-<p>This is the early stage sample for a project taking a classic
+        <p>This is the early stage sample for a project taking a classic
 government trivial digitisation <i>digital paper</i>
-(PDF) and turning it into a contemporary online form where 
+(PDF) and turning it into a contemporary online form where
 only relevant questions are presented. In the same way as applying
-for an operators licence <a href="">online</a> versus the
+for an operators licence online versus the
 <a href="https://www.gov.uk/apply-vehicle-operator-licence">download,
  edit, print &amp; post</a> version. Here the team have a reference,
 with well worn paths to make improvements: in the flow for the user;
 the easy wins as directed by the service team; and apply lesiglative
 updates. Low rate of re-visits to the build stage as one would hope
 form taking an already working model and doing a little discovery and
-improvement.
-</p>
-<br>
-<h1>Service extension</h1>
-<div id="IGraph" style="width:800px;height:480px;"></div>
-<p>This is the first two-thirds of extending an existing service
+improvement.</p>
+      </section>
+
+      <section class="project-section" aria-labelledby="service-extension-heading">
+        <h2 id="service-extension-heading">Service extension</h2>
+        <div class="chart-frame">
+          <div id="IGraph" class="chart" role="img" aria-label="Chart showing ticket re-entries to the build stage for the service extension project"></div>
+        </div>
+        <p>This is the first two-thirds of extending an existing service
 which was paused in September 2017.
 This involves UX &amp; discovery for novel scenarios as the norm, unlike
 reworking known scenarios above.
@@ -82,53 +232,147 @@ Note the relatively vertical
 nature of the re-builds -- indicating, perhaps, focussed refinement
 and iteration to complete the ticket. Zoomed to the same time scale
 as the reimplementtion graph shows a comparable, and roughly equal,
-approximation to vertical lines.
-</p>
-<br>
-<h1>Replatforming project</h1>
-<div id="DGraph" style="width:800px;height:480px;"></div>
-<p>This is a platform version upgrade (Java application and content management
+approximation to vertical lines.</p>
+      </section>
+
+      <section class="project-section" aria-labelledby="replatforming-heading">
+        <h2 id="replatforming-heading">Replatforming project</h2>
+        <div class="chart-frame">
+          <div id="DGraph" class="chart" role="img" aria-label="Chart showing ticket re-entries to the build stage for the replatforming project"></div>
+        </div>
+        <p>This is a platform version upgrade (Java application and content management
 service) and the timeframe is comparable to the
 reimplementation work. Note how considerably different the shape is in terms
 of height (the number of visits to the <i>build</i> stage);
 width (time to iterate through the cycles); and the proportion of tickets
-that are not complete first time (a single dot on the <i>y=0</i> line).
-</p>
-<br>
-</div> <!-- container theme-showcase-->
+that are not complete first time (a single dot on the <i>y=0</i> line).</p>
+      </section>
+    </main>
+  </div>
 
-<script src="P.js"></script>
-<script src="I.js"></script>
-<script src="D.js"></script>
+  <!-- Keep the existing data files alongside this HTML file. -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="P.js"></script>
+  <script src="I.js"></script>
+  <script src="D.js"></script>
 
-<script>
-var makePlot=function(DOMElement, data){
-var sets=[];
-for (ticket in data){
-  var ys=[];
-  for (y in data[ticket]) {
-    ys.push(y);
-  }
-  var set={name:ticket, x:data[ticket], y:ys};
+  <script>
+    (function () {
+      "use strict";
 
-  sets.push(set);
-}
-  Graph=document.getElementById(DOMElement);
-  Plotly.plot( Graph, sets,{
-  margin: { t: 0 },
-  showlegend: false,
-  yaxis: {
-    title: 'Re-entries to build stage',
-    range: [-0.5, 8.5]
-   }
-  } );
-}
+      var plotConfig = {
+        responsive: true,
+        displaylogo: false,
+        modeBarButtonsToRemove: ["select2d", "lasso2d"]
+      };
 
-makePlot('DGraph', D);
-makePlot('IGraph', I);
-makePlot('PGraph', P);
-</script>
+      function toPlotlyDate(value) {
+        // The source timestamps use offsets such as +0200; add the colon
+        // expected by strict ISO-8601 date parsers without changing the data files.
+        return String(value).replace(/([+-]\d{2})(\d{2})$/, "$1:$2");
+      }
 
+      function makePlot(elementId, data) {
+        var element = document.getElementById(elementId);
+
+        if (!element) return;
+
+        if (typeof Plotly === "undefined") {
+          element.innerHTML = '<p class="chart-error">The chart library could not be loaded. Please check your connection and reload this page.</p>';
+          return;
+        }
+
+        if (!data || typeof data !== "object") {
+          element.innerHTML = '<p class="chart-error">The chart data could not be loaded.</p>';
+          return;
+        }
+
+        var traces = Object.keys(data).map(function (ticket) {
+          var dates = Array.isArray(data[ticket]) ? data[ticket] : [];
+          return {
+            name: ticket,
+            type: "scatter",
+            mode: "lines+markers",
+            x: dates.map(toPlotlyDate),
+            y: dates.map(function (_date, index) { return index; }),
+            line: { width: 1.5 },
+            marker: { size: 6 },
+            hovertemplate: "<b>" + ticket + "</b><br>%{x|%e %b %Y, %H:%M}<br>Build-stage visit: %{y}<extra></extra>"
+          };
+        });
+
+        var layout = {
+          autosize: true,
+          margin: { l: 76, r: 22, t: 18, b: 58 },
+          paper_bgcolor: "transparent",
+          plot_bgcolor: "transparent",
+          font: {
+            family: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+            size: 12,
+            color: getComputedStyle(document.documentElement).getPropertyValue("--soft").trim() || "#59626b"
+          },
+          showlegend: false,
+          hovermode: "closest",
+          xaxis: {
+            type: "date",
+            title: { text: "Date", standoff: 12 },
+            gridcolor: getComputedStyle(document.documentElement).getPropertyValue("--plot-grid").trim() || "#e5e8eb",
+            linecolor: getComputedStyle(document.documentElement).getPropertyValue("--rule").trim() || "#d9dde1",
+            zeroline: false,
+            automargin: true
+          },
+          yaxis: {
+            title: { text: "Re-entries to build stage", standoff: 12 },
+            range: [-0.5, 8.5],
+            dtick: 1,
+            gridcolor: getComputedStyle(document.documentElement).getPropertyValue("--plot-grid").trim() || "#e5e8eb",
+            linecolor: getComputedStyle(document.documentElement).getPropertyValue("--rule").trim() || "#d9dde1",
+            zeroline: false,
+            automargin: true
+          }
+        };
+
+        Plotly.newPlot(element, traces, layout, plotConfig);
+      }
+
+      makePlot("PGraph", window.P);
+      makePlot("IGraph", window.I);
+      makePlot("DGraph", window.D);
+
+      // Re-apply responsive sizing if the browser viewport changes.
+      window.addEventListener("resize", function () {
+        ["PGraph", "IGraph", "DGraph"].forEach(function (id) {
+          var element = document.getElementById(id);
+          if (element && element.data && typeof Plotly !== "undefined") {
+            Plotly.Plots.resize(element);
+          }
+        });
+      });
+
+      // Keep the charts legible if the user changes the system colour scheme.
+      if (window.matchMedia) {
+        var colourScheme = window.matchMedia("(prefers-color-scheme: dark)");
+        var updateChartColours = function () {
+          ["PGraph", "IGraph", "DGraph"].forEach(function (id) {
+            var element = document.getElementById(id);
+            if (!element || !element.data || typeof Plotly === "undefined") return;
+            var styles = getComputedStyle(document.documentElement);
+            Plotly.relayout(element, {
+              "font.color": styles.getPropertyValue("--soft").trim(),
+              "xaxis.gridcolor": styles.getPropertyValue("--plot-grid").trim(),
+              "xaxis.linecolor": styles.getPropertyValue("--rule").trim(),
+              "yaxis.gridcolor": styles.getPropertyValue("--plot-grid").trim(),
+              "yaxis.linecolor": styles.getPropertyValue("--rule").trim()
+            });
+          });
+        };
+        if (colourScheme.addEventListener) {
+          colourScheme.addEventListener("change", updateChartColours);
+        } else if (colourScheme.addListener) {
+          colourScheme.addListener(updateChartColours);
+        }
+      }
+    }());
+  </script>
 </body>
 </html>
-
