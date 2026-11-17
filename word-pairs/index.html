@@ -1,31 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Stylometry and stylo-sympathy: predictive text built from word pairs in classic works, plus likeness charts comparing authors and texts.">
+<meta name="author" content="James Irwin">
+<link rel="icon" href="../../favicon.ico">
+<title>Stylometry | James Irwin</title>
 
-    <title>james-irwin@github</title>
+<style>
+:root {
+  --bg:#f7f8f9;
+  --ink:#14181c;
+  --soft:#59626b;
+  --rule:#d9dde1;
+  --link:#0b5568;
+  --tint:#eceff1;
+}
 
-    <!-- Bootstrap core CSS -->
-    <link href="../dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="../dist/css/bootstrap-theme.min.css" rel="stylesheet">
+@media (prefers-color-scheme:dark) {
+  :root {
+    --bg:#101316;
+    --ink:#e6e9ec;
+    --soft:#97a1aa;
+    --rule:#2a3036;
+    --link:#6cc3d8;
+    --tint:#1a1f23;
+  }
+}
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+* { box-sizing:border-box; }
 
-  ga('create', 'UA-16765789-5', 'auto');
-  ga('send', 'pageview');
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:1rem/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
 
-</script>
+a {
+  color:var(--link);
+  text-underline-offset:.18em;
+}
+
+a:focus-visible,
+button:focus-visible,
+textarea:focus-visible {
+  outline:2px solid var(--link);
+  outline-offset:3px;
+  border-radius:3px;
+}
+
+.wrap {
+  display:grid;
+  grid-template-columns:15rem minmax(0,1fr);
+  gap:4rem;
+  max-width:80rem;
+  margin:0 auto;
+  padding:4rem 1.5rem 5rem;
+}
+
+aside {
+  position:sticky;
+  top:4rem;
+  align-self:start;
+}
+
+.name {
+  display:block;
+  font:600 2rem/1.15 ui-serif,Georgia,serif;
+  color:var(--ink);
+  text-decoration:none;
+  margin-bottom:.5rem;
+}
+
+nav a {
+  display:block;
+  padding:.2rem 0;
+  color:var(--ink);
+  text-decoration:none;
+}
+
+nav a:hover {
+  color:var(--link);
+  text-decoration:underline;
+}
+
+.eyebrow {
+  margin:0 0 .4rem;
+  font-size:.8rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--soft);
+}
+
+h1 {
+  font:600 2rem/1.2 ui-serif,Georgia,serif;
+  margin:0 0 .5rem;
+}
+
+h2 {
+  font:600 1.4rem/1.3 ui-serif,Georgia,serif;
+  margin:0 0 1rem;
+}
+
+h3 {
+  font:600 1.05rem/1.3 ui-serif,Georgia,serif;
+  margin:0 0 .5rem;
+}
+
+.lede {
+  color:var(--soft);
+  margin:.2rem 0 2rem;
+}
+
+header {
+  max-width:40rem;
+}
+
+section {
+  border-top:1px solid var(--rule);
+  padding-top:1.5rem;
+  margin-bottom:3rem;
+}
+
+textarea {
+  display:block;
+  width:100%;
+  max-width:40rem;
+  font:inherit;
+  color:var(--ink);
+  background:var(--tint);
+  border:1px solid var(--rule);
+  border-radius:4px;
+  padding:.6rem .75rem;
+  resize:vertical;
+}
+
+textarea:focus {
+  border-color:var(--link);
+}
+
+.suggesters {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr));
+  gap:1.5rem;
+  margin:1.5rem 0 2rem;
+}
+
+.suggester p {
+  margin:0 0 .5rem;
+}
+
+.suggester .suggestion { min-height:2.5rem; overflow-wrap:anywhere; }
+/*.suggester .suggestion h4 { margin:0; font:600 1.1rem/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }*/
+.suggester .suggestion small { font-size:.8em; font-weight:400; color:var(--soft); opacity:.8;}
+
+.suggester .data {
+  font-size:.85rem;
+}
+
+.chart-block {
+  margin-top:2rem;
+}
+
+.chart {
+  width:100%;
+  height:450px;
+}
+
+@media(max-width:780px) {
+  .wrap {
+    display:block;
+    padding:2rem 1.25rem 4rem;
+  }
+  aside {
+    position:static;
+    margin-bottom:2rem;
+  }
+  nav {
+    display:flex;
+    gap:1.1rem;
+    flex-wrap:wrap;
+  }
+}
+</style>
+
 <script src="js/suggest.js"></script>
 <script src="js/bronte.3.js"></script>
 <script src="js/austen.3.js"></script>
@@ -40,243 +200,184 @@
 <script src="js/old.vs.new.js"></script>
 <script src="js/koran.vs.shakespeare.js"></script>
 
-<script type='text/javascript' src='js/canvasjs.min.js'></script>
-<script type="text/javascript">
-    window.onload = function () {
-        // Three classic writers
-        var oTextboxB = new AutoSuggestControl ( document.getElementById("textinput"), [ document.getElementById("Bronte"), document.getElementById("Austen"), document.getElementById("Shakespeare")],[bronte, austen, romeo]);
-        document.getElementById("textinput").focus();
+<script src="js/canvasjs.min.js"></script>
+<script>
+// Chart container id, y-axis maximum, data points
+function chartSpecs() {
+  return [
+    ['ShakespeareAustenChartContainer', 0.6, avss],  // Shakespeare vs Austen
+    ['AustenAustenChartContainer',      1.0, avsa],  // Pride & Prejudice vs Austen
+    ['KKChartContainer',                0.6, kvsk],  // Koran vs Krishna
+    ['ONChartContainer',                1.0, ovsn],  // Old vs New Testament
+    ['KSChartContainer',                0.6, kvss]   // Koran vs Shakespeare
+  ];
+}
 
-    // Bard versus Austen likeness
-    var chart1 = new CanvasJS.Chart('ShakespeareAustenChartContainer',    { axisX:{   maximum: 1.1,   minimum: -1.1,   title: 'likeness', },        axisY:{   maximum: 0.6,   minimum: 0.0,   title:'inness' },      data: [      {        type: 'bubble',    toolTipContent: '<strong>{name}</strong><br>{follow}',     dataPoints: avss   }   ] });chart1.render();
-    
-    // Austen self-likeness
-    var chart2 = new CanvasJS.Chart('AustenAustenChartContainer',    { axisX:{   maximum: 1.1,   minimum: -1.1,   title: 'likeness', },        axisY:{   maximum: 1.0,   minimum: 0.0,   title:'inness' },      data: [      {        type: 'bubble',    toolTipContent: '<strong>{name}</strong><br>{follow}',     dataPoints: avsa   }   ] });chart2.render();
-    
-    // Scripture suggesters
-    var oTextboxS = new AutoSuggestControl ( document.getElementById("scripturetextinput"), [ document.getElementById("Krishna"), document.getElementById("Koran"), document.getElementById("OldTestament")],[krishna, koran, oldtestament]);
-        
-    // Krishna vs Koran likeness
-    var chart3 = new CanvasJS.Chart('KKChartContainer',
-      {
-        axisX:{ maximum: 1.1, minimum: -1.1, title: 'likeness', },
-        axisY:{ maximum: 0.6,   minimum: 0.0, title:'inness' },
-        data: [ 
-            { 
-                type: 'bubble', 
-                toolTipContent: '<strong>{name}</strong><br>{follow}',
-                dataPoints: kvsk
-            } ]
-      });
-        chart3.render();
+// Build chart options from the page's theme colours so the charts follow light/dark mode
+function chartOptions(yMax, points) {
+  var css = getComputedStyle(document.documentElement);
+  var ink = css.getPropertyValue('--ink').trim() || '#14181c';
+  var soft = css.getPropertyValue('--soft').trim() || '#59626b';
+  var rule = css.getPropertyValue('--rule').trim() || '#d9dde1';
+  var face = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
 
-        // Krishna vs Koran likeness
-    var chart4 = new CanvasJS.Chart('ONChartContainer',
-      {
-        axisX:{ maximum: 1.1, minimum: -1.1, title: 'likeness', },
-        axisY:{ maximum: 1.0,   minimum: 0.0, title:'inness' },
-        data: [ 
-            { 
-                type: 'bubble', 
-                toolTipContent: '<strong>{name}</strong><br>{follow}',
-                dataPoints: ovsn
-            } ]
-      });
-        chart4.render();
+  function axis(title, min, max) {
+    return {
+      minimum: min,
+      maximum: max,
+      title: title,
+      titleFontColor: soft,
+      titleFontFamily: face,
+      titleFontWeight: 'normal',
+      labelFontColor: soft,
+      labelFontFamily: face,
+      lineColor: rule,
+      tickColor: rule,
+      gridColor: rule
+    };
+  }
 
-        // Koran vs Shakespeare likeness
-    var chart5 = new CanvasJS.Chart('KSChartContainer',
-      {
-        axisX:{ maximum: 1.1, minimum: -1.1, title: 'likeness', },
-        axisY:{ maximum: 0.6,   minimum: 0.0, title:'inness' },
-        data: [ 
-            { 
-                type: 'bubble', 
-                toolTipContent: '<strong>{name}</strong><br>{follow}',
-                dataPoints: kvss
-            } ]
-      });
-        chart5.render();
+  return {
+    backgroundColor: 'transparent',
+    axisX: axis('likeness', -1.1, 1.1),
+    axisY: axis('inness', 0.0, yMax),
+    data: [{
+      type: 'bubble',
+      toolTipContent: '<strong>{name}</strong><br>{follow}',
+      dataPoints: points
+    }]
+  };
+}
 
-    } // Onload!
+function renderCharts() {
+  chartSpecs().forEach(function (spec) {
+    new CanvasJS.Chart(spec[0], chartOptions(spec[1], spec[2])).render();
+  });
+}
+
+window.onload = function () {
+  // Three classic writers
+  new AutoSuggestControl(
+    document.getElementById("textinput"),
+    [document.getElementById("Bronte"), document.getElementById("Austen"), document.getElementById("Shakespeare")],
+    [bronte, austen, romeo]
+  );
+  document.getElementById("textinput").focus();
+
+  // Scripture suggesters
+  new AutoSuggestControl(
+    document.getElementById("scripturetextinput"),
+    [document.getElementById("Krishna"), document.getElementById("Koran"), document.getElementById("OldTestament")],
+    [krishna, koran, oldtestament]
+  );
+
+  // Likeness charts
+  renderCharts();
+
+  // Redraw the charts if the system switches between light and dark
+  if (window.matchMedia) {
+    var scheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (scheme.addEventListener) {
+      scheme.addEventListener('change', renderCharts);
+    }
+  }
+};
 </script>
 </head>
 
-  <body role="document">
+<body>
 
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="http://james-irwin.github.io/">james-irwin@github</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="http://james-irwin.github.io/">Home</a></li>
-            <li><a href="http://james-irwin.github.io/#contact">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
+<div class="wrap">
+
+<aside>
+  <a class="name" href="../index.html">James Irwin</a>
+  <nav aria-label="Main navigation">
+    <a href="../index.html">Home</a>
+    <a href="../projects.html">Projects</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+</aside>
+
+<main>
+  <header>
+    <p class="eyebrow">Word pairs</p>
+    <h1>Stylometry &amp; stylo-sympathy …</h1>
+    <p class="lede">Reducing great works to numbers.</p>
+  </header>
+
+  <section>
+    <h2 id="classics-heading">Get typing with stylo-hints from a few classics</h2>
+    <textarea rows="3" id="textinput" aria-labelledby="classics-heading"></textarea>
+
+    <div class="suggesters">
+      <div class="suggester">
+        <h3>Bronte suggests</h3>
+        <p class="suggestion" id="Bronte" aria-live="polite">ready</p>
+        <p class="data"><a href="js/bronte.3.js">View data »</a></p>
       </div>
-    </nav>
-
-    <div class="container theme-showcase" role="main">
-
-      <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h2>Stylometry &amp; stylo-sympathy ...</h2>
-          <p>Reducing great works to numbers</p>
+      <div class="suggester">
+        <h3>Austen suggests</h3>
+        <p class="suggestion" id="Austen" aria-live="polite">and</p>
+        <p class="data"><a href="js/austen.3.js">View data »</a></p>
       </div>
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-12">
-        <h3>Get typing with stylo-hints from a few classics</h3>
-        <textarea class="col-md-12" rows="3"  id="textinput"></textarea>
-        </div>
+      <div class="suggester">
+        <h3>Shakespeare suggests</h3>
+        <p class="suggestion" id="Shakespeare" aria-live="polite">waiting</p>
+        <p class="data"><a href="js/shakespeare.complete.3.js">View data »</a></p>
+      </div>
     </div>
+
+    <div class="chart-block">
+      <h3>Shakespeare vs Austen (complete works)</h3>
+      <div id="ShakespeareAustenChartContainer" class="chart"></div>
+    </div>
+
+    <div class="chart-block">
+      <h3>Austen's Pride &amp; Prejudice vs Austen's complete works</h3>
+      <div id="AustenAustenChartContainer" class="chart"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="scripture-heading">Scripture inspired stylo-hints</h2>
+    <textarea rows="3" id="scripturetextinput" aria-labelledby="scripture-heading"></textarea>
+
+    <div class="suggesters">
+      <div class="suggester">
+        <h3>Koran suggests</h3>
+        <p class="suggestion" id="Koran" aria-live="polite">ready</p>
+        <p class="data"><a href="js/koran.js">View data »</a></p>
+      </div>
+      <div class="suggester">
+        <h3>Krishna suggests</h3>
+        <p class="suggestion" id="Krishna" aria-live="polite">and</p>
+        <p class="data"><a href="js/krishna.js">View data »</a></p>
+      </div>
+      <div class="suggester">
+        <h3>Old Testament suggests</h3>
+        <p class="suggestion" id="OldTestament" aria-live="polite">waiting</p>
+        <p class="data"><a href="js/oldtestament.js">View data »</a></p>
+      </div>
+    </div>
+
+    <div class="chart-block">
+      <h3>Koran vs Krishna</h3>
+      <div id="KKChartContainer" class="chart"></div>
+    </div>
+
+    <div class="chart-block">
+      <h3>Old vs New Testament</h3>
+      <div id="ONChartContainer" class="chart"></div>
+    </div>
+
+    <div class="chart-block">
+      <h3>Koran vs Shakespeare</h3>
+      <div id="KSChartContainer" class="chart"></div>
+    </div>
+  </section>
+</main>
+
 </div>
 
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-4">
-			<h3>
-				Bronte suggests
-			</h3>
-			<p id="Bronte">
-				ready
-			</p>
-			<p>
-				<a class="btn" href="js/bronte.3.js">View data »</a>
-			</p>
-		</div>
-		<div class="col-md-4">
-			<h3>
-				Austen suggests
-			</h3>
-			<p id="Austen">
-				and
-			</p>
-			<p>
-				<a class="btn" href="js/austen.3.js">View data »</a>
-			</p>
-		</div>
-		<div class="col-md-4">
-			<h3>
-				Shakespeare suggests
-			</h3>
-			<p  id="Shakespeare">
-				waiting
-			</p>
-			<p>
-				<a class="btn" href="js/shakespeare.complete.3.js">View data »</a>
-			</p>
-		</div>
-	</div>
-</div>
-        
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-12">
-        <h3>Shakespeare vs Austen (complete works)</h3>            
-        </div>
-    </div>
-    <div id='ShakespeareAustenChartContainer' style='height: 450px; width: 100%;'></div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-12">
-        <h3>Austen's Pride &amp; Prejudice vs Austen's complete works</h3>            
-        </div>
-    </div>
-    <div id='AustenAustenChartContainer' style='height: 450px; width: 100%;'></div>
-</div>
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-12">
-        <h3>Scripture inspired stylo-hints</h3>
-        <textarea class="col-md-12" rows="3"  id="scripturetextinput"></textarea>
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-4">
-			<h3>
-				Koran suggests
-			</h3>
-			<p id="Koran">
-				ready
-			</p>
-			<p>
-				<a class="btn" href="js/koran.js">View data »</a>
-			</p>
-		</div>
-		<div class="col-md-4">
-			<h3>
-				Krishna suggests
-			</h3>
-			<p id="Krishna">
-				and
-			</p>
-			<p>
-				<a class="btn" href="js/krishna.js">View data »</a>
-			</p>
-		</div>
-		<div class="col-md-4">
-			<h3>
-				Old Testament suggests
-			</h3>
-			<p  id="OldTestament">
-				waiting
-			</p>
-			<p>
-				<a class="btn" href="js/oldtestament.js">View data »</a>
-			</p>
-		</div>
-	</div>
-</div>
-        
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-12">
-        <h3>Koran vs Krishna</h3>            
-        </div>
-    </div>
-    <div id='KKChartContainer' style='height: 450px; width: 100%;'></div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-12">
-        <h3>Old vs New Testament</h3>
-        </div>
-    </div>
-    <div id='ONChartContainer' style='height: 450px; width: 100%;'></div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-12">
-        <h3>Koran vs Shakespeare</h3>
-        </div>
-    </div>
-    <div id='KSChartContainer' style='height: 450px; width: 100%;'></div>
-</div>
-        
-      </div> <!-- Container showcase, the wrapper of the page body -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="../dist/js/bootstrap.min.js"></script>
-  </body>
+</body>
 </html>

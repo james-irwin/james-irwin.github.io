@@ -34,10 +34,10 @@ AutoSuggestControl.prototype.handleKeyUp = function (oEvent) {
                         totalSuggestion+=" " + suggestion;
                     }
                 }
-            this.target[targetID].innerHTML = "<h4>" +
+            this.target[targetID].innerHTML = "" +
                 this.textbox.value.substring(this.textbox.value.length-20,
                                              this.textbox.value.length) +
-                " <small>" + totalSuggestion + "</small></h4>";
+                " <small>" + totalSuggestion + "</small>";
         }
     }
 };
