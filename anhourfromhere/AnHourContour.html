@@ -1,222 +1,481 @@
+<!DOCTYPE html>
+<html lang="en-GB">
 <head>
-  <!-- Plotly.js -->
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="../../favicon.ico">
+  <meta name="description" content="An hour from here: exploring driving time, distance and geography through contour maps and correlations.">
+  <meta name="author" content="James Irwin">
+  <link rel="icon" href="../favicon.ico">
+  <title>An hour from here | James Irwin</title>
 
-  <title>james-irwin@github An hour from here</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-  <!-- Bootstrap core CSS -->
-  <link href="../dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap theme -->
-  <link href="../dist/css/bootstrap-theme.min.css" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8f9;
+      --surface: #ffffff;
+      --ink: #14181c;
+      --soft: #59626b;
+      --rule: #d9dde1;
+      --link: #0b5568;
+      --tint: #eceff1;
+      --plot-paper: #ffffff;
+      --plot-text: #303840;
+    }
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), 
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --bg: #101316;
+        --surface: #171c20;
+        --ink: #e6e9ec;
+        --soft: #97a1aa;
+        --rule: #2a3036;
+        --link: #6cc3d8;
+        --tint: #1a1f23;
+        --plot-paper: #171c20;
+        --plot-text: #e6e9ec;
+      }
+    }
 
-  ga('create', 'UA-16765789-5', 'auto');
-  ga('send', 'pageview');
+    * { box-sizing: border-box; }
 
-</script>
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 1rem/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    a {
+      color: var(--link);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 3px;
+      border-radius: 3px;
+    }
+
+    .site-layout {
+      display: grid;
+      grid-template-columns: 15rem minmax(0, 1fr);
+      gap: 4rem;
+      width: min(100% - 3rem, 68rem);
+      margin: 0 auto;
+      padding: 4rem 0 5rem;
+    }
+
+    .site-sidebar {
+      position: sticky;
+      top: 3rem;
+      align-self: start;
+    }
+
+    .site-name {
+      display: inline-block;
+      margin-bottom: .75rem;
+      color: var(--ink);
+      font: 600 2rem/1.15 ui-serif, Georgia, serif;
+      text-decoration: none;
+      letter-spacing: -.035em;
+    }
+
+    .site-nav a {
+      display: block;
+      width: fit-content;
+      padding: .18rem 0;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .site-nav a:hover {
+      color: var(--link);
+      text-decoration: underline;
+    }
+
+    main { min-width: 0; }
+
+    .eyebrow {
+      margin: 0 0 .55rem;
+      color: var(--soft);
+      font-size: .78rem;
+      font-weight: 650;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    h1, h2 {
+      color: var(--ink);
+      font-family: ui-serif, Georgia, serif;
+      font-weight: 600;
+      letter-spacing: -.025em;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 3.25rem);
+      line-height: 1.12;
+    }
+
+    .intro {
+      max-width: 43rem;
+      margin: 1rem 0 2.6rem;
+      color: var(--soft);
+      font-size: 1.08rem;
+    }
+
+    .section {
+      margin-top: 2.8rem;
+      padding-top: 1.65rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .section:first-of-type { margin-top: 0; }
+
+    h2 {
+      margin: 0 0 .55rem;
+      font-size: clamp(1.55rem, 3vw, 2rem);
+      line-height: 1.25;
+    }
+
+    .section-note {
+      margin: 0 0 1.35rem;
+      color: var(--soft);
+    }
+
+    .chart-panel {
+      width: 100%;
+      min-width: 0;
+      padding: .5rem;
+      overflow: hidden;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .chart {
+      width: 100%;
+      min-width: 0;
+    }
+
+    #ContourDiv { min-height: 480px; }
+    #CorrelationDiv { min-height: 440px; }
+
+    .chart-caption {
+      margin: .8rem 0 0;
+      color: var(--soft);
+      font-size: .88rem;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--rule);
+      color: var(--soft);
+      font-size: .88rem;
+    }
+
+    @media (max-width: 780px) {
+      .site-layout {
+        display: block;
+        width: min(100% - 2.5rem, 48rem);
+        padding: 2rem 0 3.5rem;
+      }
+
+      .site-sidebar {
+        position: static;
+        margin-bottom: 2.5rem;
+      }
+
+      .site-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .35rem 1.2rem;
+      }
+
+      .intro { margin-bottom: 2rem; }
+      .section { margin-top: 2.2rem; }
+      #ContourDiv { min-height: 390px; }
+      #CorrelationDiv { min-height: 360px; }
+      .chart-panel { padding: .15rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
 </head>
 
-<body role="document">
+<body>
+  <div class="site-layout">
+    <aside class="site-sidebar">
+      <a class="site-name" href="../index.html">James Irwin</a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="../index.html">Home</a>
+        <a href="../projects.html">Projects</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </aside>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="http://james-irwin.github.io/">james-irwin@github</a>
+    <main>
+      <header>
+        <p class="eyebrow">Getaway driving</p>
+        <h1>An hour from here</h1>
+        <p class="intro">
+          Exploring how far an hour of driving can take you, using drive-time
+          contours and comparisons between driving distance, straight-line
+          distance and journey duration.
+        </p>
+      </header>
+
+      <section class="section" aria-labelledby="contours-heading">
+        <h2 id="contours-heading">Drive time as contours</h2>
+        <p class="section-note">
+          The contour views compare journey time from home with journey time
+          from the middle.
+        </p>
+        <div class="chart-panel">
+          <div id="ContourDiv" class="chart" role="img"
+               aria-label="Contour plots showing driving time from home and from the middle">
+          </div>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="http://james-irwin.github.io/">Home</a></li>
-            <li><a href="http://james-irwin.github.io/#contact">Contact</a></li> 
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+      </section>
 
-
-<div class="container theme-showcase" role="main">
-  <div class="page-header">
-    <h1> </h1>
-  </div>
-  <div class="page-header">
-    <h1>Drive time as contours</h1>
-  </div>
-  <div class="container">
-    <div class="row">
-      <div id="ContourDiv"></div>
-    </div>
-  </div>
-  <div class="page-header" id="correlations">
-    <h1>As correlations</h1>
-  </div>
-    <div class="row">
-      <div class="col-md-4" style="width: 640px; height: 640px;" id="CorrelationDiv"></div>
-    </div>
+      <section class="section" id="correlations" aria-labelledby="correlations-heading">
+        <h2 id="correlations-heading">As correlations</h2>
+        <p class="section-note">
+          Comparing driving distance, crow-flies distance and driving duration.
+        </p>
+        <div class="chart-panel">
+          <div id="CorrelationDiv" class="chart" role="img"
+               aria-label="Scatter plots comparing driving distance, straight-line distance and driving duration">
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 
+  <!-- Keep these data files alongside this HTML file. -->
   <script src="ContourData.js"></script>
   <script src="MidContourData.js"></script>
-  <script>
-
-var homedata =  {
-    z: dist,
-    autocontour: false,
-    contours: {
-                start: 0,
-                end: 10,
-                size: 0.5
-              },
-    showscale:false,
-    type: 'contour'
-    };
-
-var centredata =  {
-    z: middist,
-    autocontour: false,
-    contours: {
-                start: 0,
-                end: 10,
-                size: 0.5
-              },
-    xaxis: 'x2',
-    yaxis: 'y',
-    zaxis: 'z',
-    showscale:false,
-    type: 'contour'
-    };
-
-
-var data = [homedata, centredata];
-
-var layout = {
-    //autosize:false,
-    width: (2*380),
-    height: 680,
-    showlegend:false,
-    annotations: [
-     {x: 50, y: 166, xref: 'x', yref: 'y', text: 'Loch Ness', showarrow: true, arrowhead: 7, ax: 70, ay: -50},
-     {x: 76, y: 161, xref: 'x', yref: 'y', text: 'Aberdeen', showarrow: true, arrowhead: 7, ax: 55, ay: -15},
-     {x: 66, y: 135, xref: 'x', yref: 'y', text: 'Edinbrugh', showarrow: true, arrowhead: 7, ax: 55, ay: -15},
-     {x: 52, y: 56, xref: 'x', yref: 'y', text: 'Aberystwyth', showarrow: true, arrowhead: 7, ax: -80, ay: 0
-     },
-     {x: 66, y: 87, xref: 'x', yref: 'y', text: 'Blackpool', showarrow: true, arrowhead: 7, ax: -80, ay: 0},
-     {x: 85, y: 113, xref: 'x', yref: 'y', text: 'Newcastle', showarrow: true, arrowhead: 7, ax: 60, ay: -20},
-     {x: 106, y: 36, xref: 'x', yref: 'y', text: 'London', showarrow: true, arrowhead: 7, ax: 0, ay: +70},
-     { x: 30, y: 8, xref: 'x', yref: 'y', text: 'St.Ives', showarrow: true, arrowhead: 7, ax: -20, ay: -40},
-     // Second graph
-     {x: 50, y: 166, xref: 'x2', yref: 'y', text: 'Loch Ness', showarrow: true, arrowhead: 7, ax: 70, ay: -50},
-     {x: 76, y: 161, xref: 'x2', yref: 'y', text: 'Aberdeen', showarrow: true, arrowhead: 7, ax: 55, ay: -15},
-     {x: 66, y: 135, xref: 'x2', yref: 'y', text: 'Edinbrugh', showarrow: true, arrowhead: 7, ax: 55, ay: -15},
-     {x: 52, y: 56, xref: 'x2', yref: 'y', text: 'Aberystwyth', showarrow: true, arrowhead: 7, ax: -80, ay: 0
-     },
-     {x: 66, y: 87, xref: 'x2', yref: 'y', text: 'Blackpool', showarrow: true, arrowhead: 7, ax: -80, ay: 0},
-     {x: 85, y: 113, xref: 'x2', yref: 'y', text: 'Newcastle', showarrow: true, arrowhead: 7, ax: 60, ay: -20},
-     {x: 106, y: 36, xref: 'x2', yref: 'y', text: 'London', showarrow: true, arrowhead: 7, ax: 0, ay: +70},
-     { x: 30, y: 8, xref: 'x2', yref: 'y', text: 'St.Ives', showarrow: true, arrowhead: 7, ax: -20, ay: -40},
-    ],
-    margin: {l: 0, r: 0, b: 0, t: 0, pad: 0},
-    xaxis: {
-      ticks:'',
-      title:'Hours from home',
-      showticklabels:false,
-      showline:false,
-      showgrid:false,
-      zeroline:false,
-      domain: [0, 0.45]
-    },
-    yaxis:{
-      ticks:'',
-      showticklabels:false,
-      showline:false,
-      showgrid:false,
-      zeroline:false,
-      domain: [0.1, 1]
-    },
-    xaxis2: {
-      title: 'Hours from the middle',
-      domain: [0.55, 1],
-      ticks:'',
-      showticklabels:false,
-      showline:false,
-      showgrid:false,
-      zeroline:false
-    }
-}
-
-Plotly.newPlot('ContourDiv', data, layout);
-
-  </script>
-
   <script src="plotly.dists.js"></script>
   <script src="plotly.durations.js"></script>
   <script src="plotly.linear.dists.js"></script>
 
-<script>
-var DrivingDistanceVsDrivingDuration = {
-  x: dists,
-  y: durations,
-  type: 'scatter',
-  mode:'markers',
-  showscale:false
-};
+  <script>
+    (function () {
+      "use strict";
 
-var LinearDistanceVsDrivingDuration = {
-  x: lindists,
-  y: durations,
-  xaxis: 'x2',
-  yaxis: 'y',
-  type: 'scatter',
-  mode:'markers',
-  showscale:false
-};
+      if (!window.Plotly) {
+        console.error("Plotly did not load; the charts cannot be drawn.");
+        return;
+      }
 
-var DrivingDistanceVsLinearDistance = {
-  x: dists,
-  y: lindists,
-  xaxis: 'x',
-  yaxis: 'y3',
-  type: 'scatter',
-  mode:'markers',
-  showscale:false
-};
+      const css = getComputedStyle(document.documentElement);
+      const plotPaper = css.getPropertyValue("--plot-paper").trim();
+      const plotText = css.getPropertyValue("--plot-text").trim();
+      const plotFont = getComputedStyle(document.body).fontFamily;
 
-var data = [DrivingDistanceVsDrivingDuration, LinearDistanceVsDrivingDuration,
-            DrivingDistanceVsLinearDistance];
+      const cityAnnotations = [
+        { x: 50, y: 166, text: "Loch Ness", ax: 70, ay: -50 },
+        { x: 76, y: 161, text: "Aberdeen", ax: 55, ay: -15 },
+        { x: 66, y: 135, text: "Edinburgh", ax: 55, ay: -15 },
+        { x: 52, y: 56, text: "Aberystwyth", ax: -80, ay: 0 },
+        { x: 66, y: 87, text: "Blackpool", ax: -80, ay: 0 },
+        { x: 85, y: 113, text: "Newcastle", ax: 60, ay: -20 },
+        { x: 106, y: 36, text: "London", ax: 0, ay: 70 },
+        { x: 30, y: 8, text: "St Ives", ax: -20, ay: -40 }
+      ];
 
-var layout = {
-  showlegend:false,
-  margin: {
-      l: 0,
-      r: 0,
-      b: 0,
-      t: 0,
-      pad: 0
-    },
-  xaxis: {title:'Driving distance', domain: [0, 0.45]},
-  yaxis: {title:'Driving duration', domain: [0, 0.45]},
-  xaxis2: {title:'Crow-flies distance', domain: [0.55, 1]},
-  yaxis3: {title:'Crow-flies distance', domain: [0.55, 1]},
-};
+      const annotations = [];
+      cityAnnotations.forEach(function (city) {
+        annotations.push({
+          x: city.x, y: city.y, xref: "x", yref: "y",
+          text: city.text, showarrow: true, arrowhead: 7,
+          ax: city.ax, ay: city.ay, font: { color: plotText }
+        });
+        annotations.push({
+          x: city.x, y: city.y, xref: "x2", yref: "y",
+          text: city.text, showarrow: true, arrowhead: 7,
+          ax: city.ax, ay: city.ay, font: { color: plotText }
+        });
+      });
 
-Plotly.newPlot('CorrelationDiv', data, layout);
+      const homeData = {
+        z: dist,
+        autocontour: false,
+        contours: { start: 0, end: 10, size: 0.5 },
+        showscale: false,
+        type: "contour",
+        colorbar: { outlinewidth: 0 }
+      };
 
-</script>
-<div> <!-- End of container class showcase -->
+      const middleData = {
+        z: middist,
+        autocontour: false,
+        contours: { start: 0, end: 10, size: 0.5 },
+        xaxis: "x2",
+        yaxis: "y",
+        showscale: false,
+        type: "contour"
+      };
+
+      const contourLayout = {
+        autosize: true,
+        height: 610,
+        showlegend: false,
+        paper_bgcolor: plotPaper,
+        plot_bgcolor: plotPaper,
+        font: { family: plotFont, color: plotText },
+        annotations: annotations,
+        margin: { l: 8, r: 8, b: 42, t: 12, pad: 0 },
+        xaxis: {
+          title: "Hours from home",
+          ticks: "",
+          showticklabels: false,
+          showline: false,
+          showgrid: false,
+          zeroline: false,
+          domain: [0, 0.45]
+        },
+        yaxis: {
+          ticks: "",
+          showticklabels: false,
+          showline: false,
+          showgrid: false,
+          zeroline: false,
+          domain: [0.05, 1]
+        },
+        xaxis2: {
+          title: "Hours from the middle",
+          domain: [0.55, 1],
+          ticks: "",
+          showticklabels: false,
+          showline: false,
+          showgrid: false,
+          zeroline: false
+        }
+      };
+
+      const drivingDistanceVsDuration = {
+        x: dists,
+        y: durations,
+        type: "scatter",
+        mode: "markers",
+        name: "Driving distance vs driving duration",
+        marker: { size: 7, opacity: 0.72 }
+      };
+
+      const linearDistanceVsDuration = {
+        x: lindists,
+        y: durations,
+        xaxis: "x2",
+        yaxis: "y",
+        type: "scatter",
+        mode: "markers",
+        name: "Crow-flies distance vs driving duration",
+        marker: { size: 7, opacity: 0.72 }
+      };
+
+      const drivingDistanceVsLinearDistance = {
+        x: dists,
+        y: lindists,
+        xaxis: "x",
+        yaxis: "y3",
+        type: "scatter",
+        mode: "markers",
+        name: "Driving distance vs crow-flies distance",
+        marker: { size: 7, opacity: 0.72 }
+      };
+
+      const correlationLayout = {
+        autosize: true,
+        height: 570,
+        showlegend: false,
+        paper_bgcolor: plotPaper,
+        plot_bgcolor: plotPaper,
+        font: { family: plotFont, color: plotText },
+        margin: { l: 62, r: 18, b: 58, t: 18, pad: 0 },
+        xaxis: {
+          title: "Driving distance",
+          domain: [0, 0.45],
+          anchor: "y"
+        },
+        yaxis: {
+          title: "Driving duration",
+          domain: [0, 0.45],
+          anchor: "x"
+        },
+        xaxis2: {
+          title: "Crow-flies distance",
+          domain: [0.55, 1],
+          anchor: "y"
+        },
+        yaxis3: {
+          title: "Crow-flies distance",
+          domain: [0.55, 1],
+          anchor: "x"
+        }
+      };
+
+      const config = {
+        responsive: true,
+        displaylogo: false,
+        modeBarButtonsToRemove: ["select2d", "lasso2d"]
+      };
+
+      const contourPromise = Plotly.newPlot(
+        "ContourDiv",
+        [homeData, middleData],
+        contourLayout,
+        config
+      );
+
+      const correlationPromise = Plotly.newPlot(
+        "CorrelationDiv",
+        [
+          drivingDistanceVsDuration,
+          linearDistanceVsDuration,
+          drivingDistanceVsLinearDistance
+        ],
+        correlationLayout,
+        config
+      );
+
+      Promise.all([contourPromise, correlationPromise]).catch(function (error) {
+        console.error("There was a problem drawing the charts:", error);
+      });
+
+      // Re-apply theme colours when the visitor changes system appearance.
+      if (window.matchMedia) {
+        const colourScheme = window.matchMedia("(prefers-color-scheme: dark)");
+        const refreshTheme = function () {
+          const current = getComputedStyle(document.documentElement);
+          const paper = current.getPropertyValue("--plot-paper").trim();
+          const text = current.getPropertyValue("--plot-text").trim();
+          [ "ContourDiv", "CorrelationDiv" ].forEach(function (id) {
+            const element = document.getElementById(id);
+            if (element && element.data) {
+              Plotly.relayout(element, {
+                paper_bgcolor: paper,
+                plot_bgcolor: paper,
+                "font.color": text
+              });
+            }
+          });
+        };
+        if (colourScheme.addEventListener) {
+          colourScheme.addEventListener("change", refreshTheme);
+        } else if (colourScheme.addListener) {
+          colourScheme.addListener(refreshTheme);
+        }
+      }
+    })();
+  </script>
 </body>
+</html>
